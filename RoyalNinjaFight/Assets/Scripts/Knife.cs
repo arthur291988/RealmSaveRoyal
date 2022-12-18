@@ -41,7 +41,7 @@ public class Knife : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_knifeTransform.position.y > CommonData.vertScreenSize / 2 + 1 || _knifeTransform.position.y < -CommonData.vertScreenSize / 2-1)
+        if (_knifeTransform.position.y > CommonData.instance.vertScreenSize / 2 + 1 || _knifeTransform.position.y < -CommonData.instance.vertScreenSize / 2-1)
         {
             gameObject.SetActive(false);
         }

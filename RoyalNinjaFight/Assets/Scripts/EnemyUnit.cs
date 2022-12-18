@@ -1,28 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyUnit : Unit
 {
-    private int energyOnDestroy;
+    private int _enemyLevel;
+    private int _energyOnDestroy;
+    private float _moveSpeed;
 
     public override void Start()
     {
         base.Start();
         attackTimer = Random.Range(ATTACK_TIME + 4, ATTACK_TIME + 10f);
-        Invoke("setMoveToPoint", 1f);
     }
 
     private void OnEnable()
     {
-        energyOnDestroy = CommonData.energyOfEnemy1;
-        HP = 2;
+        setEnemyFeatures();
+        Invoke("setMoveToPoint", 1f);
     }
 
-    private void setMoveToPoint () =>
-        _movePoint = CommonData.platformPoints.Count>0 ? CommonData.platformPoints[Random.Range(0, CommonData.platformPoints.Count)]:Vector2.zero;
+    public void setEnemyLevel(int level) =>_enemyLevel=level;
+
+    private void setEnemyFeatures() {
+        if (_enemyLevel == 1)
+        {
+            _moveSpeed = CommonData.instance.speedOfEnemy1;
+            _energyOnDestroy = CommonData.instance.energyOfEnemy1;
+        }
+        HP = _enemyLevel;
+    }
+
+    private void setMoveToPoint() =>
+        _movePoint = CommonData.instance.platformPoints.Count > 0 ? CommonData.instance.platformPoints[Random.Range(0, CommonData.instance.platformPoints.Count)] : Vector2.zero;
 
     //private void OnCollisionEnter2D(Collision2D collision)
     //{
@@ -50,13 +63,13 @@ public class EnemyUnit : Unit
 
     public override void removeFromCommonData()
     {
-        CommonData.enemyUnits.Remove(this);
+        CommonData.instance.enemyUnits.Remove(this);
     }
 
 
     public override void disactivateUnit()
     {
-        GameController.instance.incrementEnergy(energyOnDestroy);
+        GameController.instance.incrementEnergy(_energyOnDestroy);
         GameController.instance.updateEneryText();
         removeFromCommonData();
         gameObject.SetActive(false);

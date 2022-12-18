@@ -14,14 +14,14 @@ public class DragController : MonoBehaviour
     public Transform getUnitUnderTouch(Vector2 pos)
     {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
-        for (int i = 0; i < CommonData.playerUnits.Count; i++) {
-            if (worldPosition.x < (CommonData.playerUnits[i]._unitStartPosition.x + CommonData.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
-                worldPosition.x > (CommonData.playerUnits[i]._unitStartPosition.x - CommonData.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
-                worldPosition.y < (CommonData.playerUnits[i]._unitStartPosition.y + CommonData.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2) &&
-                worldPosition.y > (CommonData.playerUnits[i]._unitStartPosition.y - CommonData.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2))
+        for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
+            if (worldPosition.x < (CommonData.instance.playerUnits[i]._unitStartPosition.x + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
+                worldPosition.x > (CommonData.instance.playerUnits[i]._unitStartPosition.x - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
+                worldPosition.y < (CommonData.instance.playerUnits[i]._unitStartPosition.y + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2) &&
+                worldPosition.y > (CommonData.instance.playerUnits[i]._unitStartPosition.y - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2))
             {
-                druggedUnitScript = CommonData.playerUnits[i];
-                return unitToDrag = CommonData.playerUnits[i]._transform;
+                druggedUnitScript = CommonData.instance.playerUnits[i];
+                return unitToDrag = CommonData.instance.playerUnits[i]._transform;
             }
         }
         return null;

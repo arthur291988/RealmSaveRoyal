@@ -24,11 +24,11 @@ public class PlayerUnit : Unit
     //}
     public void addToCommonData()
     {
-        CommonData.playerUnits.Add(this);
+        CommonData.instance.playerUnits.Add(this);
     }
     public override void removeFromCommonData()
     {
-        CommonData.playerUnits.Remove(this);
+        CommonData.instance.playerUnits.Remove(this);
     }
     public override void disactivateUnit()
     {
@@ -44,10 +44,10 @@ public class PlayerUnit : Unit
         ObjectPulled.transform.position = _transform.position;
         ObjectPulled.SetActive(true);
 
-        Unit unitToAttack = CommonData.enemyUnits.Count == 1 ? CommonData.enemyUnits[0] : CommonData.enemyUnits[Random.Range(0, CommonData.enemyUnits.Count)];
+        Unit unitToAttack = CommonData.instance.enemyUnits.Count == 1 ? CommonData.instance.enemyUnits[0] : CommonData.instance.enemyUnits[Random.Range(0, CommonData.instance.enemyUnits.Count)];
         //attackDirection = new Vector2(unitToAttack._transform.position.x + randomnessOfSimpleAttackDirection, unitToAttack._transform.position.y);
         //attackDirection -= new Vector2(_transform.position.x, _transform.position.y);
-        attackDirection = Rotate(CommonData.shotDirection-_unitStartPosition, Random.Range(-0.2f,0.2f));
+        attackDirection = Rotate(CommonData.instance.shotDirection-_unitStartPosition, Random.Range(-0.2f,0.2f));
         ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * 60, ForceMode2D.Impulse);
     }
 
@@ -61,7 +61,7 @@ public class PlayerUnit : Unit
 
     private void Update()
     {
-        if (attackTimer > 0 && CommonData.enemyUnits.Count>0 /*&& CommonData.gameIsOn*/)
+        if (attackTimer > 0 && CommonData.instance.enemyUnits.Count>0 /*&& CommonData.gameIsOn*/)
         {
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0)

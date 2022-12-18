@@ -5,30 +5,39 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class CommonData : MonoBehaviour
 {
+    public static CommonData instance { get; private set;}
+
+    public CommonData() {
+        instance = this;
+    }
+
     [HideInInspector]
-    public static Camera cameraOfGame;
+    public Camera cameraOfGame;
     [HideInInspector]
-    public static float vertScreenSize;
+    public float vertScreenSize;
     [HideInInspector]
-    public static float horisScreenSize;
+    public float horisScreenSize;
 
-    public static Vector2 shotDirection;
+    public Vector2 shotDirection;
 
-    public static bool gameIsOn;
+    public bool gameIsOn;
 
-    public static List<EnemyUnit> enemyUnits;
-    public static List<PlayerUnit> playerUnits;
-    public static List<Vector2> platformPoints;
-    public static List<Vector2> platformPointsWithNoUnits;
+    public List<EnemyUnit> enemyUnits;
+    public List<PlayerUnit> playerUnits;
+    public List<Vector2> platformPoints;
+    public List<Vector2> platformPointsWithNoUnits;
 
-    public static int HPOfTile = 3;
+    public int HPOfTile = 3;
 
-    public static int energyOfEnemy1 = 10;
+    public int energyOfEnemy1 = 10;
 
-    public static int energy;
+    public int energy;
 
-    public static int energyOnStart=100;
-    public static int energyToNextUnitAddStep = 10;
+    public int energyOnStart=100;
+    public int energyToNextUnitAddStep = 10;
+
+    public float speedOfEnemy1 = 0.008f;
+
 
     private void Awake()
     {

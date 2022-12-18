@@ -38,8 +38,8 @@ public class AimController : MonoBehaviour
 
     private void Start()
     {
-        _vertScreenSize = CommonData.vertScreenSize / 2;
-        _horisScreenSize = CommonData.horisScreenSize / 2;
+        _vertScreenSize = CommonData.instance.vertScreenSize / 2;
+        _horisScreenSize = CommonData.instance.horisScreenSize / 2;
         RotateRadiusX = _horisScreenSize- widthOfAimSprite;
         RotateRadiusY = RotateRadiusX;
     }
@@ -63,7 +63,7 @@ public class AimController : MonoBehaviour
         }
 
 
-        CommonData.shotDirection = _transform.position;
+        CommonData.instance.shotDirection = _transform.position;
     }
 
     private void FixedUpdate()

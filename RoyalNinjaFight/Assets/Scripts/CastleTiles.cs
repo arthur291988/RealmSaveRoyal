@@ -12,14 +12,14 @@ public class CastleTiles : MonoBehaviour
     private void Start()
     {
         _gameObject = gameObject;
-        CommonData.platformPoints.Add(_position);
-        CommonData.platformPointsWithNoUnits.Add(_position);
+        CommonData.instance.platformPoints.Add(_position);
+        CommonData.instance.platformPointsWithNoUnits.Add(_position);
     }
 
     private void OnEnable()
     {
         _position = transform.position;
-        HP = CommonData.HPOfTile;
+        HP = CommonData.instance.HPOfTile;
     }
 
     //tile destruction by enemy hit
@@ -38,10 +38,10 @@ public class CastleTiles : MonoBehaviour
     }
 
     private void destroyPlayerUnitStayingOnThisPlatform() {
-        for (int i = 0; i < CommonData.playerUnits.Count; i++) {
-            if (CommonData.playerUnits[i]._unitStartPosition == _position)
+        for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
+            if (CommonData.instance.playerUnits[i]._unitStartPosition == _position)
             {
-                CommonData.playerUnits[i].disactivateUnit();
+                CommonData.instance.playerUnits[i].disactivateUnit();
                 return;
             }
         }
@@ -49,8 +49,8 @@ public class CastleTiles : MonoBehaviour
 
     private void disactivateTile()
     {
-        CommonData.platformPointsWithNoUnits.Remove(_position);
-        CommonData.platformPoints.Remove(_position);
+        CommonData.instance.platformPointsWithNoUnits.Remove(_position);
+        CommonData.instance.platformPoints.Remove(_position);
         destroyPlayerUnitStayingOnThisPlatform();
         _gameObject.SetActive(false);
     }

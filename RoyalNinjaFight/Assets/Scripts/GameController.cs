@@ -32,19 +32,19 @@ public class GameController : MonoBehaviour
         energyToNextUnitAddTxt = gameTurnButton.GetComponentInChildren<Text>();
         instance =this;
         attackWaveTime = 7;
-        initiateAttackWave(5);
-        CommonData.energy = CommonData.energyOnStart;
+        initiateAttackWave(5,1);
+        CommonData.instance.energy = CommonData.instance.energyOnStart;
         updateEneryText();
-        energyToNextUnitAdd = CommonData.energyToNextUnitAddStep;
+        energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
         //gameTurn = 0;
         //timerText.text = "0";
     }
 
-    public void updateEneryText() => energyText.text = CommonData.energy.ToString();
+    public void updateEneryText() => energyText.text = CommonData.instance.energy.ToString();
     public void updateEneryToNextUnitAddText() => energyToNextUnitAddTxt.text = energyToNextUnitAdd.ToString();
-    private void incrementEnergyNeedToNextUnitAdd() => energyToNextUnitAdd += CommonData.energyToNextUnitAddStep;
+    private void incrementEnergyNeedToNextUnitAdd() => energyToNextUnitAdd += CommonData.instance.energyToNextUnitAddStep;
     public void incrementEnergy(int energy) {
-        CommonData.energy += energy;
+        CommonData.instance.energy += energy;
         updateUnitsAddButtonUI();
     }
     private void updateUnitsAddButtonUI()
@@ -52,53 +52,55 @@ public class GameController : MonoBehaviour
         if (!emptyPlatformTilesLeft()) gameTurnButton.interactable = false;
         else {
             if (gameTurnButton.interactable) {
-                if (CommonData.energy < energyToNextUnitAdd) gameTurnButton.interactable = false;
+                if (CommonData.instance.energy < energyToNextUnitAdd) gameTurnButton.interactable = false;
             }
-            else if (CommonData.energy >= energyToNextUnitAdd) gameTurnButton.interactable = true;
+            else if (CommonData.instance.energy >= energyToNextUnitAdd) gameTurnButton.interactable = true;
         }
     }
     private void consumeTheEnergy(int consumeAmount) {
-        CommonData.energy-=consumeAmount;
+        CommonData.instance.energy -=consumeAmount;
         updateEneryText();
     }
 
     private Vector2 pointOfEnemy (int side) { 
-        if (side==0) return new Vector2(Random.Range(-CommonData.horisScreenSize / 2, CommonData.horisScreenSize/2), CommonData.vertScreenSize / 2 + Random.Range(2, 3.5f));
-        else if (side == 1) return new Vector2(CommonData.horisScreenSize / 2 + Random.Range(2, 3.5f), Random.Range(-CommonData.vertScreenSize / 2, CommonData.vertScreenSize / 2));
-        else if (side == 2) return new Vector2(Random.Range(-CommonData.horisScreenSize / 2, CommonData.horisScreenSize/2), -CommonData.vertScreenSize / 2 - Random.Range(2, 3.5f));
-        else return new Vector2(-CommonData.horisScreenSize / 2 - Random.Range(2, 3.5f), Random.Range(-CommonData.vertScreenSize / 2, CommonData.vertScreenSize/2));
+        if (side==0) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize /2), CommonData.instance.vertScreenSize / 2 + Random.Range(2, 3.5f));
+        else if (side == 1) return new Vector2(CommonData.instance.horisScreenSize / 2 + Random.Range(2, 3.5f), Random.Range(-CommonData.instance.vertScreenSize / 2, CommonData.instance.vertScreenSize / 2));
+        else if (side == 2) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize/2), -CommonData.instance.vertScreenSize / 2 - Random.Range(2, 3.5f));
+        else return new Vector2(-CommonData.instance.horisScreenSize / 2 - Random.Range(2, 3.5f), Random.Range(-CommonData.instance.vertScreenSize / 2, CommonData.instance.vertScreenSize/2));
     }
 
-    public void initiateAttackWave(int counOfEnemiesForEachSide) {
+    public void initiateAttackWave(int counOfEnemiesForEachSide, int level) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < counOfEnemiesForEachSide; j++)
             {
                 ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
                 ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
                 ObjectPulled.transform.position = pointOfEnemy(i);
-                CommonData.enemyUnits.Add(ObjectPulled.GetComponent<EnemyUnit>());
+                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
+                CommonData.instance.enemyUnits.Add(enemyUnit);
+                enemyUnit.setEnemyLevel(level);
                 ObjectPulled.SetActive(true);
             }
         }
     }
 
     private bool emptyPlatformTilesLeft() {
-        if (CommonData.platformPointsWithNoUnits.Count > 0) return true;
+        if (CommonData.instance.platformPointsWithNoUnits.Count > 0) return true;
         else return false;
     }
 
 
     public void addNewUnit() {
         int positionIndex = 0;
-        if (CommonData.platformPointsWithNoUnits.Count > 1)
-            positionIndex = Random.Range(0, CommonData.platformPointsWithNoUnits.Count);
-        else if (CommonData.platformPointsWithNoUnits.Count == 1) positionIndex = 0;
+        if (CommonData.instance.platformPointsWithNoUnits.Count > 1)
+            positionIndex = Random.Range(0, CommonData.instance.platformPointsWithNoUnits.Count);
+        else if (CommonData.instance.platformPointsWithNoUnits.Count == 1) positionIndex = 0;
 
         ObjectPulledList = ObjectPuller.current.GetPlayerUnitsPullList();
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-        ObjectPulled.transform.position = CommonData.platformPointsWithNoUnits[positionIndex];
-        CommonData.platformPointsWithNoUnits.RemoveAt(positionIndex);
-        CommonData.playerUnits.Add(ObjectPulled.GetComponent<PlayerUnit>());
+        ObjectPulled.transform.position = CommonData.instance.platformPointsWithNoUnits[positionIndex];
+        CommonData.instance.platformPointsWithNoUnits.RemoveAt(positionIndex);
+        CommonData.instance.playerUnits.Add(ObjectPulled.GetComponent<PlayerUnit>());
         ObjectPulled.SetActive(true);
         consumeTheEnergy(energyToNextUnitAdd);
         incrementEnergyNeedToNextUnitAdd();
@@ -124,7 +126,7 @@ public class GameController : MonoBehaviour
             attackWaveTime -= Time.deltaTime;
             if (attackWaveTime <= 0)
             {
-                initiateAttackWave(4);
+                initiateAttackWave(4,1);
                 attackWaveTime = 7;
             }
 
