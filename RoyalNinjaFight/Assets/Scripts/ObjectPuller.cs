@@ -27,7 +27,7 @@ public class ObjectPuller : MonoBehaviour
     [HideInInspector]
     public List<GameObject> enemySurikenPull;
     [HideInInspector]
-    public List<GameObject> playerSurikenPull;
+    public List<GameObject> playerBallPull;
 
     private void Awake()
     {
@@ -39,7 +39,7 @@ public class ObjectPuller : MonoBehaviour
     {
         enemyUnitsPull = new List<GameObject>();
         playerUnitsPull = new List<GameObject>();
-        playerSurikenPull = new List<GameObject>();
+        playerBallPull = new List<GameObject>();
         enemySurikenPull = new List<GameObject>();
 
         
@@ -59,12 +59,12 @@ public class ObjectPuller : MonoBehaviour
 
             GameObject obj3 = (GameObject)Instantiate(playerSuriken);
             obj3.SetActive(false);
-            playerSurikenPull.Add(obj3);
+            playerBallPull.Add(obj3);
         }
     }
     public List<GameObject> GetPlayerSurikenPullList()
     {
-        return playerSurikenPull;
+        return playerBallPull;
     }
     public List<GameObject> GetEnemySurikenPullList()
     {

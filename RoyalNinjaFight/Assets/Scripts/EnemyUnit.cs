@@ -29,7 +29,7 @@ public class EnemyUnit : Unit
         if (_enemyLevel == 1)
         {
             _moveSpeed = CommonData.instance.speedOfEnemy1;
-            _energyOnDestroy = CommonData.instance.energyOfEnemy1;
+            _energyOnDestroy = CommonData.instance.energyFromEnemy1;
         }
         HP = _enemyLevel;
     }

@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEditor.PlayerSettings;
 
 
 public class DragController : MonoBehaviour
 {
-    private Transform unitToDrag;
+    private Transform unitToDragTransorm;
+    private Unit unitToMergeWith;
+    private Unit draggedUnitScript;
     private Vector2 touchStartPosition;
-    private bool unitIsDrugged;
-    private Unit druggedUnitScript;
+    private bool unitIsDragged;
 
-    public Transform getUnitUnderTouch(Vector2 pos)
+    private Transform getUnitUnderTouch(Vector2 pos)
     {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
         for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
@@ -20,19 +22,36 @@ public class DragController : MonoBehaviour
                 worldPosition.y < (CommonData.instance.playerUnits[i]._unitStartPosition.y + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2) &&
                 worldPosition.y > (CommonData.instance.playerUnits[i]._unitStartPosition.y - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2))
             {
-                druggedUnitScript = CommonData.instance.playerUnits[i];
-                return unitToDrag = CommonData.instance.playerUnits[i]._transform;
+                draggedUnitScript = CommonData.instance.playerUnits[i];
+                return unitToDragTransorm = CommonData.instance.playerUnits[i]._transform;
             }
         }
         return null;
     }
 
+    private Unit getUnitToMergeWith(Vector2 pos) {
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
+        if (draggedUnitScript != null) {
+            for (int i = 0; i < CommonData.instance.playerUnits.Count; i++)
+            {
+                if (CommonData.instance.playerUnits[i] != draggedUnitScript) {
+                    if (worldPosition.x < (CommonData.instance.playerUnits[i]._unitStartPosition.x + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.x > (CommonData.instance.playerUnits[i]._unitStartPosition.x - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.y < (CommonData.instance.playerUnits[i]._unitStartPosition.y + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2) &&
+                    worldPosition.y > (CommonData.instance.playerUnits[i]._unitStartPosition.y - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2))
+                    {
+                        return unitToMergeWith = CommonData.instance.playerUnits[i];
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
-    //// Start is called before the first frame update
-    //void Start()
-    //{
+    private void mergeUnits(Unit unitToUpgrade, Unit unitToDelete) {
+        unitToDelete.disactivateUnit();
 
-    //}
+    }
 
     // Update is called once per frame
     void Update()
@@ -42,35 +61,38 @@ public class DragController : MonoBehaviour
 
             if (_touch.phase == TouchPhase.Began)
             {
-                if (unitToDrag==null && getUnitUnderTouch(_touch.position) != null)
+                if (unitToDragTransorm == null && getUnitUnderTouch(_touch.position) != null)
                 {
                     Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
-                    unitToDrag.position = worldPosition; 
-                    unitIsDrugged = true;
+                    unitToDragTransorm.position = worldPosition;
+                    unitIsDragged = true;
                 }
             }
-            if (unitIsDrugged)
+            if (unitIsDragged)
             {
                 if (_touch.phase == TouchPhase.Moved)
                 {
                     Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
-                    unitToDrag.position = worldPosition;
+                    unitToDragTransorm.position = worldPosition;
                 }
                 else if (_touch.phase == TouchPhase.Ended)
                 {
-                    unitIsDrugged = false;
+                    if (getUnitToMergeWith(_touch.position)!=null) {
+                        mergeUnits(unitToMergeWith, draggedUnitScript);
+                    }
+                    else unitIsDragged = false;
                 }
             }
         }
     }
     private void FixedUpdate()
     {
-        if (unitToDrag!=null && !unitIsDrugged && druggedUnitScript._unitStartPosition != (Vector2)unitToDrag.position) {
-            unitToDrag.position = Vector2.Lerp((Vector2)unitToDrag.position, druggedUnitScript._unitStartPosition, 0.2f);
-            if ((druggedUnitScript._unitStartPosition - (Vector2)unitToDrag.position).sqrMagnitude < 0.1f) {
-                unitToDrag.position = druggedUnitScript._unitStartPosition;
-                unitToDrag = null;
-                druggedUnitScript = null;
+        if (unitToDragTransorm != null && !unitIsDragged && draggedUnitScript._unitStartPosition != (Vector2)unitToDragTransorm.position) {
+            unitToDragTransorm.position = Vector2.Lerp((Vector2)unitToDragTransorm.position, draggedUnitScript._unitStartPosition, 0.2f);
+            if ((draggedUnitScript._unitStartPosition - (Vector2)unitToDragTransorm.position).sqrMagnitude < 0.1f) {
+                unitToDragTransorm.position = draggedUnitScript._unitStartPosition;
+                unitToDragTransorm = null;
+                draggedUnitScript = null;
             }
         }
     }

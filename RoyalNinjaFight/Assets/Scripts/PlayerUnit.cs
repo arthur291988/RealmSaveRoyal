@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerUnit : Unit
 {
+    public int harm;
 
     public override void Start()
     {
@@ -11,10 +12,7 @@ public class PlayerUnit : Unit
         attackTimer = Random.Range(ATTACK_TIME - 2.5f, ATTACK_TIME - 1f);
         HP = 4;
         addToCommonData();
-
     }
-
-
 
     //public override void OnTriggerEnter2D(Collider2D collision) {
     //    if (collision.gameObject.TryGetComponent<EnemyKnife>(out EnemyKnife knife))

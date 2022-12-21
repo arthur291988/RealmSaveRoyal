@@ -29,12 +29,16 @@ public class CommonData : MonoBehaviour
 
     public int HPOfTile = 3;
 
-    public int energyOfEnemy1 = 10;
+    public int HPOfEnemy1 = 1;
+
+    public int energyFromEnemy1 = 10;
 
     public int energy;
 
     public int energyOnStart=100;
     public int energyToNextUnitAddStep = 10;
+
+    public int HarmOfPlayer1 = 8;
 
     public float speedOfEnemy1 = 0.008f;
 

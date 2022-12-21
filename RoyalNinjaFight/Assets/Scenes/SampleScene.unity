@@ -190,7 +190,7 @@ MonoBehaviour:
   enemyUnitsPull: []
   playerUnitsPull: []
   enemySurikenPull: []
-  playerSurikenPull: []
+  playerBallPull: []
 --- !u!1 &120133470
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +232,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!70 &120133472
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -846,6 +847,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 240b39a11cc560f488137d08b4d5727f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraOfGame: {fileID: 0}
+  vertScreenSize: 0
+  horisScreenSize: 0
+  shotDirection: {x: 0, y: 0}
+  gameIsOn: 0
+  enemyUnits: []
+  playerUnits: []
+  platformPoints: []
+  platformPointsWithNoUnits: []
+  HPOfTile: 3
+  HPOfEnemy1: 10
+  energyFromEnemy1: 10
+  energy: 0
+  energyOnStart: 100
+  energyToNextUnitAddStep: 10
+  HarmOfPlayer1: 8
+  speedOfEnemy1: 0.008
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1197,6 +1215,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &652885476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,6 +1650,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &842605925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2041,6 +2061,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &1240779075
 GameObject:
   m_ObjectHideFlags: 0
@@ -2163,6 +2184,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &1249352911
 GameObject:
   m_ObjectHideFlags: 0
@@ -2348,6 +2370,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!70 &1312533131
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2614,6 +2637,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!70 &1377354336
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2817,6 +2841,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &1400497894
 GameObject:
   m_ObjectHideFlags: 0
@@ -3018,6 +3043,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &1593885050
 GameObject:
   m_ObjectHideFlags: 0
@@ -3428,6 +3454,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &1822659451
 GameObject:
   m_ObjectHideFlags: 0
@@ -3873,6 +3900,7 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
   _movePoint: {x: 0, y: 0}
+  harm: 0
 --- !u!1 &2013119933
 GameObject:
   m_ObjectHideFlags: 0
