@@ -8,8 +8,8 @@ using static UnityEditor.PlayerSettings;
 public class DragController : MonoBehaviour
 {
     private Transform unitToDragTransorm;
-    private Unit unitToMergeWith;
-    private Unit draggedUnitScript;
+    private PlayerUnit unitToMergeWith;
+    private PlayerUnit draggedUnitScript;
     private Vector2 touchStartPosition;
     private bool unitIsDragged;
 
@@ -29,7 +29,7 @@ public class DragController : MonoBehaviour
         return null;
     }
 
-    private Unit getUnitToMergeWith(Vector2 pos) {
+    private PlayerUnit getUnitToMergeWith(Vector2 pos) {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
         if (draggedUnitScript != null) {
             for (int i = 0; i < CommonData.instance.playerUnits.Count; i++)
@@ -48,7 +48,7 @@ public class DragController : MonoBehaviour
         return null;
     }
 
-    private void mergeUnits(Unit unitToUpgrade, Unit unitToDelete) {
+    private void mergeUnits(PlayerUnit unitToUpgrade, PlayerUnit unitToDelete) {
         unitToDelete.disactivateUnit();
 
     }

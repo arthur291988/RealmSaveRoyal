@@ -38,7 +38,14 @@ public class CommonData : MonoBehaviour
     public int energyOnStart=100;
     public int energyToNextUnitAddStep = 10;
 
-    public int HarmOfPlayer1 = 8;
+    public int harmOfPlayer1 = 8;
+
+    public float attackSpeedFastBase = 1.1f;
+    public float attackSpeedMidleBase = 1.7f;
+    public float attackSpeedSlowBase = 2.5f;
+
+    public float attackSpeedIncreaseStepBase = 0.15f;
+
 
     public float speedOfEnemy1 = 0.008f;
 

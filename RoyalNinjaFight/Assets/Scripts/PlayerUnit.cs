@@ -2,52 +2,70 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerUnit : Unit
+public class PlayerUnit:MonoBehaviour
 {
+    [HideInInspector]
     public int harm;
 
-    public override void Start()
+    [HideInInspector]
+    public GameObject ObjectPulled;
+    [HideInInspector]
+    public List<GameObject> ObjectPulledList;
+
+    [HideInInspector]
+    public Transform _transform;
+    [HideInInspector]
+    public Vector2 _unitStartPosition;
+
+    [HideInInspector]
+    public float attackTimer;
+    [HideInInspector]
+    public Vector2 attackDirection;
+    [HideInInspector]
+    public float randomnessOfSimpleAttackDirection;
+
+    [HideInInspector]
+    public SpriteRenderer _unitSpriteRenderer;
+
+    public void Start()
     {
-        base.Start();
+        _transform = transform;
+        _unitStartPosition = new Vector2(_transform.position.x, _transform.position.y);
+        _unitSpriteRenderer = GetComponent<SpriteRenderer>();
         attackTimer = Random.Range(ATTACK_TIME - 2.5f, ATTACK_TIME - 1f);
-        HP = 4;
         addToCommonData();
     }
 
-    //public override void OnTriggerEnter2D(Collider2D collision) {
-    //    if (collision.gameObject.TryGetComponent<EnemyKnife>(out EnemyKnife knife))
-    //    {
-    //        reduceHP();
-    //    }
-    //}
     public void addToCommonData()
     {
         CommonData.instance.playerUnits.Add(this);
     }
-    public override void removeFromCommonData()
+    public void removeFromCommonData()
     {
         CommonData.instance.playerUnits.Remove(this);
     }
-    public override void disactivateUnit()
+    public void disactivateUnit()
     {
         removeFromCommonData();
         gameObject.SetActive(false);
     }
-    public override void attackSimple()
+    public void attackSimple()
     {
-        base.attackSimple();
+        randomnessOfSimpleAttackDirection = Random.Range(0, 2.5f);
+        if (Random.Range(0, 2) == 0) randomnessOfSimpleAttackDirection *= -1;
 
         ObjectPulledList = ObjectPuller.current.GetPlayerSurikenPullList();
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = _transform.position;
         ObjectPulled.SetActive(true);
 
-        Unit unitToAttack = CommonData.instance.enemyUnits.Count == 1 ? CommonData.instance.enemyUnits[0] : CommonData.instance.enemyUnits[Random.Range(0, CommonData.instance.enemyUnits.Count)];
+        EnemyUnit unitToAttack = CommonData.instance.enemyUnits.Count == 1 ? CommonData.instance.enemyUnits[0] : CommonData.instance.enemyUnits[Random.Range(0, CommonData.instance.enemyUnits.Count)];
         //attackDirection = new Vector2(unitToAttack._transform.position.x + randomnessOfSimpleAttackDirection, unitToAttack._transform.position.y);
         //attackDirection -= new Vector2(_transform.position.x, _transform.position.y);
         attackDirection = Rotate(CommonData.instance.shotDirection-_unitStartPosition, Random.Range(-0.2f,0.2f));
         ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * 60, ForceMode2D.Impulse);
     }
+
 
     public Vector2 Rotate(Vector2 v, float delta)
     {
