@@ -48,19 +48,20 @@ public class EnemyUnit : MonoBehaviour
     private void setMoveToPoint() =>
         _movePoint = CommonData.instance.platformPoints.Count > 0 ? CommonData.instance.platformPoints[Random.Range(0, CommonData.instance.platformPoints.Count)] : Vector2.zero;
 
-    public void reduceHP()
+    public void reduceHP(int harm)
     {
-        HP--;
+        HP -= harm;
         if (HP < 1) disactivateUnit();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.TryGetComponent<PlayerKnife>(out PlayerKnife knife))
-        {
-            reduceHP();
-        }
-    }
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.TryGetComponent<PlayerShot>(out PlayerShot shot))
+    //    {
+    //        reduceHP();
+    //    }
+    //}
+    
 
     public void removeFromCommonData()
     {

@@ -12,18 +12,24 @@ public class DragController : MonoBehaviour
     private PlayerUnit draggedUnitScript;
     private Vector2 touchStartPosition;
     private bool unitIsDragged;
+    [HideInInspector]
+    public GameObject ObjectPulled;
+    [HideInInspector]
+    public List<GameObject> ObjectPulledList;
 
     private Transform getUnitUnderTouch(Vector2 pos)
     {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
+        PlayerUnit unit;
         for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
-            if (worldPosition.x < (CommonData.instance.playerUnits[i]._unitStartPosition.x + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
-                worldPosition.x > (CommonData.instance.playerUnits[i]._unitStartPosition.x - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
-                worldPosition.y < (CommonData.instance.playerUnits[i]._unitStartPosition.y + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2) &&
-                worldPosition.y > (CommonData.instance.playerUnits[i]._unitStartPosition.y - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2))
+            unit = CommonData.instance.playerUnits[i];
+            if (worldPosition.x < (unit._unitStartPosition.x + unit._unitSpriteRenderer.bounds.size.x / 2) &&
+                worldPosition.x > (unit._unitStartPosition.x - unit._unitSpriteRenderer.bounds.size.x / 2) &&
+                worldPosition.y < (unit._unitStartPosition.y + unit._unitSpriteRenderer.bounds.size.y / 2) &&
+                worldPosition.y > (unit._unitStartPosition.y - unit._unitSpriteRenderer.bounds.size.y / 2))
             {
-                draggedUnitScript = CommonData.instance.playerUnits[i];
-                return unitToDragTransorm = CommonData.instance.playerUnits[i]._transform;
+                draggedUnitScript = unit;
+                return unitToDragTransorm = unit._transform;
             }
         }
         return null;
@@ -32,15 +38,17 @@ public class DragController : MonoBehaviour
     private PlayerUnit getUnitToMergeWith(Vector2 pos) {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
         if (draggedUnitScript != null) {
+            PlayerUnit unit;
             for (int i = 0; i < CommonData.instance.playerUnits.Count; i++)
             {
                 if (CommonData.instance.playerUnits[i] != draggedUnitScript) {
-                    if (worldPosition.x < (CommonData.instance.playerUnits[i]._unitStartPosition.x + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
-                    worldPosition.x > (CommonData.instance.playerUnits[i]._unitStartPosition.x - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.x / 2) &&
-                    worldPosition.y < (CommonData.instance.playerUnits[i]._unitStartPosition.y + CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2) &&
-                    worldPosition.y > (CommonData.instance.playerUnits[i]._unitStartPosition.y - CommonData.instance.playerUnits[i]._unitSpriteRenderer.bounds.size.y / 2))
+                    unit = CommonData.instance.playerUnits[i];
+                    if (worldPosition.x < (unit._unitStartPosition.x + unit._unitSpriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.x > (unit._unitStartPosition.x - unit._unitSpriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.y < (unit._unitStartPosition.y + unit._unitSpriteRenderer.bounds.size.y / 2) &&
+                    worldPosition.y > (unit._unitStartPosition.y - unit._unitSpriteRenderer.bounds.size.y / 2))
                     {
-                        return unitToMergeWith = CommonData.instance.playerUnits[i];
+                        return unitToMergeWith = unit;
                     }
                 }
             }
@@ -48,9 +56,32 @@ public class DragController : MonoBehaviour
         return null;
     }
 
-    private void mergeUnits(PlayerUnit unitToUpgrade, PlayerUnit unitToDelete) {
-        unitToDelete.disactivateUnit();
+    private void mergeUnits()
+    {
+        int unitTypeIndex = Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length);
+        ObjectPulledList = ObjectPuller.current.GetPlayerUnitsPullList(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = unitToMergeWith._unitStartPosition;
+        PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
+        unit.setUnitLevel(unitToMergeWith._unitLevel + 1);
+        unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
+        unit.updatePropertiesToLevel();
+        CommonData.instance.playerUnits.Add(unit);
 
+        ObjectPulled.SetActive(true);
+        unit.setUnitPosition();
+
+        CommonData.instance.platformPointsWithNoUnits.Add(draggedUnitScript._unitStartPosition);
+        GameController.instance.updateUnitsAddButtonUI();
+
+        unitToMergeWith.disactivateUnit();
+        draggedUnitScript.disactivateUnit();
+    }
+
+    private bool checkIfCanMerge() {
+        if (unitToMergeWith._unitLevel == draggedUnitScript._unitLevel && unitToMergeWith._unitType == draggedUnitScript._unitType
+            && unitToMergeWith._unitLevel < CommonData.instance.playerUnitMaxLevel) return true;
+        else return false;
     }
 
     // Update is called once per frame
@@ -77,10 +108,18 @@ public class DragController : MonoBehaviour
                 }
                 else if (_touch.phase == TouchPhase.Ended)
                 {
-                    if (getUnitToMergeWith(_touch.position)!=null) {
-                        mergeUnits(unitToMergeWith, draggedUnitScript);
+                    if (getUnitToMergeWith(_touch.position) != null && checkIfCanMerge())
+                    {
+                        unitToDragTransorm = null;
+                        unitIsDragged = false;
+                        mergeUnits();
                     }
-                    else unitIsDragged = false;
+                    else
+                    {
+                        unitIsDragged = false;
+                        unitToMergeWith = null;
+                        //draggedUnitScript = null;
+                    }
                 }
             }
         }

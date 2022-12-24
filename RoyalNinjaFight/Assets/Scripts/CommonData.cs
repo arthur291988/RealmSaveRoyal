@@ -27,9 +27,11 @@ public class CommonData : MonoBehaviour
     public List<Vector2> platformPoints;
     public List<Vector2> platformPointsWithNoUnits;
 
+    public int playerUnitMaxLevel = 4;
+
     public int HPOfTile = 3;
 
-    public int HPOfEnemy1 = 1;
+    public int HPOfEnemy1 = 12;
 
     public int energyFromEnemy1 = 10;
 
@@ -38,13 +40,26 @@ public class CommonData : MonoBehaviour
     public int energyOnStart=100;
     public int energyToNextUnitAddStep = 10;
 
-    public int harmOfPlayer1 = 8;
+    public int[] playerUnitTypesOnScene;
 
-    public float attackSpeedFastBase = 1.1f;
-    public float attackSpeedMidleBase = 1.7f;
-    public float attackSpeedSlowBase = 2.5f;
+    public int harmOfUnit1 = 8;
+    public int harmOfUnit2 = 14;
+    public int harmOfUnit3 = 20;
 
-    public float attackSpeedIncreaseStepBase = 0.15f;
+    public float attackSpeed1 = 1.1f;
+    public float attackSpeed2 = 1.7f;
+    public float attackSpeed3 = 2.5f;
+ 
+    public float attackSpeedIncreaseStep1 = 0.1f;
+    public float attackSpeedIncreaseStep2 = 0.08f;
+    public float attackSpeedIncreaseStep3 = 0.15f;
+
+    public int attackHarmIncreaseStep1 = 2;
+    public int attackHarmIncreaseStep2 = 3;
+    public int attackHarmIncreaseStep3 = 5;
+
+    public float shotImpulse = 60;
+
 
 
     public float speedOfEnemy1 = 0.008f;
@@ -52,6 +67,7 @@ public class CommonData : MonoBehaviour
 
     private void Awake()
     {
+        playerUnitTypesOnScene = new int[3];
         platformPointsWithNoUnits = new List<Vector2>();
         platformPoints = new List<Vector2>();
         enemyUnits = new List<EnemyUnit>();

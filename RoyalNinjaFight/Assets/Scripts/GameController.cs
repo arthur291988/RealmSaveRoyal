@@ -17,14 +17,7 @@ public class GameController : MonoBehaviour
     public Button gameTurnButton;
     private Text energyToNextUnitAddTxt;
     private int energyToNextUnitAdd;
-    //private float gameTimer;
-    //private const float FIRST_LVL_TIME = 15;
-    //private const float SECOND_LVL_TIME = 15;
-    //private const float THIRD_LVL_TIME = 30;
 
-    //private int gameTurn;
-
-    //public GameObject TestGo;
 
     // Start is called before the first frame update
     void Start()
@@ -36,8 +29,15 @@ public class GameController : MonoBehaviour
         CommonData.instance.energy = CommonData.instance.energyOnStart;
         updateEneryText();
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
+        populatePlayerUnitsTypesArray();
         //gameTurn = 0;
         //timerText.text = "0";
+    }
+
+    private void populatePlayerUnitsTypesArray() {
+        for (int i = 0; i < CommonData.instance.playerUnitTypesOnScene.Length; i++) {
+            CommonData.instance.playerUnitTypesOnScene[i] = i + 1; //TO DO 
+        } 
     }
 
     public void updateEneryText() => energyText.text = CommonData.instance.energy.ToString();
@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
         CommonData.instance.energy += energy;
         updateUnitsAddButtonUI();
     }
-    private void updateUnitsAddButtonUI()
+    public void updateUnitsAddButtonUI()
     {
         if (!emptyPlatformTilesLeft()) gameTurnButton.interactable = false;
         else {
@@ -92,31 +92,31 @@ public class GameController : MonoBehaviour
 
     public void addNewUnit() {
         int positionIndex = 0;
+        int unitTypeIndex = Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length);
         if (CommonData.instance.platformPointsWithNoUnits.Count > 1)
             positionIndex = Random.Range(0, CommonData.instance.platformPointsWithNoUnits.Count);
         else if (CommonData.instance.platformPointsWithNoUnits.Count == 1) positionIndex = 0;
 
-        ObjectPulledList = ObjectPuller.current.GetPlayerUnitsPullList();
+        ObjectPulledList = ObjectPuller.current.GetPlayerUnitsPullList(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = CommonData.instance.platformPointsWithNoUnits[positionIndex];
         CommonData.instance.platformPointsWithNoUnits.RemoveAt(positionIndex);
-        CommonData.instance.playerUnits.Add(ObjectPulled.GetComponent<PlayerUnit>());
+        PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
+        unit.setUnitLevel(1);
+        unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
+        unit.setSpriteOfUnit();
+        CommonData.instance.playerUnits.Add(unit);
+
+
         ObjectPulled.SetActive(true);
+        unit.setUnitPosition();
+
+
         consumeTheEnergy(energyToNextUnitAdd);
         incrementEnergyNeedToNextUnitAdd();
         updateEneryToNextUnitAddText();
         updateUnitsAddButtonUI();
     }
-
-    //public void nextTurnOfGame() {
-    //    gameTurn++;
-    //    if (gameTurn == 1) gameTimer = FIRST_LVL_TIME;
-    //    if (gameTurn == 2) gameTimer = SECOND_LVL_TIME;
-    //    if (gameTurn == 3) gameTimer = THIRD_LVL_TIME;
-    //    CommonData.gameIsOn = true;
-    //    gameTurnButton.interactable = false;
-    //    timerText.text = gameTimer.ToString("0");
-    //}
 
     // Update is called once per frame
     void Update()
@@ -131,17 +131,5 @@ public class GameController : MonoBehaviour
             }
 
         }
-
-        //if (CommonData.gameIsOn)
-        //{
-        //    gameTimer -= Time.deltaTime;
-        //    if (gameTimer <= 0)
-        //    {
-        //        CommonData.gameIsOn = false;
-        //        gameTurnButton.interactable = true;
-        //    }
-
-        //    timerText.text = gameTimer.ToString("0");
-        //}
     }
 }

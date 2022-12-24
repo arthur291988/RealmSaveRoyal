@@ -184,13 +184,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyUnits: {fileID: 3859213313038362327, guid: d2f3db3d4045cf244bdeaef72639553f, type: 3}
-  playerUnits: {fileID: 8385832067656155475, guid: 01f6af972e1637e4ca0e9fa777b6ba50, type: 3}
-  enemySuriken: {fileID: 2153718652962834367, guid: a3d529829cc486f4da31434a31c988de, type: 3}
-  playerSuriken: {fileID: 5851021026593795559, guid: ec44c1f721fcb3741ac4149a95add941, type: 3}
+  playerUnit1: {fileID: 8385832067656155475, guid: 01f6af972e1637e4ca0e9fa777b6ba50, type: 3}
+  playerUnit2: {fileID: 8385832067656155475, guid: 0bbbbfe6b965c824680dde352ba8460e, type: 3}
+  playerUnit3: {fileID: 8385832067656155475, guid: 941270bfb5fd58342a6cf8c476a39e94, type: 3}
+  playerShot1: {fileID: 5851021026593795559, guid: eee67b04facd3a047ada5316898f3da8, type: 3}
+  playerShot2: {fileID: 5851021026593795559, guid: 5087a7007573abe4688bb27916f0fb37, type: 3}
+  playerShot3: {fileID: 5851021026593795559, guid: ec44c1f721fcb3741ac4149a95add941, type: 3}
   enemyUnitsPull: []
-  playerUnitsPull: []
-  enemySurikenPull: []
-  playerBallPull: []
+  playerUnit1Pull: []
+  playerUnit2Pull: []
+  playerUnit3Pull: []
+  playerShot1Pull: []
+  playerShot2Pull: []
+  playerShot3Pull: []
 --- !u!1 &120133470
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,17 +228,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!70 &120133472
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -856,13 +864,27 @@ MonoBehaviour:
   playerUnits: []
   platformPoints: []
   platformPointsWithNoUnits: []
+  playerUnitMaxLevel: 4
   HPOfTile: 3
   HPOfEnemy1: 10
   energyFromEnemy1: 10
   energy: 0
   energyOnStart: 100
   energyToNextUnitAddStep: 10
-  HarmOfPlayer1: 8
+  playerUnitTypesOnScene: 
+  harmOfUnit1: 8
+  harmOfUnit2: 14
+  harmOfUnit3: 20
+  attackSpeed1: 1.1
+  attackSpeed2: 1.7
+  attackSpeed3: 2.5
+  attackSpeedIncreaseStep1: 0.1
+  attackSpeedIncreaseStep2: 0.08
+  attackSpeedIncreaseStep3: 0.15
+  attackHarmIncreaseStep1: 2
+  attackHarmIncreaseStep2: 3
+  attackHarmIncreaseStep3: 5
+  shotImpulse: 60
   speedOfEnemy1: 0.008
 --- !u!20 &519420031
 Camera:
@@ -949,6 +971,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa234420386f3f64fba148f1d8e60486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ObjectPulled: {fileID: 0}
+  ObjectPulledList: []
 --- !u!1 &586479715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,17 +1229,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &652885476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1640,17 +1666,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &842605925
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,17 +2079,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &1240779075
 GameObject:
   m_ObjectHideFlags: 0
@@ -2174,17 +2204,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &1249352911
 GameObject:
   m_ObjectHideFlags: 0
@@ -2360,17 +2392,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!70 &1312533131
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2627,17 +2661,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!70 &1377354336
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -2831,17 +2867,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &1400497894
 GameObject:
   m_ObjectHideFlags: 0
@@ -3033,17 +3071,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &1593885050
 GameObject:
   m_ObjectHideFlags: 0
@@ -3444,17 +3484,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &1822659451
 GameObject:
   m_ObjectHideFlags: 0
@@ -3890,17 +3932,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 727471e5db6d99e4fb30906d9c69746a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _harm: 0
+  _unitLevel: 0
+  _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   _transform: {fileID: 0}
-  attackTimer: 0
-  HP: 0
-  attackDirection: {x: 0, y: 0}
-  randomnessOfSimpleAttackDirection: 0
+  _gameObject: {fileID: 0}
   _unitStartPosition: {x: 0, y: 0}
+  _shotImpulse: 0
+  _attackSpeed: 0
+  attackTimer: 0
+  attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
-  _movePoint: {x: 0, y: 0}
-  harm: 0
 --- !u!1 &2013119933
 GameObject:
   m_ObjectHideFlags: 0
@@ -3930,6 +3974,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa234420386f3f64fba148f1d8e60486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ObjectPulled: {fileID: 0}
+  ObjectPulledList: []
 --- !u!4 &2013119935
 Transform:
   m_ObjectHideFlags: 0
@@ -4290,6 +4336,10 @@ PrefabInstance:
     - target: {fileID: 8385832067656155475, guid: 01f6af972e1637e4ca0e9fa777b6ba50, type: 3}
       propertyPath: m_Name
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8385832067656155475, guid: 01f6af972e1637e4ca0e9fa777b6ba50, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01f6af972e1637e4ca0e9fa777b6ba50, type: 3}
