@@ -8,6 +8,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class EnemyUnit : MonoBehaviour
 {
     private int _enemyLevel;
+    private int _enemySide;
     private int _energyOnDestroy;
     private float _moveSpeed;
 
@@ -20,6 +21,7 @@ public class EnemyUnit : MonoBehaviour
     public Vector2 _unitStartPosition;
     [HideInInspector]
     public Vector2 _movePoint;
+    private SpriteRenderer _unitSpriteRenderer;
 
 
     public void Start()
@@ -30,23 +32,28 @@ public class EnemyUnit : MonoBehaviour
 
     private void OnEnable()
     {
-        setEnemyFeatures();
         Invoke("setMoveToPoint", 1f);
     }
 
-    public void setEnemyLevel(int level) =>_enemyLevel=level;
+    public void setEnemyLevel(int level, int attackWaveCount)
+    {
+        _enemyLevel = level; 
+        setEnemyFeatures(attackWaveCount);
+    }
+    public void setEnemySide (int side) => _enemySide = side;
 
-    private void setEnemyFeatures() {
-        if (_enemyLevel == 1)
-        {
-            _moveSpeed = CommonData.instance.speedOfEnemy1;
-            _energyOnDestroy = CommonData.instance.energyFromEnemy1;
-        }
-        HP = _enemyLevel;
+    public void setEnemyFeatures(int waveNumber)
+    {
+        _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString());
+        
+        _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber];
+        _moveSpeed = CommonData.instance.regularEnemySpeed[_enemyLevel];
+        HP = CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, _enemyLevel];
     }
 
     private void setMoveToPoint() =>
-        _movePoint = CommonData.instance.platformPoints.Count > 0 ? CommonData.instance.platformPoints[Random.Range(0, CommonData.instance.platformPoints.Count)] : Vector2.zero;
+        _movePoint =/* CommonData.instance.platformPoints.Count > 0 ? CommonData.instance.platformPoints[Random.Range(0, CommonData.instance.platformPoints.Count)] : */Vector2.zero;
 
     public void reduceHP(int harm)
     {
@@ -65,7 +72,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void removeFromCommonData()
     {
-        CommonData.instance.enemyUnits.Remove(this);
+        CommonData.instance.enemyUnits[_enemySide].Remove(this);
     }
 
     public void disactivateUnit()
@@ -78,6 +85,6 @@ public class EnemyUnit : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _transform.position = Vector2.MoveTowards(_transform.position, _movePoint, 0.02f);
+        _transform.position = Vector2.MoveTowards(_transform.position, _movePoint, _moveSpeed);
     }
 }

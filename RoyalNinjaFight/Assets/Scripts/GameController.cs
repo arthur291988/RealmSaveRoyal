@@ -12,20 +12,20 @@ public class GameController : MonoBehaviour
     public GameObject ObjectPulled;
     [HideInInspector]
     public List<GameObject> ObjectPulledList;
-    private float attackWaveTime;
     public Text energyText;
     public Button gameTurnButton;
     private Text energyToNextUnitAddTxt;
     private int energyToNextUnitAdd;
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         energyToNextUnitAddTxt = gameTurnButton.GetComponentInChildren<Text>();
-        instance =this;
-        attackWaveTime = 7;
-        initiateAttackWave(5,1);
         CommonData.instance.energy = CommonData.instance.energyOnStart;
         updateEneryText();
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
 
     private void populatePlayerUnitsTypesArray() {
         for (int i = 0; i < CommonData.instance.playerUnitTypesOnScene.Length; i++) {
-            CommonData.instance.playerUnitTypesOnScene[i] = i + 1; //TO DO 
+            CommonData.instance.playerUnitTypesOnScene[i] = i + 1; //TO DO with more than 3 types (for now there only 3 types)
         } 
     }
 
@@ -62,24 +62,14 @@ public class GameController : MonoBehaviour
         updateEneryText();
     }
 
-    private Vector2 pointOfEnemy (int side) { 
-        if (side==0) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize /2), CommonData.instance.vertScreenSize / 2 + Random.Range(2, 3.5f));
-        else if (side == 1) return new Vector2(CommonData.instance.horisScreenSize / 2 + Random.Range(2, 3.5f), Random.Range(-CommonData.instance.vertScreenSize / 2, CommonData.instance.vertScreenSize / 2));
-        else if (side == 2) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize/2), -CommonData.instance.vertScreenSize / 2 - Random.Range(2, 3.5f));
-        else return new Vector2(-CommonData.instance.horisScreenSize / 2 - Random.Range(2, 3.5f), Random.Range(-CommonData.instance.vertScreenSize / 2, CommonData.instance.vertScreenSize/2));
-    }
-
-    public void initiateAttackWave(int counOfEnemiesForEachSide, int level) {
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < counOfEnemiesForEachSide; j++)
+    private void getAndSetTileToUnit(Vector2 position, PlayerUnit unit)
+    {
+        for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
+        {
+            if (CommonData.instance.castleTiles[i]._position == position)
             {
-                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
-                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-                ObjectPulled.transform.position = pointOfEnemy(i);
-                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-                CommonData.instance.enemyUnits.Add(enemyUnit);
-                enemyUnit.setEnemyLevel(level);
-                ObjectPulled.SetActive(true);
+                CommonData.instance.castleTiles[i]._playerUnit = unit;
+                break;
             }
         }
     }
@@ -102,7 +92,7 @@ public class GameController : MonoBehaviour
         ObjectPulled.transform.position = CommonData.instance.platformPointsWithNoUnits[positionIndex];
         CommonData.instance.platformPointsWithNoUnits.RemoveAt(positionIndex);
         PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
-        unit.setUnitLevel(1);
+        unit.setUnitLevel(0);
         unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         unit.setSpriteOfUnit();
         CommonData.instance.playerUnits.Add(unit);
@@ -110,6 +100,7 @@ public class GameController : MonoBehaviour
 
         ObjectPulled.SetActive(true);
         unit.setUnitPosition();
+        getAndSetTileToUnit(unit._unitStartPosition,unit);
 
 
         consumeTheEnergy(energyToNextUnitAdd);
@@ -118,18 +109,5 @@ public class GameController : MonoBehaviour
         updateUnitsAddButtonUI();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (attackWaveTime > 0)
-        {
-            attackWaveTime -= Time.deltaTime;
-            if (attackWaveTime <= 0)
-            {
-                initiateAttackWave(4,1);
-                attackWaveTime = 7;
-            }
-
-        }
-    }
+    
 }

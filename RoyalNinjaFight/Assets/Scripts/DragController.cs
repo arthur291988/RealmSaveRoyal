@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using static UnityEditor.PlayerSettings;
+using static UnityEngine.UI.CanvasScaler;
 
 
 public class DragController : MonoBehaviour
@@ -10,6 +10,8 @@ public class DragController : MonoBehaviour
     private Transform unitToDragTransorm;
     private PlayerUnit unitToMergeWith;
     private PlayerUnit draggedUnitScript;
+    private CastleTiles draggedFromTile;
+    private CastleTiles toPutOnTile;
     private Vector2 touchStartPosition;
     private bool unitIsDragged;
     [HideInInspector]
@@ -20,41 +22,108 @@ public class DragController : MonoBehaviour
     private Transform getUnitUnderTouch(Vector2 pos)
     {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
-        PlayerUnit unit;
-        for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
-            unit = CommonData.instance.playerUnits[i];
-            if (worldPosition.x < (unit._unitStartPosition.x + unit._unitSpriteRenderer.bounds.size.x / 2) &&
-                worldPosition.x > (unit._unitStartPosition.x - unit._unitSpriteRenderer.bounds.size.x / 2) &&
-                worldPosition.y < (unit._unitStartPosition.y + unit._unitSpriteRenderer.bounds.size.y / 2) &&
-                worldPosition.y > (unit._unitStartPosition.y - unit._unitSpriteRenderer.bounds.size.y / 2))
+        CastleTiles tile;
+
+        //castle tiles used to identify unit that is staying on it
+        for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
+        {
+            tile = CommonData.instance.castleTiles[i];
+            if (worldPosition.x < (tile._position.x + tile._spriteRenderer.bounds.size.x / 2) &&
+                worldPosition.x > (tile._position.x - tile._spriteRenderer.bounds.size.x / 2) &&
+                worldPosition.y < (tile._position.y + tile._spriteRenderer.bounds.size.y / 2) &&
+                worldPosition.y > (tile._position.y - tile._spriteRenderer.bounds.size.y / 2))
             {
-                draggedUnitScript = unit;
-                return unitToDragTransorm = unit._transform;
+                if (tile._playerUnit != null)
+                {
+                    draggedFromTile = tile;
+                    draggedUnitScript = tile._playerUnit;
+                    return unitToDragTransorm = draggedUnitScript._transform;
+                }
+                else return null;
             }
         }
+
+        //for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
+        //    unit = CommonData.instance.playerUnits[i];
+        //    if (worldPosition.x < (unit._unitStartPosition.x + unit._unitSpriteRenderer.bounds.size.x / 2) &&
+        //        worldPosition.x > (unit._unitStartPosition.x - unit._unitSpriteRenderer.bounds.size.x / 2) &&
+        //        worldPosition.y < (unit._unitStartPosition.y + unit._unitSpriteRenderer.bounds.size.y / 2) &&
+        //        worldPosition.y > (unit._unitStartPosition.y - unit._unitSpriteRenderer.bounds.size.y / 2))
+        //    {
+        //        draggedUnitScript = unit;
+        //        return unitToDragTransorm = unit._transform;
+        //    }
+        //}
         return null;
     }
 
     private PlayerUnit getUnitToMergeWith(Vector2 pos) {
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
         if (draggedUnitScript != null) {
-            PlayerUnit unit;
-            for (int i = 0; i < CommonData.instance.playerUnits.Count; i++)
+            CastleTiles tile; 
+
+            for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
             {
-                if (CommonData.instance.playerUnits[i] != draggedUnitScript) {
-                    unit = CommonData.instance.playerUnits[i];
-                    if (worldPosition.x < (unit._unitStartPosition.x + unit._unitSpriteRenderer.bounds.size.x / 2) &&
-                    worldPosition.x > (unit._unitStartPosition.x - unit._unitSpriteRenderer.bounds.size.x / 2) &&
-                    worldPosition.y < (unit._unitStartPosition.y + unit._unitSpriteRenderer.bounds.size.y / 2) &&
-                    worldPosition.y > (unit._unitStartPosition.y - unit._unitSpriteRenderer.bounds.size.y / 2))
+                if (CommonData.instance.castleTiles[i] != draggedFromTile)
+                {
+                    tile = CommonData.instance.castleTiles[i];
+                    if (worldPosition.x < (tile._position.x + tile._spriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.x > (tile._position.x - tile._spriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.y < (tile._position.y + tile._spriteRenderer.bounds.size.y / 2) &&
+                    worldPosition.y > (tile._position.y - tile._spriteRenderer.bounds.size.y / 2))
                     {
-                        return unitToMergeWith = unit;
+                        if (tile._playerUnit != null)
+                        {
+                            toPutOnTile = tile;
+                            return unitToMergeWith = tile._playerUnit;
+                        }
+                        else return null;
+                    }
+                }
+            }
+
+            //for (int i = 0; i < CommonData.instance.playerUnits.Count; i++)
+            //{
+            //    if (CommonData.instance.playerUnits[i] != draggedUnitScript) {
+            //        unit = CommonData.instance.playerUnits[i];
+            //        if (worldPosition.x < (unit._unitStartPosition.x + unit._unitSpriteRenderer.bounds.size.x / 2) &&
+            //        worldPosition.x > (unit._unitStartPosition.x - unit._unitSpriteRenderer.bounds.size.x / 2) &&
+            //        worldPosition.y < (unit._unitStartPosition.y + unit._unitSpriteRenderer.bounds.size.y / 2) &&
+            //        worldPosition.y > (unit._unitStartPosition.y - unit._unitSpriteRenderer.bounds.size.y / 2))
+            //        {
+            //            return unitToMergeWith = unit;
+            //        }
+            //    }
+            //}
+        }
+        return null;
+    }
+    private CastleTiles getTileToPutOn(Vector2 pos)
+    {
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
+        if (draggedUnitScript != null)
+        {
+            CastleTiles tile;
+
+            for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
+            {
+                if (CommonData.instance.castleTiles[i] != draggedFromTile)
+                {
+                    tile = CommonData.instance.castleTiles[i];
+                    if (worldPosition.x < (tile._position.x + tile._spriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.x > (tile._position.x - tile._spriteRenderer.bounds.size.x / 2) &&
+                    worldPosition.y < (tile._position.y + tile._spriteRenderer.bounds.size.y / 2) &&
+                    worldPosition.y > (tile._position.y - tile._spriteRenderer.bounds.size.y / 2))
+                    {
+                        if (tile._playerUnit == null) return toPutOnTile = tile;
+                        else return null;
                     }
                 }
             }
         }
         return null;
     }
+
 
     private void mergeUnits()
     {
@@ -70,12 +139,27 @@ public class DragController : MonoBehaviour
 
         ObjectPulled.SetActive(true);
         unit.setUnitPosition();
+        toPutOnTile._playerUnit = unit;
+        draggedFromTile._playerUnit = null;
 
-        CommonData.instance.platformPointsWithNoUnits.Add(draggedUnitScript._unitStartPosition);
+        CommonData.instance.platformPointsWithNoUnits.Add(draggedFromTile._position);
         GameController.instance.updateUnitsAddButtonUI();
 
         unitToMergeWith.disactivateUnit();
         draggedUnitScript.disactivateUnit();
+        draggedFromTile = null;
+        toPutOnTile = null;
+    }
+
+    private void putUnitOnNewPosition() {
+        draggedUnitScript._transform.position = toPutOnTile._position;
+        draggedUnitScript.setUnitPosition();
+
+        CommonData.instance.platformPointsWithNoUnits.Add(draggedFromTile._position);
+        CommonData.instance.platformPointsWithNoUnits.Remove(toPutOnTile._position);
+
+        toPutOnTile._playerUnit = draggedUnitScript;
+        draggedFromTile._playerUnit = null;
     }
 
     private bool checkIfCanMerge() {
@@ -114,6 +198,13 @@ public class DragController : MonoBehaviour
                         unitIsDragged = false;
                         mergeUnits();
                     }
+                    else if (getTileToPutOn(_touch.position))
+                    {
+                        unitToDragTransorm = null;
+                        unitIsDragged = false;
+                        putUnitOnNewPosition();
+
+                    }
                     else
                     {
                         unitIsDragged = false;
@@ -132,6 +223,8 @@ public class DragController : MonoBehaviour
                 unitToDragTransorm.position = draggedUnitScript._unitStartPosition;
                 unitToDragTransorm = null;
                 draggedUnitScript = null;
+                draggedFromTile = null;
+                toPutOnTile = null;
             }
         }
     }

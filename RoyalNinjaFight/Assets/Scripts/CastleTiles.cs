@@ -7,13 +7,21 @@ public class CastleTiles : MonoBehaviour
 {
     private int HP;
     private GameObject _gameObject;
-    private Vector2 _position;
+    [HideInInspector]
+    public Vector2 _position;
+    [HideInInspector]
+    public SpriteRenderer _spriteRenderer;
+    [HideInInspector]
+    public PlayerUnit _playerUnit;
 
     private void Start()
     {
         _gameObject = gameObject;
         CommonData.instance.platformPoints.Add(_position);
         CommonData.instance.platformPointsWithNoUnits.Add(_position);
+        CommonData.instance.castleTiles.Add(this);
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _playerUnit = null;
     }
 
     private void OnEnable()
@@ -51,13 +59,9 @@ public class CastleTiles : MonoBehaviour
     {
         CommonData.instance.platformPointsWithNoUnits.Remove(_position);
         CommonData.instance.platformPoints.Remove(_position);
+        CommonData.instance.castleTiles.Remove(this);
+        _playerUnit = null;
         destroyPlayerUnitStayingOnThisPlatform();
         _gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

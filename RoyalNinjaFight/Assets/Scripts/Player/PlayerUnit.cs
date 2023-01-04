@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -23,6 +24,8 @@ public class PlayerUnit : MonoBehaviour
     public GameObject _gameObject;
     [HideInInspector]
     public Vector2 _unitStartPosition;
+    [HideInInspector]
+    public int unitSide; //0 up 1 down
 
     [HideInInspector]
     public float _shotImpulse;
@@ -38,8 +41,12 @@ public class PlayerUnit : MonoBehaviour
 
     public SpriteAtlas _unitSpriteAtlas;
 
+    [HideInInspector]
+    public bool isMoved;
+
     public void Start()
     {
+        isMoved = false;
         _shotImpulse = CommonData.instance.shotImpulse;
         _gameObject = gameObject;
     }
@@ -52,6 +59,8 @@ public class PlayerUnit : MonoBehaviour
     public void setUnitLevel(int level) => _unitLevel = level;
     public void setUnitPosition() {
         _unitStartPosition = new Vector2(_transform.position.x, _transform.position.y);
+        if (_unitStartPosition.y > 0) unitSide = 0;
+        else unitSide = 1;
     }
     public void setSpriteOfUnit()
     {
@@ -59,10 +68,6 @@ public class PlayerUnit : MonoBehaviour
         _unitSpriteRenderer.sprite = _unitSpriteAtlas.GetSprite(_unitType.ToString() + _unitLevel.ToString());
     }
 
-    //public void addToCommonData()
-    //{
-    //    CommonData.instance.playerUnits.Add(this);
-    //}
     public void removeFromCommonData()
     {
         CommonData.instance.playerUnits.Remove(this);
@@ -77,7 +82,7 @@ public class PlayerUnit : MonoBehaviour
        
     }
 
-    //Rotates the attack vector to att some randomness
+    //Rotates the attack vector to add some randomness
     public Vector2 RotateAttackVector(Vector2 attackDirection, float delta)
     {
         return new Vector2(
@@ -88,12 +93,16 @@ public class PlayerUnit : MonoBehaviour
 
     private void Update()
     {
-        if (attackTimer > 0 && CommonData.instance.enemyUnits.Count>0 /*&& CommonData.gameIsOn*/)
+        if (attackTimer > 0)
         {
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0)
             {
-                attackSimple();
+                if (CommonData.instance.enemyUnits[unitSide].Count > 0 && !isMoved)
+                {
+                    attackSimple();
+                }
+
                 attackTimer = _attackSpeed;
             }
 

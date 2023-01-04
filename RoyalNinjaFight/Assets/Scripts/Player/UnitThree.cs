@@ -14,7 +14,7 @@ public class UnitThree : PlayerUnit
 
     public override void updatePropertiesToLevel()
     {
-        _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
         _unitSpriteRenderer.sprite = _unitSpriteAtlas.GetSprite(_unitType.ToString() + _unitLevel.ToString());
         _attackSpeed -= CommonData.instance.attackSpeedIncreaseStep3 * _unitLevel;
         _harm += CommonData.instance.attackHarmIncreaseStep3 * _unitLevel;
@@ -32,11 +32,17 @@ public class UnitThree : PlayerUnit
         ObjectPulled.GetComponent<PlayerShot>()._harm = _harm;
         ObjectPulled.SetActive(true);
 
-        EnemyUnit unitToAttack = CommonData.instance.enemyUnits.Count == 1 ? CommonData.instance.enemyUnits[0] : CommonData.instance.enemyUnits[Random.Range(0, CommonData.instance.enemyUnits.Count)];
         //attackDirection = new Vector2(unitToAttack._transform.position.x + randomnessOfSimpleAttackDirection, unitToAttack._transform.position.y);
         //attackDirection -= new Vector2(_transform.position.x, _transform.position.y);
 
-        attackDirection = RotateAttackVector(CommonData.instance.shotDirection - _unitStartPosition, Random.Range(-0.2f, 0.2f));
+        EnemyUnit unitToAttack = CommonData.instance.enemyUnits[unitSide].Count == 1 ? CommonData.instance.enemyUnits[unitSide][0] :
+                CommonData.instance.enemyUnits[unitSide][Random.Range(0, CommonData.instance.enemyUnits[unitSide].Count)];
+
+        attackDirection = new Vector2(unitToAttack._transform.position.x, unitToAttack._transform.position.y);
+        attackDirection -= _unitStartPosition;
+        attackDirection = RotateAttackVector(attackDirection, Random.Range(-0.2f, 0.2f));
+
+        //attackDirection = RotateAttackVector(CommonData.instance.shotDirection - _unitStartPosition, Random.Range(-0.2f, 0.2f));
         ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * _shotImpulse, ForceMode2D.Impulse);
     }
 }
