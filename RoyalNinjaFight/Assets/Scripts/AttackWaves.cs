@@ -67,7 +67,6 @@ public class AttackWaves : MonoBehaviour
                 ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
                 ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-                CommonData.instance.enemyUnits[sideOfWave].Add(enemyUnit);
                 enemyUnit.setEnemySide(sideOfWave);
                 enemyUnit.setEnemyLevel(0, attackWaveCount);
                 ObjectPulled.SetActive(true);
@@ -79,7 +78,6 @@ public class AttackWaves : MonoBehaviour
                 ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
                 ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-                CommonData.instance.enemyUnits[sideOfWave].Add(enemyUnit);
                 enemyUnit.setEnemySide(sideOfWave);
                 enemyUnit.setEnemyLevel(1, attackWaveCount);
                 ObjectPulled.SetActive(true);

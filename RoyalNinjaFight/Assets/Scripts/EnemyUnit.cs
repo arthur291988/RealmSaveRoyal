@@ -23,6 +23,8 @@ public class EnemyUnit : MonoBehaviour
     public Vector2 _movePoint;
     private SpriteRenderer _unitSpriteRenderer;
 
+    private bool _includedToShotPull;
+
 
     public void Start()
     {
@@ -32,6 +34,7 @@ public class EnemyUnit : MonoBehaviour
 
     private void OnEnable()
     {
+        _includedToShotPull = false;
         Invoke("setMoveToPoint", 1f);
     }
 
@@ -81,6 +84,25 @@ public class EnemyUnit : MonoBehaviour
         GameController.instance.updateEneryText();
         removeFromCommonData();
         gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (!_includedToShotPull) {
+            if (_enemySide == 0)
+            {
+                if (_transform.position.y < GameController.instance.topShotLine)
+                {
+                    CommonData.instance.enemyUnits[_enemySide].Add(this);
+                    _includedToShotPull = true;
+                }
+            }
+            else if (_transform.position.y > GameController.instance.bottomShotLine)
+            {
+                CommonData.instance.enemyUnits[_enemySide].Add(this);
+                _includedToShotPull = true;
+            }
+        }
     }
 
     private void FixedUpdate()

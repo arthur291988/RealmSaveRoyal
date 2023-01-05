@@ -8,6 +8,12 @@ public class GameController : MonoBehaviour
 {
     public static GameController instance;
 
+    public RectTransform lowerPanelRect;
+    public CanvasScaler canvasScaler;
+    [HideInInspector]
+    public float bottomShotLine;
+    [HideInInspector]
+    public float topShotLine;
     [HideInInspector]
     public GameObject ObjectPulled;
     [HideInInspector]
@@ -30,13 +36,16 @@ public class GameController : MonoBehaviour
         updateEneryText();
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
         populatePlayerUnitsTypesArray();
+        Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(0, lowerPanelRect.anchoredPosition.y + lowerPanelRect.sizeDelta.y* Screen.height/canvasScaler.referenceResolution.y, 0));
+        bottomShotLine = worldPosition.y;
+        topShotLine = CommonData.instance.vertScreenSize/2 - 0.5f;
         //gameTurn = 0;
         //timerText.text = "0";
     }
 
     private void populatePlayerUnitsTypesArray() {
         for (int i = 0; i < CommonData.instance.playerUnitTypesOnScene.Length; i++) {
-            CommonData.instance.playerUnitTypesOnScene[i] = i + 1; //TO DO with more than 3 types (for now there only 3 types)
+            CommonData.instance.playerUnitTypesOnScene[i] = i; //TO DO with more than 3 types (for now there only 3 types)
         } 
     }
 
@@ -92,7 +101,8 @@ public class GameController : MonoBehaviour
         ObjectPulled.transform.position = CommonData.instance.platformPointsWithNoUnits[positionIndex];
         CommonData.instance.platformPointsWithNoUnits.RemoveAt(positionIndex);
         PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
-        unit.setUnitLevel(0);
+        unit.setUnitMergeLevel(0);
+        unit.setUnitPoweUpLevel(0);
         unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         unit.setSpriteOfUnit();
         CommonData.instance.playerUnits.Add(unit);
@@ -101,7 +111,7 @@ public class GameController : MonoBehaviour
         ObjectPulled.SetActive(true);
         unit.setUnitPosition();
         getAndSetTileToUnit(unit._unitStartPosition,unit);
-
+        unit.setUnitFeatures(unit._baseHarm, unit._baseAttackSpeed, unit._baseAccuracy);
 
         consumeTheEnergy(energyToNextUnitAdd);
         incrementEnergyNeedToNextUnitAdd();

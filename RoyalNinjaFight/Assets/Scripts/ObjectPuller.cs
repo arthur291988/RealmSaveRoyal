@@ -107,8 +107,8 @@ public class ObjectPuller : MonoBehaviour
     }
     public List<GameObject> GetPlayerShotPullList(int shotType)
     {
-        if (shotType == 1) return playerShot1Pull;
-        else if (shotType == 2) return playerShot2Pull;
+        if (shotType == 0) return playerShot1Pull;
+        else if (shotType == 1) return playerShot2Pull;
         else return playerShot3Pull;
     }
 

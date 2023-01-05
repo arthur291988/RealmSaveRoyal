@@ -155,6 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ddbf1176d11e7f4d8b2d136cd96bc9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lowerPanelRect: {fileID: 330124665}
+  canvasScaler: {fileID: 742320140}
+  bottomShotLine: 0
+  topShotLine: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   energyText: {fileID: 1400497896}
@@ -235,31 +239,21 @@ MonoBehaviour:
   castleTiles: []
   platformPoints: []
   platformPointsWithNoUnits: []
+  playerUnitTypesOnScene: 
   playerUnitMaxLevel: 4
   HPOfTile: 3
   energy: 0
   energyOnStart: 100
   energyToNextUnitAddStep: 10
-  playerUnitTypesOnScene: 
-  harmOfUnit1: 8
-  harmOfUnit2: 14
-  harmOfUnit3: 20
-  attackSpeed1: 1.1
-  attackSpeed2: 1.7
-  attackSpeed3: 2.5
-  attackSpeedIncreaseStep1: 0.1
-  attackSpeedIncreaseStep2: 0.08
-  attackSpeedIncreaseStep3: 0.15
-  attackHarmIncreaseStep1: 2
-  attackHarmIncreaseStep2: 3
-  attackHarmIncreaseStep3: 5
   shotImpulse: 60
-  HPOfEnemy1: 10
-  HPOfEnemy2: 18
-  speedOfEnemy1: 0.008
-  speedOfEnemy2: 0.008
-  energyFromEnemy1: 10
-  energyFromEnemy2: 15
+  baseHPOfRegularEnemy: 0
+  baseSpeedOfEnemy: 0
+  energyFromEnemyBase: 0
+  energyFromRegularEnemyIncreaser: 0
+  subLocation: 0
+  location: 0
+  regularEnemySpeed: []
+  regularEnemyEnergy: 
 --- !u!1 &120133470
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,7 +286,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -301,7 +301,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -407,7 +406,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &239765467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +626,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &290760488
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -790,7 +789,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 84.05}
+  m_SizeDelta: {x: 0, y: 84.04999}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &330124666
 MonoBehaviour:
@@ -818,7 +817,7 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 1
-    height: 1
+    height: 0.26
 --- !u!222 &330124667
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1240,7 +1239,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &586479716
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1481,7 +1480,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -1490,7 +1495,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -1683,7 +1687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &808683029
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1924,7 +1928,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -1933,7 +1943,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -2493,7 +2502,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -2502,7 +2517,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -2712,7 +2726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4555248155797539878, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4555248155797539879, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
       propertyPath: m_Color.r
@@ -2841,7 +2855,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -2850,7 +2870,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -2875,7 +2894,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1241103293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3022,7 +3041,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1249352912
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3182,7 +3201,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -3191,7 +3216,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -3297,7 +3321,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1319387057
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3457,7 +3481,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -3466,7 +3496,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -3666,7 +3695,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -3675,7 +3710,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -3779,7 +3813,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1480719039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4020,7 +4054,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -4029,7 +4069,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -4261,7 +4300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593885050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: 7, z: 0}
+  m_LocalPosition: {x: -3.5, y: -27.7975, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4348,7 +4387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1636935755
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4589,7 +4628,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -4598,7 +4643,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -4623,7 +4667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1771655268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4830,7 +4874,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822659451}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7, y: 3.5, z: 0}
+  m_LocalPosition: {x: 7, y: -30.18, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -5557,7 +5601,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _harm: 0
-  _unitLevel: 0
+  _baseHarm: 0
+  _attackSpeed: 0
+  _baseAttackSpeed: 0
+  _accuracy: 0
+  _baseAccuracy: 0
+  _unitMergeLevel: 0
+  _unitPowerUpLevel: 0
   _unitType: 0
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
@@ -5566,7 +5616,6 @@ MonoBehaviour:
   _unitStartPosition: {x: 0, y: 0}
   unitSide: 0
   _shotImpulse: 0
-  _attackSpeed: 0
   attackTimer: 0
   attackDirection: {x: 0, y: 0}
   _unitSpriteRenderer: {fileID: 0}
@@ -5636,7 +5685,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2030107608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5783,7 +5832,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &2076399130
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6047,7 +6096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4555248155797539878, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4408232749ea2234aa629bb333081bdc, type: 3}

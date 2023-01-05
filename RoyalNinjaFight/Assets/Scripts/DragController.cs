@@ -21,7 +21,7 @@ public class DragController : MonoBehaviour
 
     private Transform getUnitUnderTouch(Vector2 pos)
     {
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
+        Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
         CastleTiles tile;
 
         //castle tiles used to identify unit that is staying on it
@@ -58,7 +58,7 @@ public class DragController : MonoBehaviour
     }
 
     private PlayerUnit getUnitToMergeWith(Vector2 pos) {
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
+        Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
         if (draggedUnitScript != null) {
             CastleTiles tile; 
 
@@ -100,7 +100,7 @@ public class DragController : MonoBehaviour
     }
     private CastleTiles getTileToPutOn(Vector2 pos)
     {
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
+        Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(pos.x, pos.y, 0));
         if (draggedUnitScript != null)
         {
             CastleTiles tile;
@@ -132,7 +132,7 @@ public class DragController : MonoBehaviour
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = unitToMergeWith._unitStartPosition;
         PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
-        unit.setUnitLevel(unitToMergeWith._unitLevel + 1);
+        unit.setUnitMergeLevel(unitToMergeWith._unitMergeLevel + 1);
         unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         unit.updatePropertiesToLevel();
         CommonData.instance.playerUnits.Add(unit);
@@ -163,8 +163,8 @@ public class DragController : MonoBehaviour
     }
 
     private bool checkIfCanMerge() {
-        if (unitToMergeWith._unitLevel == draggedUnitScript._unitLevel && unitToMergeWith._unitType == draggedUnitScript._unitType
-            && unitToMergeWith._unitLevel < CommonData.instance.playerUnitMaxLevel) return true;
+        if (unitToMergeWith._unitMergeLevel == draggedUnitScript._unitMergeLevel && unitToMergeWith._unitType == draggedUnitScript._unitType
+            && unitToMergeWith._unitMergeLevel < CommonData.instance.playerUnitMaxLevel) return true;
         else return false;
     }
 
@@ -178,7 +178,7 @@ public class DragController : MonoBehaviour
             {
                 if (unitToDragTransorm == null && getUnitUnderTouch(_touch.position) != null)
                 {
-                    Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
+                    Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
                     unitToDragTransorm.position = worldPosition;
                     unitIsDragged = true;
                 }
@@ -187,7 +187,7 @@ public class DragController : MonoBehaviour
             {
                 if (_touch.phase == TouchPhase.Moved)
                 {
-                    Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
+                    Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
                     unitToDragTransorm.position = worldPosition;
                 }
                 else if (_touch.phase == TouchPhase.Ended)

@@ -1,5 +1,6 @@
 ﻿
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -60,34 +61,6 @@ public class CommonData : MonoBehaviour
     public int energyToNextUnitAddStep;
 
     [HideInInspector]
-    public int harmOfUnit1;
-    [HideInInspector]
-    public int harmOfUnit2;
-    [HideInInspector]
-    public int harmOfUnit3;
-
-    [HideInInspector]
-    public float attackSpeed1;
-    [HideInInspector]
-    public float attackSpeed2;
-    [HideInInspector]
-    public float attackSpeed3;
-
-    [HideInInspector]
-    public float attackSpeedIncreaseStep1;
-    [HideInInspector]
-    public float attackSpeedIncreaseStep2;
-    [HideInInspector]
-    public float attackSpeedIncreaseStep3;
-
-    [HideInInspector]
-    public int attackHarmIncreaseStep1;
-    [HideInInspector]
-    public int attackHarmIncreaseStep2;
-    [HideInInspector]
-    public int attackHarmIncreaseStep3;
-
-    [HideInInspector]
     public float shotImpulse;
 
     [HideInInspector]
@@ -111,14 +84,6 @@ public class CommonData : MonoBehaviour
     [HideInInspector]
     public Dictionary<int, List<int>> attackWavesForLevel1 = new Dictionary<int, List<int>>
     {
-        //[0] = new List<int> () { 1, 5, 3, 0 },
-        //[1] = new List<int>() { 2, 5, 2, 0 },
-        //[2] = new List<int>() { 2, 8, 4, 0 },
-        //[3] = new List<int>() { 2, 5, 5, 0 },
-        //[4] = new List<int>() { 3, 6, 7, 0 },
-        //[5] = new List<int>() { 1, 10, 0, 0 },
-        //[6] = new List<int>() { 3, 13, 2, 0 },
-        //[7] = new List<int>() { 4, 10, 8, 0 },
         [0] = new List<int>() { 1, 20, 10, 0 },
         [1] = new List<int>() { 2, 25, 11, 0 },
         [2] = new List<int>() { 2, 9, 18, 0 },
@@ -140,11 +105,9 @@ public class CommonData : MonoBehaviour
     [HideInInspector]
     public int[] regularEnemyEnergy;
 
+    [HideInInspector]
+    public float[,] indexesForPlayerUnits;
 
-
-    public int[] harmOfUnitOne;
-    public int[] harmOfUnitTwo;
-    public int[] harmOfUnitThree;
 
     //indexes to change pararmeters of enemy units
     private void populateEnemyLevelIndexes()
@@ -264,33 +227,69 @@ public class CommonData : MonoBehaviour
         }
     }
 
+    //indexes to change pararmeters of player units
+    private void populatePlayerUnitIndexes()
+    {
+        indexesForPlayerUnits = new float[5, 5];
+        int rows = indexesForPlayerUnits.GetUpperBound(0) + 1;
+        int colums = indexesForPlayerUnits.Length / rows;
+        float multiplierBase = 1.3f;
+        float multiplierForColumn = multiplierBase;
+        float multiplierForRow = multiplierBase;
+        float multiplierDiscount = 1.02f;
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < colums; j++)
+            {
+                if (i == 0 && j == 0) indexesForPlayerUnits[i, j] = 1; //first element is base and equals to 1
+                else
+                {
+                    if (i == 0)
+                    {
+                        indexesForPlayerUnits[i, j] = indexesForPlayerUnits[i, j - 1] * multiplierForColumn;
+                        multiplierForColumn /= multiplierDiscount;
+                    }
+                    else
+                    {
+                        indexesForPlayerUnits[i, j] = indexesForPlayerUnits[i - 1, j] * multiplierForColumn;
+                    }
+                }
+            }
+            if (i != 0)
+            {
+                multiplierForRow /= multiplierDiscount;
+                multiplierForColumn = multiplierForRow;
+            }
+            else multiplierForColumn = multiplierBase;
+
+        }
+    }
+
+    public int getHarmOfUnit(int mergeLevel, int powerUpCount, int baseHarm) { 
+        return (int) (baseHarm* indexesForPlayerUnits[mergeLevel, powerUpCount]);
+    }
+    public float getSpeedOfShotOfUnit(int mergeLevel, int powerUpCount, float baseSpeedOfShot)
+    {
+        return baseSpeedOfShot / indexesForPlayerUnits[mergeLevel, powerUpCount];
+    }
+    public float getAccuracyOfUnit(int mergeLevel, int powerUpCount, float baseAccuracy)
+    {
+        return baseAccuracy / indexesForPlayerUnits[mergeLevel, powerUpCount];
+    }
+
+
     private void Awake()
     {
         subLocation = 0;
         location = 0;
-        playerUnitMaxLevel = 4;
+        playerUnitMaxLevel = 5;
 
         HPOfTile = 3;
 
         energyOnStart = 100;
 
         energyToNextUnitAddStep = 10;
-
-        harmOfUnit1 = 8;
-        harmOfUnit2 = 14;
-        harmOfUnit3 = 20;
-
-        attackSpeed1 = 1.1f;
-        attackSpeed2 = 1.7f;
-        attackSpeed3 = 2.5f;
-
-        attackSpeedIncreaseStep1 = 0.1f;
-        attackSpeedIncreaseStep2 = 0.08f;
-        attackSpeedIncreaseStep3 = 0.15f;
-
-        attackHarmIncreaseStep1 = 2;
-        attackHarmIncreaseStep2 = 3;
-        attackHarmIncreaseStep3 = 5;
 
         shotImpulse = 60;
 
@@ -324,6 +323,8 @@ public class CommonData : MonoBehaviour
         populateAllLocationsRegularEnemyHP(); 
         populateSpeedOfEnemyUNits();
         populateEnergyFromEnemyUnits();
+
+        populatePlayerUnitIndexes();
 
     }
 

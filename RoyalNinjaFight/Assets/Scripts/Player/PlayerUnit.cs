@@ -9,7 +9,21 @@ public class PlayerUnit : MonoBehaviour
     [HideInInspector]
     public int _harm;
     [HideInInspector]
-    public int _unitLevel;
+    public int _baseHarm;
+    [HideInInspector]
+    public float _attackSpeed;
+    [HideInInspector]
+    public float _baseAttackSpeed;
+    [HideInInspector]
+    public float _accuracy;
+    [HideInInspector]
+    public float _baseAccuracy;
+
+    [HideInInspector]
+    public int _unitMergeLevel;
+    [HideInInspector]
+    public int _unitPowerUpLevel;
+
     [HideInInspector]
     public int _unitType;
 
@@ -30,8 +44,6 @@ public class PlayerUnit : MonoBehaviour
     [HideInInspector]
     public float _shotImpulse;
     [HideInInspector]
-    public float _attackSpeed;
-    [HideInInspector]
     public float attackTimer;
     [HideInInspector]
     public Vector2 attackDirection;
@@ -44,19 +56,40 @@ public class PlayerUnit : MonoBehaviour
     [HideInInspector]
     public bool isMoved;
 
+    private void OnEnable()
+    {
+    }
+
     public void Start()
     {
         isMoved = false;
         _shotImpulse = CommonData.instance.shotImpulse;
         _gameObject = gameObject;
+
     }
 
+    public void setStartProperties() {
+        _transform = transform;
+        attackTimer = Random.Range(0.5f, 1);
+    }
 
-    public void SetAttackSpeed(float speed) => _attackSpeed = speed;
-    public void SetAttackHarm(int harm) => _harm = harm;
+    public void setUnitFeatures(int harm, float speed, float accuracy) {
+        _harm = harm;
+        _attackSpeed = speed;
+        _accuracy = accuracy;
+    }
+    public virtual void updatePropertiesToLevel()
+    {
+        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        _unitSpriteRenderer.sprite = _unitSpriteAtlas.GetSprite(_unitType.ToString() + _unitMergeLevel.ToString());
+
+        setUnitFeatures(CommonData.instance.getHarmOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseHarm), 
+            CommonData.instance.getSpeedOfShotOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseAttackSpeed), 
+            CommonData.instance.getAccuracyOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseAccuracy));
+    }
+    public void setUnitMergeLevel(int level) => _unitMergeLevel = level;
+    public void setUnitPoweUpLevel(int level) => _unitPowerUpLevel = level;
     public void SetUnitType(int type) => _unitType = type;
-    public virtual void updatePropertiesToLevel() {}
-    public void setUnitLevel(int level) => _unitLevel = level;
     public void setUnitPosition() {
         _unitStartPosition = new Vector2(_transform.position.x, _transform.position.y);
         if (_unitStartPosition.y > 0) unitSide = 0;
@@ -65,7 +98,7 @@ public class PlayerUnit : MonoBehaviour
     public void setSpriteOfUnit()
     {
         _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = _unitSpriteAtlas.GetSprite(_unitType.ToString() + _unitLevel.ToString());
+        _unitSpriteRenderer.sprite = _unitSpriteAtlas.GetSprite(_unitType.ToString() + _unitMergeLevel.ToString());
     }
 
     public void removeFromCommonData()
@@ -79,7 +112,20 @@ public class PlayerUnit : MonoBehaviour
     }
     public virtual void attackSimple()
     {
-       
+        ObjectPulledList = ObjectPuller.current.GetPlayerShotPullList(_unitType);
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = _transform.position;
+        ObjectPulled.GetComponent<PlayerShot>()._harm = _harm;
+        ObjectPulled.SetActive(true);
+
+        EnemyUnit unitToAttack = CommonData.instance.enemyUnits[unitSide].Count == 1 ? CommonData.instance.enemyUnits[unitSide][0] :
+                CommonData.instance.enemyUnits[unitSide][Random.Range(0, CommonData.instance.enemyUnits[unitSide].Count)];
+
+        attackDirection = new Vector2(unitToAttack._transform.position.x, unitToAttack._transform.position.y);
+        attackDirection -= _unitStartPosition;
+        attackDirection = RotateAttackVector(attackDirection, Random.Range(-_accuracy, _accuracy));
+
+        ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * _shotImpulse, ForceMode2D.Impulse);
     }
 
     //Rotates the attack vector to add some randomness
