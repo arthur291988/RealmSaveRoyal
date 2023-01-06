@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-using System.Data;
+
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -35,13 +35,23 @@ public class CommonData : MonoBehaviour
     public List<PlayerUnit> playerUnits;
 
     [HideInInspector]
-    public List<CastleTiles>  castleTiles;
+    public List<CastleTiles> castleTiles;
+
+    //value shows if tile is empty 0-empty 1 - not Empty 
+    [HideInInspector]
+    public Dictionary<Vector2, int> platformTilesUp;
+
+    //value shows if tile is empty 0-empty 1 - not Empty 
+    [HideInInspector]
+    public Dictionary<Vector2, int> platformTilesDown;
 
     [HideInInspector]
-    public List<Vector2> platformPoints;
+    public List<Vector2> castlePointsUp;
+    [HideInInspector]
+    public List<Vector2> castlePointsDown;
 
     [HideInInspector]
-    public List<Vector2> platformPointsWithNoUnits;
+    public List<Vector2> castlePointsWithNoUnits;
 
     [HideInInspector]
     public int[] playerUnitTypesOnScene;
@@ -79,21 +89,39 @@ public class CommonData : MonoBehaviour
     [HideInInspector]
     public int location;
 
-
+    #region levelParameters
     //index explanation: 0 - attack side counts (2 means attack will go from up and down simultaniously); 1-2-3 first-second-third level enemies count 
     [HideInInspector]
-    public Dictionary<int, List<int>> attackWavesForLevel1 = new Dictionary<int, List<int>>
+    public Dictionary<int, List<List<int>>> attackWavesForLocation00 = new Dictionary<int, List<List<int>>>
     {
-        [0] = new List<int>() { 1, 20, 10, 0 },
-        [1] = new List<int>() { 2, 25, 11, 0 },
-        [2] = new List<int>() { 2, 9, 18, 0 },
-        [3] = new List<int>() { 2, 18, 15, 0 },
-        [4] = new List<int>() { 1, 11, 20, 0 },
-        [5] = new List<int>() { 2, 20, 20, 0 },
-        [6] = new List<int>() { 2, 35, 20, 0 },
-        [7] = new List<int>() { 2, 30, 25, 0 },
+        [0] = new List<List<int>> {
+            new List<int> {1, 20, 10, 0, 0},
+            new List<int> { 2, 25, 11, 0, 0 },
+            new List<int> { 1, 20, 22, 0, 0 },
+        },
+        [1] = new List<List<int>>
+        {
+            new List<int>() { 2, 18, 15, 5, 0 },
+            new List<int>() { 1, 20, 20, 10, 0 },
+            new List<int>() { 2, 10, 20, 4, 0 },
+            new List<int>() { 1, 35, 20, 13, 0 },
+        },
+        [2] = new List<List<int>>
+        {
+            new List<int>() { 2, 30, 25, 5, 0 },
+            new List<int>() { 1, 40, 15, 8, 0 },
+            new List<int>() { 1, 30, 25, 10, 0 },
+            new List<int>() { 2, 30, 30, 7, 0 },
+            new List<int>() { 2, 30, 40, 8, 0 },
+        }
     };
 
+    [HideInInspector]
+    public Dictionary<Vector2, Dictionary<int, List<List<int>>>> locationWaves;
+
+    #endregion levelParameters
+
+    #region EnemyUnits
     [HideInInspector]
     public float[,] indexesForEnemy ;
     [HideInInspector]
@@ -106,8 +134,13 @@ public class CommonData : MonoBehaviour
     public int[] regularEnemyEnergy;
 
     [HideInInspector]
-    public float[,] indexesForPlayerUnits;
-
+    public int energyMultiplierForMiniBoss;
+    [HideInInspector]
+    public int energyMultiplierForBigBoss;
+    [HideInInspector]
+    public int HPMultiplierForMiniBoss;
+    [HideInInspector]
+    public int HPMultiplierForBigBoss;
 
     //indexes to change pararmeters of enemy units
     private void populateEnemyLevelIndexes()
@@ -115,7 +148,7 @@ public class CommonData : MonoBehaviour
         indexesForEnemy = new float[7, 4];
         int rows = indexesForEnemy.GetUpperBound(0) + 1;
         int colums = indexesForEnemy.Length / rows;
-        float multiplierBase = 1.15f;
+        float multiplierBase = 1.5f;
         float multiplierForColumn = multiplierBase;
         float multiplierForRow = multiplierBase;
         float multiplierDiscount = 1.02f;
@@ -147,8 +180,7 @@ public class CommonData : MonoBehaviour
 
         }
     }
-
-    private void populateBaseregularEnemyHPBase()
+    private void populateRegularEnemyHPBase()
     {
         int baseHP = baseHPOfRegularEnemy;
         int HPIncreaserForLevel = 40;
@@ -204,8 +236,7 @@ public class CommonData : MonoBehaviour
             else multiplierForLocation = Mathf.Pow(baseMultiplierIndexForLication, i + 1);
         }
     }
-
-    private void populateSpeedOfEnemyUNits() {
+    private void populateSpeedOfEnemyUnits() {
         regularEnemySpeed = new float[4]; 
         for (int i=0;i< regularEnemySpeed.Length;i++) {
             if (i == 0) regularEnemySpeed[i] = baseSpeedOfEnemy;
@@ -214,7 +245,6 @@ public class CommonData : MonoBehaviour
             }
         }
     }
-
     private void populateEnergyFromEnemyUnits() {
         regularEnemyEnergy = new int[7];
         for (int i = 0; i < regularEnemyEnergy.Length; i++)
@@ -224,6 +254,21 @@ public class CommonData : MonoBehaviour
             {
                 regularEnemyEnergy[i] = regularEnemyEnergy[i-1] + energyFromRegularEnemyIncreaser;
             }
+        }
+    }
+
+
+    #endregion EnemyUnits
+
+    #region PlayerUnit
+
+    [HideInInspector]
+    public float[,] indexesForPlayerUnits;
+    private void populatePlayerUnitsTypesArray()
+    {
+        for (int i = 0; i < playerUnitTypesOnScene.Length; i++)
+        {
+            playerUnitTypesOnScene[i] = i; //TO DO with more than 3 types (for now there only 3 types)
         }
     }
 
@@ -265,7 +310,6 @@ public class CommonData : MonoBehaviour
 
         }
     }
-
     public int getHarmOfUnit(int mergeLevel, int powerUpCount, int baseHarm) { 
         return (int) (baseHarm* indexesForPlayerUnits[mergeLevel, powerUpCount]);
     }
@@ -278,9 +322,15 @@ public class CommonData : MonoBehaviour
         return baseAccuracy / indexesForPlayerUnits[mergeLevel, powerUpCount];
     }
 
+    #endregion PlayerUnit
 
     private void Awake()
     {
+        cameraOfGame = Camera.main;
+        //determine the sizes of view screen
+        vertScreenSize = cameraOfGame.orthographicSize * 2;
+        horisScreenSize = vertScreenSize * Screen.width / Screen.height;
+
         subLocation = 0;
         location = 0;
         playerUnitMaxLevel = 5;
@@ -300,10 +350,66 @@ public class CommonData : MonoBehaviour
         energyFromEnemyBase = 10;
         energyFromRegularEnemyIncreaser = 10;
 
+        energyMultiplierForMiniBoss=5;
+        energyMultiplierForBigBoss=20;
+        HPMultiplierForMiniBoss=5;
+        HPMultiplierForBigBoss=10;
+
         playerUnitTypesOnScene = new int[3];
-        platformPointsWithNoUnits = new List<Vector2>();
-        platformPoints = new List<Vector2>();
+
+        locationWaves = new Dictionary<Vector2, Dictionary<int, List<List<int>>>>
+        {
+            [new Vector2 (0,0)] = attackWavesForLocation00
+        };
+
         castleTiles = new List<CastleTiles>();
+
+        castlePointsWithNoUnits = new List<Vector2>();
+        castlePointsUp = new List<Vector2>();
+        castlePointsDown = new List<Vector2>();
+
+        platformTilesUp = new Dictionary<Vector2, int>
+        {
+            {new Vector2(0, 3.5f),0},
+            {new Vector2(-3.5f, 3.5f),0},
+            {new Vector2(3.5f, 3.5f),0},
+            {new Vector2(-7, 3.5f),0},
+            {new Vector2(7, 3.5f),0},
+
+            {new Vector2(0, 7),0},
+            {new Vector2(-3.5f, 7),0},
+            {new Vector2(3.5f, 7),0},
+            {new Vector2(-7, 7),0},
+            {new Vector2(7, 7),0},
+
+            {new Vector2(0, 10.5f),0},
+            {new Vector2(-3.5f, 10.5f),0},
+            {new Vector2(3.5f, 10.5f),0},
+            {new Vector2(-7, 10.5f),0},
+            {new Vector2(7, 10.5f),0},
+        }; 
+        platformTilesDown = new Dictionary<Vector2, int>
+        {
+            {new Vector2(0, -3.5f),0},
+            {new Vector2(-3.5f, -3.5f),0},
+            {new Vector2(3.5f, -3.5f),0},
+            {new Vector2(-7, -3.5f),0},
+            {new Vector2(7, -3.5f),0},
+
+            {new Vector2(0, -7),0},
+            {new Vector2(-3.5f, -7),0},
+            {new Vector2(3.5f, -7),0},
+            {new Vector2(-7, -7),0},
+            {new Vector2(7, -7),0},
+
+            {new Vector2(0, -10.5f),0},
+            {new Vector2(-3.5f, -10.5f),0},
+            {new Vector2(3.5f, -10.5f),0},
+            {new Vector2(-7, -10.5f),0},
+            {new Vector2(7, -10.5f),0},
+        };
+
+
         enemyUnits = new Dictionary<int, List<EnemyUnit>>
         {
             [0] = new List<EnemyUnit>(),
@@ -311,17 +417,11 @@ public class CommonData : MonoBehaviour
         };
         playerUnits = new List<PlayerUnit>();
 
-        cameraOfGame = Camera.main;
-        //determine the sizes of view screen
-        vertScreenSize = cameraOfGame.orthographicSize * 2;
-        horisScreenSize = vertScreenSize * Screen.width / Screen.height;
-
-
-
+        populatePlayerUnitsTypesArray();
         populateEnemyLevelIndexes();
-        populateBaseregularEnemyHPBase();
+        populateRegularEnemyHPBase();
         populateAllLocationsRegularEnemyHP(); 
-        populateSpeedOfEnemyUNits();
+        populateSpeedOfEnemyUnits();
         populateEnergyFromEnemyUnits();
 
         populatePlayerUnitIndexes();

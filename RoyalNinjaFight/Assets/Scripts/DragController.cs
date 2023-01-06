@@ -1,8 +1,6 @@
-﻿using System.Collections;
+﻿
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using static UnityEngine.UI.CanvasScaler;
 
 
 public class DragController : MonoBehaviour
@@ -142,8 +140,8 @@ public class DragController : MonoBehaviour
         toPutOnTile._playerUnit = unit;
         draggedFromTile._playerUnit = null;
 
-        CommonData.instance.platformPointsWithNoUnits.Add(draggedFromTile._position);
-        GameController.instance.updateUnitsAddButtonUI();
+        CommonData.instance.castlePointsWithNoUnits.Add(draggedFromTile._position);
+        GameController.instance.updateUnitsAndCastleTileAddButtonsUI();
 
         unitToMergeWith.disactivateUnit();
         draggedUnitScript.disactivateUnit();
@@ -155,8 +153,8 @@ public class DragController : MonoBehaviour
         draggedUnitScript._transform.position = toPutOnTile._position;
         draggedUnitScript.setUnitPosition();
 
-        CommonData.instance.platformPointsWithNoUnits.Add(draggedFromTile._position);
-        CommonData.instance.platformPointsWithNoUnits.Remove(toPutOnTile._position);
+        CommonData.instance.castlePointsWithNoUnits.Add(draggedFromTile._position);
+        CommonData.instance.castlePointsWithNoUnits.Remove(toPutOnTile._position);
 
         toPutOnTile._playerUnit = draggedUnitScript;
         draggedFromTile._playerUnit = null;

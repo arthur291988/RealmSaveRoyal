@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyUnit : MonoBehaviour
 {
-    private int _enemyLevel;
+    private int _enemyLevel; //each level has its own sprite
     private int _enemySide;
     private int _energyOnDestroy;
     private float _moveSpeed;
@@ -40,20 +36,66 @@ public class EnemyUnit : MonoBehaviour
 
     public void setEnemyLevel(int level, int attackWaveCount)
     {
-        _enemyLevel = level; 
-        setEnemyFeatures(attackWaveCount);
+        _enemyLevel = level;
+        if (_enemyLevel < 10) setEnemyFeatures(attackWaveCount);
+        else if (_enemyLevel < 100) setMiniBossFeatures(attackWaveCount);
+        else setBigBossFeatures(attackWaveCount);
     }
+
     public void setEnemySide (int side) => _enemySide = side;
 
-    public void setEnemyFeatures(int waveNumber)
+    private void setEnemyFeatures(int waveNumber)
     {
-        _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString());
+        if (_unitSpriteRenderer==null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString()); 
         
         _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber];
         _moveSpeed = CommonData.instance.regularEnemySpeed[_enemyLevel];
         HP = CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, _enemyLevel];
     }
+
+    private void setMiniBossFeatures(int waveNumber) {
+        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString());
+
+        int intHolder = 0;
+        for (int i = 0; i < 4; i++) {
+            intHolder += CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, i] * CommonData.instance.HPMultiplierForMiniBoss;
+        }
+        HP = intHolder / 4;
+
+        _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber]* CommonData.instance.energyMultiplierForMiniBoss;
+
+        float floatHolder = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            floatHolder += CommonData.instance.regularEnemySpeed[i];
+        }
+        _moveSpeed = floatHolder / 4;
+    }
+
+    private void setBigBossFeatures(int waveNumber) {
+        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString());
+
+        int intHolder = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            intHolder += 
+                CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, i] * CommonData.instance.HPMultiplierForBigBoss;
+        }
+        HP = intHolder / 4;
+
+        _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber] * CommonData.instance.energyMultiplierForBigBoss;
+
+        float floatHolder = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            floatHolder += CommonData.instance.regularEnemySpeed[i];
+        }
+        _moveSpeed = floatHolder / 4;
+    }
+    
 
     private void setMoveToPoint() =>
         _movePoint =/* CommonData.instance.platformPoints.Count > 0 ? CommonData.instance.platformPoints[Random.Range(0, CommonData.instance.platformPoints.Count)] : */Vector2.zero;

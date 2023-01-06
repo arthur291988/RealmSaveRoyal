@@ -7,7 +7,7 @@ public class UnitThree : PlayerUnit
     {
         _baseHarm = 6;
         _baseAccuracy = 0.15f;
-        _baseAttackSpeed = 0.8f;
+        _baseAttackSpeed = 1f;
         setStartProperties();
     }
 

@@ -5,7 +5,8 @@ using UnityEngine.UIElements;
 
 public class CastleTiles : MonoBehaviour
 {
-    private int HP;
+    [HideInInspector]
+    public int HP;
     private GameObject _gameObject;
     [HideInInspector]
     public Vector2 _position;
@@ -14,22 +15,38 @@ public class CastleTiles : MonoBehaviour
     [HideInInspector]
     public PlayerUnit _playerUnit;
 
-    private void Start()
+    [HideInInspector]
+    public int _tileSide; //0 up 1 down
+
+    private void OnEnable()
     {
         _gameObject = gameObject;
-        CommonData.instance.platformPoints.Add(_position);
-        CommonData.instance.platformPointsWithNoUnits.Add(_position);
+    }
+
+    public void addCastleTilePropertiesToCommonData(int tileSide, Vector2 position)
+    {
+        HP = CommonData.instance.HPOfTile;
+        _tileSide = tileSide;
+        _position = position;
+        if (tileSide == 0)
+        {
+            CommonData.instance.castlePointsUp.Add(_position);
+            CommonData.instance.platformTilesUp[_position] = 1;//set platform to "filled" mode, cause it is not empty any more
+        }
+        else
+        {
+            CommonData.instance.castlePointsDown.Add(_position);
+            CommonData.instance.platformTilesDown[_position] = 1;//set platform to "filled" mode, cause it is not empty any more
+        }
+
+        CommonData.instance.castlePointsWithNoUnits.Add(_position);
         CommonData.instance.castleTiles.Add(this);
+
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerUnit = null;
     }
 
-    private void OnEnable()
-    {
-        _position = transform.position;
-        HP = CommonData.instance.HPOfTile;
-    }
-
+   
     //tile destruction by enemy hit
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -57,11 +74,24 @@ public class CastleTiles : MonoBehaviour
 
     private void disactivateTile()
     {
-        CommonData.instance.platformPointsWithNoUnits.Remove(_position);
-        CommonData.instance.platformPoints.Remove(_position);
+        if (_playerUnit==null) CommonData.instance.castlePointsWithNoUnits.Remove(_position);
+        if (_tileSide == 0)
+        {
+            CommonData.instance.castlePointsUp.Remove(_position);
+            CommonData.instance.platformTilesUp[_position] = 0;//set platform to empty mode
+        }
+        else
+        {
+            CommonData.instance.castlePointsDown.Remove(_position);
+            CommonData.instance.platformTilesDown[_position] = 0;//set platform to empty mode
+        }
+
+
+
         CommonData.instance.castleTiles.Remove(this);
         _playerUnit = null;
         destroyPlayerUnitStayingOnThisPlatform();
         _gameObject.SetActive(false);
+        GameController.instance.updateUnitsAndCastleTileAddButtonsUI();
     }
 }

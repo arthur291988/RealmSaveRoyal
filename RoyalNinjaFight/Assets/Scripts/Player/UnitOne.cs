@@ -6,9 +6,9 @@ public class UnitOne : PlayerUnit
     
     private void OnEnable()
     {
-        _baseHarm = 15;
+        _baseHarm = 11;
         _baseAccuracy = 0.2f;
-        _baseAttackSpeed = 1.1f;
+        _baseAttackSpeed = 1.5f;
 
         setStartProperties();
     }

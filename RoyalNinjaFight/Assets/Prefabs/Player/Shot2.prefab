@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 251426642654662843}
   - component: {fileID: 993988725455960788}
   m_Layer: 8
-  m_Name: ShotTwo
+  m_Name: Shot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   _shotRigidBody2D: {fileID: 0}
   _gameObject: {fileID: 0}
   _trailRenderer: {fileID: 0}
+  _harm: 0
 --- !u!50 &5851021026593795556
 Rigidbody2D:
   serializedVersion: 4
@@ -164,7 +165,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

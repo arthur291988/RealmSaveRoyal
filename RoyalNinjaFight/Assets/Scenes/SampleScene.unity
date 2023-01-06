@@ -162,7 +162,8 @@ MonoBehaviour:
   ObjectPulled: {fileID: 0}
   ObjectPulledList: []
   energyText: {fileID: 1400497896}
-  gameTurnButton: {fileID: 395605102}
+  addUnitButton: {fileID: 395605102}
+  addCastleTileButton: {fileID: 1614867225}
 --- !u!4 &99078299
 Transform:
   m_ObjectHideFlags: 0
@@ -189,14 +190,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a34624e8c5d7cd42bb3f48414fb2456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  castleTile: {fileID: 4555248155797539878, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
   enemyUnits: {fileID: 3859213313038362327, guid: d2f3db3d4045cf244bdeaef72639553f, type: 3}
+  miniBossUnits: {fileID: 3859213313038362327, guid: 45853e89a3e6dd84991c1d22ddc16792, type: 3}
+  bigBossUnits: {fileID: 3859213313038362327, guid: ea35f6fa5a5c20c478121df995c531f3, type: 3}
   playerUnit1: {fileID: 8385832067656155475, guid: 01f6af972e1637e4ca0e9fa777b6ba50, type: 3}
   playerUnit2: {fileID: 8385832067656155475, guid: 0bbbbfe6b965c824680dde352ba8460e, type: 3}
   playerUnit3: {fileID: 8385832067656155475, guid: 941270bfb5fd58342a6cf8c476a39e94, type: 3}
   playerShot1: {fileID: 5851021026593795559, guid: eee67b04facd3a047ada5316898f3da8, type: 3}
   playerShot2: {fileID: 5851021026593795559, guid: 5087a7007573abe4688bb27916f0fb37, type: 3}
   playerShot3: {fileID: 5851021026593795559, guid: ec44c1f721fcb3741ac4149a95add941, type: 3}
+  castleTilePull: []
   enemyUnitsPull: []
+  miniBossUnitsPull: []
+  bigBossUnitsPull: []
   playerUnit1Pull: []
   playerUnit2Pull: []
   playerUnit3Pull: []
@@ -237,8 +244,9 @@ MonoBehaviour:
   gameIsOn: 0
   playerUnits: []
   castleTiles: []
-  platformPoints: []
-  platformPointsWithNoUnits: []
+  castlePointsUp: []
+  castlePointsDown: []
+  castlePointsWithNoUnits: []
   playerUnitTypesOnScene: 
   playerUnitMaxLevel: 4
   HPOfTile: 3
@@ -254,6 +262,10 @@ MonoBehaviour:
   location: 0
   regularEnemySpeed: []
   regularEnemyEnergy: 
+  energyMultiplierForMiniBoss: 0
+  energyMultiplierForBigBoss: 0
+  HPMultiplierForMiniBoss: 0
+  HPMultiplierForBigBoss: 0
 --- !u!1 &120133470
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,6 +434,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &239765468
 Rigidbody2D:
   serializedVersion: 4
@@ -591,7 +604,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4555248155797539878, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4555248155797539879, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
       propertyPath: m_Color.r
@@ -754,6 +767,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &330124664
 GameObject:
   m_ObjectHideFlags: 0
@@ -845,7 +859,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &390166642
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -973,6 +987,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &395605100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1009,7 +1024,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 41.69995}
+  m_AnchoredPosition: {x: -176.4, y: 42}
   m_SizeDelta: {x: 90, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &395605102
@@ -1367,6 +1382,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &626153184
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,6 +1675,7 @@ RectTransform:
   - {fileID: 1892580328}
   - {fileID: 330124665}
   - {fileID: 395605101}
+  - {fileID: 1614867224}
   - {fileID: 1400497895}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -1815,6 +1832,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &836888205
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,7 +1985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &842605926
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2095,6 +2113,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &887106653
 GameObject:
   m_ObjectHideFlags: 0
@@ -2130,6 +2149,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &887106655
 Rigidbody2D:
   serializedVersion: 4
@@ -2389,6 +2409,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &970298241
 GameObject:
   m_ObjectHideFlags: 0
@@ -2448,7 +2469,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 637277e8516be4142ba81a7777ba2631, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4d604fbf1ec2957488083ba72987dcd9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2456,7 +2477,7 @@ SpriteRenderer:
   m_Size: {x: 3, y: 1.8046875}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &970298243
@@ -2467,7 +2488,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 970298241}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 3.5, y: 2.5, z: 0}
+  m_LocalPosition: {x: 3.5, y: -10.11, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2541,7 +2562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1177720013
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2557,6 +2578,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &1177720014
 Rigidbody2D:
   serializedVersion: 4
@@ -2669,6 +2691,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1224316779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1224316780}
+  - component: {fileID: 1224316782}
+  - component: {fileID: 1224316781}
+  m_Layer: 5
+  m_Name: EnergyToNextUnitTxt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1224316780
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224316779}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1614867224}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1224316781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224316779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0.9142746, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 1
+    m_BestFit: 1
+    m_MinSize: 10
+    m_MaxSize: 60
+    m_Alignment: 4
+    m_AlignByGeometry: 1
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 10
+--- !u!222 &1224316782
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224316779}
+  m_CullTransparentMesh: 0
 --- !u!1001 &1232551114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2910,6 +3011,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &1241103294
 Rigidbody2D:
   serializedVersion: 4
@@ -3169,6 +3271,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &1312533129
 GameObject:
   m_ObjectHideFlags: 0
@@ -3449,6 +3552,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &1377354334
 GameObject:
   m_ObjectHideFlags: 0
@@ -3745,12 +3849,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 742320142}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -152, y: 40}
-  m_SizeDelta: {x: 200, y: 60}
+  m_AnchoredPosition: {x: -294, y: 40}
+  m_SizeDelta: {x: 120, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1400497896
 MonoBehaviour:
@@ -3785,7 +3889,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 0
+  m_Text: 00000
 --- !u!222 &1400497897
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3829,6 +3933,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &1480719040
 Rigidbody2D:
   serializedVersion: 4
@@ -4109,6 +4214,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &1505070562
 Rigidbody2D:
   serializedVersion: 4
@@ -4368,6 +4474,139 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
+--- !u!1 &1614867223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1614867224}
+  - component: {fileID: 1614867227}
+  - component: {fileID: 1614867226}
+  - component: {fileID: 1614867225}
+  m_Layer: 5
+  m_Name: CastleTileAddButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1614867224
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614867223}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1224316780}
+  m_Father: {fileID: 742320142}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -78.64, y: 42}
+  m_SizeDelta: {x: 90, y: 80}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1614867225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614867223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 0.27058825}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1614867226}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 99078298}
+        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
+        m_MethodName: addNewCastleTile
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1614867226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614867223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.5722232, g: 0.6683382, b: 0.7264151, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1614867227
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614867223}
+  m_CullTransparentMesh: 0
 --- !u!1 &1636935754
 GameObject:
   m_ObjectHideFlags: 0
@@ -4515,6 +4754,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &1700445975
 GameObject:
   m_ObjectHideFlags: 0
@@ -4683,6 +4923,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &1771655269
 Rigidbody2D:
   serializedVersion: 4
@@ -4942,6 +5183,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1001 &1824684079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4999,7 +5241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4555248155797539878, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4555248155797539879, guid: 4408232749ea2234aa629bb333081bdc, type: 3}
       propertyPath: m_Color.r
@@ -5034,7 +5276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1889310103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5050,6 +5292,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &1889310104
 Rigidbody2D:
   serializedVersion: 4
@@ -5376,6 +5619,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &1916984436
 Rigidbody2D:
   serializedVersion: 4
@@ -5701,6 +5945,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!50 &2030107609
 Rigidbody2D:
   serializedVersion: 4
@@ -5960,6 +6205,7 @@ MonoBehaviour:
   _position: {x: 0, y: 0}
   _spriteRenderer: {fileID: 0}
   _playerUnit: {fileID: 0}
+  _tileSide: 0
 --- !u!1 &2130761993
 GameObject:
   m_ObjectHideFlags: 0
