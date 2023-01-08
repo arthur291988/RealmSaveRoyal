@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+
     public static GameController instance;
+
+    public bool gameIsOn;
 
     public RectTransform lowerPanelRect;
     public CanvasScaler canvasScaler;
@@ -21,6 +24,13 @@ public class GameController : MonoBehaviour
 
     public Button addUnitButton;
     public Button addCastleTileButton;
+    public Button bonusHitButton;
+
+    public Slider bonusFillSlider;
+    private int bonusHitSliderMaxValue;
+    private int bonusHitSliderMaxValueBase;
+    private int bonusHitSliderMinValueMultiplier;
+    private int bonusHitSliderValueStep;
 
     private Text energyToNextUnitAddTxt;
     private int energyToNextUnitAdd;
@@ -28,31 +38,54 @@ public class GameController : MonoBehaviour
     private Text energyToNextCastleTileAddTxt;
     private int energyToNextCastleTileAdd;
 
+    public List<Button> powerUpButtonsList;
+    public List<Image> powerUpButtonsListImg;
+    public List<Text> powerUpButtonTextsList;
+    public List<int> energyToNextPowerUpList;
+
     private void Awake()
     {
         instance = this;
+        gameIsOn = true;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        bonusHitButton.interactable = false;
+        bonusHitSliderMinValueMultiplier = 1;
+        bonusHitSliderMaxValue = 100;
+        bonusHitSliderMaxValueBase = bonusHitSliderMaxValue;
+        bonusHitSliderValueStep = 10;
+        bonusFillSlider.maxValue = bonusHitSliderMaxValue;
+        bonusFillSlider.value = 0;
         energyToNextUnitAddTxt = addUnitButton.GetComponentInChildren<Text>();
         energyToNextCastleTileAddTxt = addCastleTileButton.GetComponentInChildren<Text>();
         CommonData.instance.energy = CommonData.instance.energyOnStart;
         updateEneryText();
-
+        setStartPowerUpSettings();
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
         energyToNextCastleTileAdd = CommonData.instance.energyToNextUnitAddStep;
 
+
+
         Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(0, lowerPanelRect.anchoredPosition.y + lowerPanelRect.sizeDelta.y* Screen.height/canvasScaler.referenceResolution.y, 0));
         bottomShotLine = worldPosition.y;
-        topShotLine = CommonData.instance.vertScreenSize/2 - 0.5f;
+        topShotLine = -worldPosition.y;
         addInitialCastleTiles();
         //gameTurn = 0;
         //timerText.text = "0";
     }
 
-    
+    private void setStartPowerUpSettings()
+    {
+        energyToNextPowerUpList = new List<int>();
+        for (int i = 0; i < powerUpButtonsList.Count; i++) { 
+            energyToNextPowerUpList.Add(CommonData.instance.energyToPowerUpBase); 
+            powerUpButtonTextsList[i].text = energyToNextPowerUpList[i].ToString();
+            powerUpButtonsListImg[i].sprite = CommonData.instance.playerSpriteAtlases.GetSprite(CommonData.instance.playerUnitTypesOnScene[i].ToString());
+        }
+    }
 
     public void updateEneryText() => energyText.text = CommonData.instance.energy.ToString();
     public void updateEneryToNextUnitAddText() => energyToNextUnitAddTxt.text = energyToNextUnitAdd.ToString();
@@ -62,7 +95,10 @@ public class GameController : MonoBehaviour
     public void incrementEnergy(int energy) {
         CommonData.instance.energy += energy;
         updateUnitsAndCastleTileAddButtonsUI();
+        updateBonusSliderFill();
+        updatePowerUpButtonsUI();
     }
+
     public void updateUnitsAndCastleTileAddButtonsUI()
     {
         if (!emptyCastleTilesLeft()) addUnitButton.interactable = false;
@@ -85,9 +121,33 @@ public class GameController : MonoBehaviour
 
     }
 
+    public void incrementEnergyNeedToNextPowerUp(int index) {
+        for (int i = 0; i < energyToNextPowerUpList.Count; i++) {
+            if (index == i) {
+                if (energyToNextPowerUpList[i] < CommonData.instance.energyToPowerUpMax)
+                {
+                    energyToNextPowerUpList[i] *= 2;
+                    powerUpButtonTextsList[i].text = energyToNextPowerUpList[i].ToString();
+                }
+                else powerUpButtonTextsList[i].text = "Max";
+            }
+        }
+    }
+    public void updatePowerUpButtonsUI()
+    {
+        for (int i = 0; i < energyToNextPowerUpList.Count; i++) {
+            if (energyToNextPowerUpList[i] == CommonData.instance.energyToPowerUpMax) powerUpButtonsList[i].interactable = false;
+            else { 
+                if (energyToNextPowerUpList[i]<= CommonData.instance.energy) powerUpButtonsList[i].interactable = true;
+                else powerUpButtonsList[i].interactable = false;
+            }
+        } 
+    }
+
     private void consumeTheEnergy(int consumeAmount) {
         CommonData.instance.energy -=consumeAmount;
         updateEneryText();
+        updateUnitsAndCastleTileAddButtonsUI();
     }
 
     private void getAndSetTileToUnit(Vector2 position, PlayerUnit unit)
@@ -142,7 +202,6 @@ public class GameController : MonoBehaviour
         consumeTheEnergy(energyToNextUnitAdd);
         incrementEnergyNeedToNextUnitAdd();
         updateEneryToNextUnitAddText();
-        updateUnitsAndCastleTileAddButtonsUI();
     }
 
     public void addNewCastleTile(bool start) {
@@ -190,7 +249,6 @@ public class GameController : MonoBehaviour
             consumeTheEnergy(energyToNextCastleTileAdd);
             incrementEnergyNeedToNextCatleTileAdd();
             updateEneryToNextCastleTileAddText();
-            updateUnitsAndCastleTileAddButtonsUI();
         }
     }
 
@@ -201,5 +259,37 @@ public class GameController : MonoBehaviour
             addNewCastleTile(true);
         }
     }
-    
+
+    public void updateBonusSliderFill() {
+        bonusFillSlider.value += bonusHitSliderValueStep;
+        if (bonusFillSlider.value >= bonusHitSliderMaxValue) {
+            bonusHitSliderMinValueMultiplier++;
+            bonusHitSliderMaxValue = bonusHitSliderMaxValueBase*bonusHitSliderMinValueMultiplier;
+            bonusFillSlider.maxValue = bonusHitSliderMaxValue;
+            bonusFillSlider.value = 0;
+            updateBonusHitButton();
+        }
+    }
+
+    public void updateBonusHitButton() {
+        if (!bonusHitButton.interactable) bonusHitButton.interactable = true;
+    }
+
+    public void bonusHit() {
+        bonusHitButton.interactable = false;
+    }
+
+    public void poweUpUnits(int index) {
+
+        consumeTheEnergy(energyToNextPowerUpList[index]);
+        incrementEnergyNeedToNextPowerUp(index);
+        updatePowerUpButtonsUI();
+        for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
+            if (CommonData.instance.playerUnits[i]._unitType == CommonData.instance.playerUnitTypesOnScene[index])
+            {
+                CommonData.instance.playerUnits[i].setUnitPoweUpLevel(CommonData.instance.playerUnits[i]._unitPowerUpLevel + 1);
+                CommonData.instance.playerUnits[i].updatePropertiesToLevel();
+            }
+        }
+    }
 }

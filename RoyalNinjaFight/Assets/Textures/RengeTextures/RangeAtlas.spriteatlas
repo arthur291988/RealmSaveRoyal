@@ -6,7 +6,7 @@ SpriteAtlas:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UnitSprites
+  m_Name: RangeAtlas
   m_EditorData:
     serializedVersion: 2
     textureSettings:
@@ -22,20 +22,8 @@ SpriteAtlas:
       sRGB: 1
     platformSettings:
     - serializedVersion: 3
-      m_BuildTarget: DefaultTexturePlatform
-      m_MaxTextureSize: 128
-      m_ResizeAlgorithm: 0
-      m_TextureFormat: -1
-      m_TextureCompression: 1
-      m_CompressionQuality: 50
-      m_CrunchedCompression: 0
-      m_AllowsAlphaSplitting: 0
-      m_Overridden: 0
-      m_AndroidETC2FallbackOverride: 0
-      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
-    - serializedVersion: 3
       m_BuildTarget: Android
-      m_MaxTextureSize: 512
+      m_MaxTextureSize: 256
       m_ResizeAlgorithm: 0
       m_TextureFormat: 47
       m_TextureCompression: 1
@@ -54,23 +42,23 @@ SpriteAtlas:
       enableTightPacking: 1
     variantMultiplier: 1
     packables:
-    - {fileID: 102900000, guid: 4ced7094a7c1189499611bdf15db639a, type: 3}
-    totalSpriteSurfaceArea: 49280
+    - {fileID: 102900000, guid: 82b9c7c449b8470438ef46f1df9b5cf9, type: 3}
+    totalSpriteSurfaceArea: 65280
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: ef8987210050610469d9f9b81131e577, type: 3}
-  - {fileID: 21300000, guid: 4298f864abb855142a730930cb4ef6fa, type: 3}
-  - {fileID: 21300000, guid: 0379c9862a5d1454599fb330effdaff6, type: 3}
-  - {fileID: 21300000, guid: 164feee7840436d4485b1362db061420, type: 3}
-  - {fileID: 21300000, guid: d3d362b9941faac4c8f2e0cfa6acaee9, type: 3}
+  - {fileID: 21300000, guid: 49291a632276b33469b88103498568b2, type: 3}
+  - {fileID: 21300000, guid: 3e12cc78e2364a847a5e77f86d1edcc0, type: 3}
+  - {fileID: 21300000, guid: 91cee55bc7de5f449915165c47b77c74, type: 3}
+  - {fileID: 21300000, guid: 42002b0ebcea15d40908446c73473adf, type: 3}
+  - {fileID: 21300000, guid: 1d3b894e9623cc843bfb61efa2f4e6f0, type: 3}
   m_PackedSpriteNamesToIndex:
-  - 1
-  - 0
-  - 3
-  - 2
   - 4
-  m_Tag: UnitSprites
+  - 1
+  - 3
+  - 0
+  - 2
+  m_Tag: RangeAtlas
   m_IsVariant: 0

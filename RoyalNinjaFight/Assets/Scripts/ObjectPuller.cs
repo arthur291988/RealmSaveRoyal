@@ -32,6 +32,10 @@ public class ObjectPuller : MonoBehaviour
     private GameObject playerUnit2;
     [SerializeField]
     private GameObject playerUnit3;
+    [SerializeField]
+    private GameObject playerUnit4;
+    [SerializeField]
+    private GameObject playerUnit5;
 
 
     [SerializeField]
@@ -40,6 +44,10 @@ public class ObjectPuller : MonoBehaviour
     private GameObject playerShot2;
     [SerializeField]
     private GameObject playerShot3;
+    [SerializeField]
+    private GameObject playerShot4;
+    [SerializeField]
+    private GameObject playerShot5;
 
     [HideInInspector]
     public List<GameObject> castleTilePull;
@@ -57,6 +65,10 @@ public class ObjectPuller : MonoBehaviour
     public List<GameObject> playerUnit2Pull;
     [HideInInspector]
     public List<GameObject> playerUnit3Pull;
+    [HideInInspector]
+    public List<GameObject> playerUnit4Pull;
+    [HideInInspector]
+    public List<GameObject> playerUnit5Pull;
 
     [HideInInspector]
     public List<GameObject> playerShot1Pull;
@@ -64,6 +76,10 @@ public class ObjectPuller : MonoBehaviour
     public List<GameObject> playerShot2Pull;
     [HideInInspector]
     public List<GameObject> playerShot3Pull;
+    [HideInInspector]
+    public List<GameObject> playerShot4Pull;
+    [HideInInspector]
+    public List<GameObject> playerShot5Pull;
 
     private void Awake()
     {
@@ -82,10 +98,14 @@ public class ObjectPuller : MonoBehaviour
         playerUnit1Pull = new List<GameObject>();
         playerUnit2Pull = new List<GameObject>();
         playerUnit3Pull = new List<GameObject>();
+        playerUnit4Pull = new List<GameObject>();
+        playerUnit5Pull = new List<GameObject>();
 
         playerShot1Pull = new List<GameObject>();
         playerShot2Pull = new List<GameObject>();
         playerShot3Pull = new List<GameObject>();
+        playerShot4Pull = new List<GameObject>();
+        playerShot5Pull = new List<GameObject>();
 
         for (int i = 0; i < pullOfObjects2; i++)
         {
@@ -111,6 +131,12 @@ public class ObjectPuller : MonoBehaviour
             GameObject obj2 = Instantiate(playerUnit3);
             obj2.SetActive(false);
             playerUnit3Pull.Add(obj2);
+            GameObject obj3 = Instantiate(playerUnit4);
+            obj3.SetActive(false);
+            playerUnit4Pull.Add(obj3);
+            GameObject obj4 = Instantiate(playerUnit5);
+            obj4.SetActive(false);
+            playerUnit5Pull.Add(obj4);
 
         }
 
@@ -127,6 +153,12 @@ public class ObjectPuller : MonoBehaviour
             GameObject obj2 = Instantiate(playerShot3);
             obj2.SetActive(false);
             playerShot3Pull.Add(obj2);
+            GameObject obj3 = Instantiate(playerShot4);
+            obj3.SetActive(false);
+            playerShot4Pull.Add(obj3);
+            GameObject obj4 = Instantiate(playerShot5);
+            obj4.SetActive(false);
+            playerShot5Pull.Add(obj4);
 
         }
 
@@ -144,25 +176,29 @@ public class ObjectPuller : MonoBehaviour
             castleTilePull.Add(obj1);
         }
     }
-    public List<GameObject> GetPlayerShotPullList(int shotType)
+    public List<GameObject> GetPlayerShotPullList(int shotType) //TO DO WITH OTHER TYPES OF player shots
     {
         if (shotType == 0) return playerShot1Pull;
         else if (shotType == 1) return playerShot2Pull;
-        else return playerShot3Pull;
+        else if(shotType == 2) return playerShot3Pull;
+        else if (shotType == 3) return playerShot4Pull;
+        else return playerShot5Pull;
     }
 
     //0-regularUnit, //1-miniBossUnit //2-bigBossUnit
-    public List<GameObject> GetEnemyUnitsPullList(int enemyIndex)
+    public List<GameObject> GetEnemyUnitsPullList(int enemyIndex) //TO DO WITH OTHER TYPES OF ENEMY UNITS
     {
         if (enemyIndex == 0) return enemyUnitsPull;
         else if (enemyIndex == 1) return miniBossUnitsPull;
         else return bigBossUnitsPull; 
     }
-    public List<GameObject> GetPlayerUnitsPullList(int unitType)
+    public List<GameObject> GetPlayerUnitsPullList(int unitType) //TO DO WITH OTHER TYPES OF player UNITS
     {
         if (unitType == 0) return playerUnit1Pull;
         else if (unitType == 1) return playerUnit2Pull;
-        else return playerUnit3Pull;
+        else if (unitType == 2) return playerUnit3Pull;
+        else if (unitType == 3) return playerUnit4Pull;
+        else return playerUnit5Pull;
     }
     public List<GameObject> GetCastleTilePullList()
     {

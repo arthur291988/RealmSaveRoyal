@@ -149,6 +149,6 @@ public class EnemyUnit : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _transform.position = Vector2.MoveTowards(_transform.position, _movePoint, _moveSpeed);
+        if (GameController.instance.gameIsOn) _transform.position = Vector2.MoveTowards(_transform.position, _movePoint, _moveSpeed);
     }
 }

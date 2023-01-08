@@ -6,6 +6,8 @@ using UnityEngine.U2D;
 
 public class PlayerUnit : MonoBehaviour
 {
+
+
     [HideInInspector]
     public int _harm;
     [HideInInspector]
@@ -50,8 +52,12 @@ public class PlayerUnit : MonoBehaviour
 
     [HideInInspector]
     public SpriteRenderer _unitSpriteRenderer;
+    //public SpriteAtlas _unitSpriteAtlas;
 
-    public SpriteAtlas _unitSpriteAtlas;
+    public SpriteRenderer _rangeSprite;
+    //public SpriteAtlas _rangeSpriteAtlas;
+
+    public ParticleSystem MergeOrPowerUpEffect;
 
     [HideInInspector]
     public bool isMoved;
@@ -80,12 +86,11 @@ public class PlayerUnit : MonoBehaviour
     }
     public virtual void updatePropertiesToLevel()
     {
-        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = _unitSpriteAtlas.GetSprite(_unitType.ToString() + _unitMergeLevel.ToString());
-
+        setSpriteOfUnit();
         setUnitFeatures(CommonData.instance.getHarmOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseHarm), 
             CommonData.instance.getSpeedOfShotOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseAttackSpeed), 
             CommonData.instance.getAccuracyOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseAccuracy));
+        MergeOrPowerUpEffect.Play();
     }
     public void setUnitMergeLevel(int level) => _unitMergeLevel = level;
     public void setUnitPoweUpLevel(int level) => _unitPowerUpLevel = level;
@@ -97,8 +102,9 @@ public class PlayerUnit : MonoBehaviour
     }
     public void setSpriteOfUnit()
     {
-        _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = _unitSpriteAtlas.GetSprite(_unitType.ToString() + _unitMergeLevel.ToString());
+        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        _unitSpriteRenderer.sprite = CommonData.instance.playerSpriteAtlases.GetSprite(_unitType.ToString());
+        _rangeSprite.sprite = CommonData.instance.playerRangeSpriteAtlases.GetSprite(_unitMergeLevel.ToString());
     }
 
     public void removeFromCommonData()
@@ -139,7 +145,7 @@ public class PlayerUnit : MonoBehaviour
 
     private void Update()
     {
-        if (attackTimer > 0)
+        if (attackTimer > 0 && GameController.instance.gameIsOn)
         {
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0)

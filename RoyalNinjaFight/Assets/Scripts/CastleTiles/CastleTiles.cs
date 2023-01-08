@@ -7,7 +7,8 @@ public class CastleTiles : MonoBehaviour
 {
     [HideInInspector]
     public int HP;
-    private GameObject _gameObject;
+    [HideInInspector]
+    public GameObject _gameObject;
     [HideInInspector]
     public Vector2 _position;
     [HideInInspector]
@@ -72,7 +73,7 @@ public class CastleTiles : MonoBehaviour
         }
     }
 
-    private void disactivateTile()
+    public virtual void disactivateTile()
     {
         if (_playerUnit==null) CommonData.instance.castlePointsWithNoUnits.Remove(_position);
         if (_tileSide == 0)

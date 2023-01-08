@@ -14,6 +14,8 @@ public class CommonData : MonoBehaviour
     }
 
     public SpriteAtlas enemyAtlas;
+    public SpriteAtlas playerSpriteAtlases;
+    public SpriteAtlas playerRangeSpriteAtlases;
 
     [HideInInspector]
     public Camera cameraOfGame;
@@ -69,6 +71,11 @@ public class CommonData : MonoBehaviour
     public int energyOnStart;
     [HideInInspector]
     public int energyToNextUnitAddStep;
+
+    [HideInInspector]
+    public int energyToPowerUpBase;
+    [HideInInspector]
+    public int energyToPowerUpMax;
 
     [HideInInspector]
     public float shotImpulse;
@@ -268,7 +275,7 @@ public class CommonData : MonoBehaviour
     {
         for (int i = 0; i < playerUnitTypesOnScene.Length; i++)
         {
-            playerUnitTypesOnScene[i] = i; //TO DO with more than 3 types (for now there only 3 types)
+            playerUnitTypesOnScene[i] = i; //TO DO with more than 5 types (for now there only 5 types). Also necessary to limit unittypes on scene with ones chosen by player 
         }
     }
 
@@ -350,12 +357,15 @@ public class CommonData : MonoBehaviour
         energyFromEnemyBase = 10;
         energyFromRegularEnemyIncreaser = 10;
 
-        energyMultiplierForMiniBoss=5;
+        energyToPowerUpBase = 100;
+        energyToPowerUpMax = 800;
+
+        energyMultiplierForMiniBoss =5;
         energyMultiplierForBigBoss=20;
         HPMultiplierForMiniBoss=5;
         HPMultiplierForBigBoss=10;
 
-        playerUnitTypesOnScene = new int[3];
+        playerUnitTypesOnScene = new int[5];
 
         locationWaves = new Dictionary<Vector2, Dictionary<int, List<List<int>>>>
         {
