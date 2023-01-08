@@ -132,6 +132,7 @@ public class DragController : MonoBehaviour
         PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
         unit.setUnitMergeLevel(unitToMergeWith._unitMergeLevel + 1);
         unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
+        unit.setSpriteOfUnit();
         unit.updatePropertiesToLevel();
         CommonData.instance.playerUnits.Add(unit);
 

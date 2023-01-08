@@ -21,6 +21,11 @@ public class EnemyUnit : MonoBehaviour
 
     private bool _includedToShotPull;
 
+    [SerializeField] 
+    private Transform _lifeLine;
+    private float LifelineMaxXPositionModule;
+    private float HPtoTransforOfLifeLine;
+
 
     public void Start()
     {
@@ -30,6 +35,9 @@ public class EnemyUnit : MonoBehaviour
 
     private void OnEnable()
     {
+        LifelineMaxXPositionModule = 3;
+        _lifeLine.localPosition = new Vector2(0, 1.4f);
+        HPtoTransforOfLifeLine = LifelineMaxXPositionModule / HP;
         _includedToShotPull = false;
         Invoke("setMoveToPoint", 1f);
     }
@@ -103,17 +111,11 @@ public class EnemyUnit : MonoBehaviour
     public void reduceHP(int harm)
     {
         HP -= harm;
-        if (HP < 1) disactivateUnit();
+        _lifeLine.localPosition = new Vector2(HP * HPtoTransforOfLifeLine-LifelineMaxXPositionModule, 1.4f);  
+        if (HP <= 0) disactivateUnit();
     }
 
-    //private void OnCollisionEnter2D(Collision2D collision)
-    //{
-    //    if (collision.gameObject.TryGetComponent<PlayerShot>(out PlayerShot shot))
-    //    {
-    //        reduceHP();
-    //    }
-    //}
-    
+
 
     public void removeFromCommonData()
     {

@@ -118,25 +118,24 @@ public class GameController : MonoBehaviour
             }
             else if (CommonData.instance.energy >= energyToNextCastleTileAdd) addCastleTileButton.interactable = true;
         }
-
     }
 
     public void incrementEnergyNeedToNextPowerUp(int index) {
         for (int i = 0; i < energyToNextPowerUpList.Count; i++) {
             if (index == i) {
-                if (energyToNextPowerUpList[i] < CommonData.instance.energyToPowerUpMax)
+                if (energyToNextPowerUpList[i] <= CommonData.instance.energyToPowerUpMax)
                 {
                     energyToNextPowerUpList[i] *= 2;
-                    powerUpButtonTextsList[i].text = energyToNextPowerUpList[i].ToString();
+                    if(energyToNextPowerUpList[i]<= CommonData.instance.energyToPowerUpMax) powerUpButtonTextsList[i].text = energyToNextPowerUpList[i].ToString();
+                    else powerUpButtonTextsList[i].text = "Max";
                 }
-                else powerUpButtonTextsList[i].text = "Max";
             }
         }
     }
     public void updatePowerUpButtonsUI()
     {
         for (int i = 0; i < energyToNextPowerUpList.Count; i++) {
-            if (energyToNextPowerUpList[i] == CommonData.instance.energyToPowerUpMax) powerUpButtonsList[i].interactable = false;
+            if (energyToNextPowerUpList[i] > CommonData.instance.energyToPowerUpMax) powerUpButtonsList[i].interactable = false;
             else { 
                 if (energyToNextPowerUpList[i]<= CommonData.instance.energy) powerUpButtonsList[i].interactable = true;
                 else powerUpButtonsList[i].interactable = false;
@@ -144,10 +143,10 @@ public class GameController : MonoBehaviour
         } 
     }
 
+
     private void consumeTheEnergy(int consumeAmount) {
         CommonData.instance.energy -=consumeAmount;
         updateEneryText();
-        updateUnitsAndCastleTileAddButtonsUI();
     }
 
     private void getAndSetTileToUnit(Vector2 position, PlayerUnit unit)
@@ -188,7 +187,6 @@ public class GameController : MonoBehaviour
         CommonData.instance.castlePointsWithNoUnits.RemoveAt(positionIndex);
         PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
         unit.setUnitMergeLevel(0);
-        unit.setUnitPoweUpLevel(0);
         unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         unit.setSpriteOfUnit();
         CommonData.instance.playerUnits.Add(unit);
@@ -196,12 +194,15 @@ public class GameController : MonoBehaviour
 
         ObjectPulled.SetActive(true);
         unit.setUnitPosition();
-        getAndSetTileToUnit(unit._unitStartPosition,unit);
-        unit.setUnitFeatures(unit._baseHarm, unit._baseAttackSpeed, unit._baseAccuracy);
+        getAndSetTileToUnit(unit._unitStartPosition,unit); 
+        unit.updatePropertiesToLevel();
+        //unit.setUnitFeatures(unit._baseHarm, unit._baseAttackSpeed, unit._baseAccuracy);
 
         consumeTheEnergy(energyToNextUnitAdd);
         incrementEnergyNeedToNextUnitAdd();
         updateEneryToNextUnitAddText();
+        updateUnitsAndCastleTileAddButtonsUI();
+        updatePowerUpButtonsUI();
     }
 
     public void addNewCastleTile(bool start) {
@@ -249,6 +250,8 @@ public class GameController : MonoBehaviour
             consumeTheEnergy(energyToNextCastleTileAdd);
             incrementEnergyNeedToNextCatleTileAdd();
             updateEneryToNextCastleTileAddText();
+            updateUnitsAndCastleTileAddButtonsUI();
+            updatePowerUpButtonsUI();
         }
     }
 
@@ -280,14 +283,15 @@ public class GameController : MonoBehaviour
     }
 
     public void poweUpUnits(int index) {
-
         consumeTheEnergy(energyToNextPowerUpList[index]);
         incrementEnergyNeedToNextPowerUp(index);
+        updateUnitsAndCastleTileAddButtonsUI();
         updatePowerUpButtonsUI();
+        CommonData.instance.playerUnitTypesOnScenePowerUpLevel[index]++;
         for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
             if (CommonData.instance.playerUnits[i]._unitType == CommonData.instance.playerUnitTypesOnScene[index])
             {
-                CommonData.instance.playerUnits[i].setUnitPoweUpLevel(CommonData.instance.playerUnits[i]._unitPowerUpLevel + 1);
+                //CommonData.instance.playerUnits[i].setUnitPoweUpLevel(CommonData.instance.playerUnitTypesOnScenePowerUpLevel[i]);
                 CommonData.instance.playerUnits[i].updatePropertiesToLevel();
             }
         }

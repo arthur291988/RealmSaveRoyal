@@ -57,6 +57,8 @@ public class CommonData : MonoBehaviour
 
     [HideInInspector]
     public int[] playerUnitTypesOnScene;
+    [HideInInspector]
+    public int[] playerUnitTypesOnScenePowerUpLevel;
 
     [HideInInspector]
     public int playerUnitMaxLevel;
@@ -276,7 +278,13 @@ public class CommonData : MonoBehaviour
         for (int i = 0; i < playerUnitTypesOnScene.Length; i++)
         {
             playerUnitTypesOnScene[i] = i; //TO DO with more than 5 types (for now there only 5 types). Also necessary to limit unittypes on scene with ones chosen by player 
+            
         }
+    }
+
+    private void populatePlayerUnitsTypesStartPowerUpLevels()
+    {
+        for (int i = 0; i < playerUnitTypesOnScenePowerUpLevel.Length; i++) playerUnitTypesOnScenePowerUpLevel[i] = 0;
     }
 
     //indexes to change pararmeters of player units
@@ -285,7 +293,7 @@ public class CommonData : MonoBehaviour
         indexesForPlayerUnits = new float[5, 5];
         int rows = indexesForPlayerUnits.GetUpperBound(0) + 1;
         int colums = indexesForPlayerUnits.Length / rows;
-        float multiplierBase = 1.3f;
+        float multiplierBase = 1.24f;
         float multiplierForColumn = multiplierBase;
         float multiplierForRow = multiplierBase;
         float multiplierDiscount = 1.02f;
@@ -366,6 +374,7 @@ public class CommonData : MonoBehaviour
         HPMultiplierForBigBoss=10;
 
         playerUnitTypesOnScene = new int[5];
+        playerUnitTypesOnScenePowerUpLevel = new int[5];
 
         locationWaves = new Dictionary<Vector2, Dictionary<int, List<List<int>>>>
         {
@@ -427,6 +436,7 @@ public class CommonData : MonoBehaviour
         };
         playerUnits = new List<PlayerUnit>();
 
+        populatePlayerUnitsTypesStartPowerUpLevels();
         populatePlayerUnitsTypesArray();
         populateEnemyLevelIndexes();
         populateRegularEnemyHPBase();

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -23,8 +24,8 @@ public class PlayerUnit : MonoBehaviour
 
     [HideInInspector]
     public int _unitMergeLevel;
-    [HideInInspector]
-    public int _unitPowerUpLevel;
+    //[HideInInspector]
+    //public int _unitPowerUpLevel;
 
     [HideInInspector]
     public int _unitType;
@@ -62,10 +63,6 @@ public class PlayerUnit : MonoBehaviour
     [HideInInspector]
     public bool isMoved;
 
-    private void OnEnable()
-    {
-    }
-
     public void Start()
     {
         isMoved = false;
@@ -76,7 +73,7 @@ public class PlayerUnit : MonoBehaviour
 
     public void setStartProperties() {
         _transform = transform;
-        attackTimer = Random.Range(0.5f, 1);
+        attackTimer = UnityEngine.Random.Range(0.5f, 1);
     }
 
     public void setUnitFeatures(int harm, float speed, float accuracy) {
@@ -86,14 +83,14 @@ public class PlayerUnit : MonoBehaviour
     }
     public virtual void updatePropertiesToLevel()
     {
-        setSpriteOfUnit();
-        setUnitFeatures(CommonData.instance.getHarmOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseHarm), 
-            CommonData.instance.getSpeedOfShotOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseAttackSpeed), 
-            CommonData.instance.getAccuracyOfUnit(_unitMergeLevel, _unitPowerUpLevel, _baseAccuracy));
+        int powerUpLevel = CommonData.instance.playerUnitTypesOnScenePowerUpLevel[Array.IndexOf(CommonData.instance.playerUnitTypesOnScene, _unitType)];
+        setUnitFeatures(CommonData.instance.getHarmOfUnit(_unitMergeLevel, powerUpLevel, _baseHarm),
+            CommonData.instance.getSpeedOfShotOfUnit(_unitMergeLevel, powerUpLevel, _baseAttackSpeed), 
+            CommonData.instance.getAccuracyOfUnit(_unitMergeLevel, powerUpLevel, _baseAccuracy));
         MergeOrPowerUpEffect.Play();
     }
     public void setUnitMergeLevel(int level) => _unitMergeLevel = level;
-    public void setUnitPoweUpLevel(int level) => _unitPowerUpLevel = level;
+    //public void setUnitPoweUpLevel(int level) => _unitPowerUpLevel = level;
     public void SetUnitType(int type) => _unitType = type;
     public void setUnitPosition() {
         _unitStartPosition = new Vector2(_transform.position.x, _transform.position.y);
@@ -125,12 +122,11 @@ public class PlayerUnit : MonoBehaviour
         ObjectPulled.SetActive(true);
 
         EnemyUnit unitToAttack = CommonData.instance.enemyUnits[unitSide].Count == 1 ? CommonData.instance.enemyUnits[unitSide][0] :
-                CommonData.instance.enemyUnits[unitSide][Random.Range(0, CommonData.instance.enemyUnits[unitSide].Count)];
+                CommonData.instance.enemyUnits[unitSide][UnityEngine.Random.Range(0, CommonData.instance.enemyUnits[unitSide].Count)];
 
         attackDirection = new Vector2(unitToAttack._transform.position.x, unitToAttack._transform.position.y);
         attackDirection -= _unitStartPosition;
-        attackDirection = RotateAttackVector(attackDirection, Random.Range(-_accuracy, _accuracy));
-
+        attackDirection = RotateAttackVector(attackDirection, UnityEngine.Random.Range(-_accuracy, _accuracy));
         ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * _shotImpulse, ForceMode2D.Impulse);
     }
 
