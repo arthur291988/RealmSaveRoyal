@@ -7,8 +7,6 @@ using UnityEngine.U2D;
 
 public class PlayerUnit : MonoBehaviour
 {
-
-
     [HideInInspector]
     public int _harm;
     [HideInInspector]
@@ -16,11 +14,19 @@ public class PlayerUnit : MonoBehaviour
     [HideInInspector]
     public float _attackSpeed;
     [HideInInspector]
+    public int _superHitHarm;
+    [HideInInspector]
+    public float _superHitTime;
+    [HideInInspector]
     public float _baseAttackSpeed;
     [HideInInspector]
     public float _accuracy;
     [HideInInspector]
     public float _baseAccuracy;
+    [HideInInspector]
+    public int _baseSuperHitHarm;
+    [HideInInspector]
+    public float _baseSuperHitTime;
 
     [HideInInspector]
     public int _unitMergeLevel;
@@ -52,6 +58,11 @@ public class PlayerUnit : MonoBehaviour
     public Vector2 attackDirection;
 
     [HideInInspector]
+    public float superHitsCount;
+    [HideInInspector]
+    public float superHitsCounter;
+
+    [HideInInspector]
     public SpriteRenderer _unitSpriteRenderer;
     //public SpriteAtlas _unitSpriteAtlas;
 
@@ -68,7 +79,6 @@ public class PlayerUnit : MonoBehaviour
         isMoved = false;
         _shotImpulse = CommonData.instance.shotImpulse;
         _gameObject = gameObject;
-
     }
 
     public void setStartProperties() {
@@ -76,17 +86,23 @@ public class PlayerUnit : MonoBehaviour
         attackTimer = UnityEngine.Random.Range(0.5f, 1);
     }
 
-    public void setUnitFeatures(int harm, float speed, float accuracy) {
+    public void setUnitFeatures(int harm, float speed, float accuracy, int superHitHarm, float superHItTime) {
         _harm = harm;
         _attackSpeed = speed;
         _accuracy = accuracy;
+        _superHitHarm = superHitHarm;
+        _superHitTime = superHItTime;
     }
     public virtual void updatePropertiesToLevel()
     {
         int powerUpLevel = CommonData.instance.playerUnitTypesOnScenePowerUpLevel[Array.IndexOf(CommonData.instance.playerUnitTypesOnScene, _unitType)];
-        setUnitFeatures(CommonData.instance.getHarmOfUnit(_unitMergeLevel, powerUpLevel, _baseHarm),
+        setUnitFeatures(
+            CommonData.instance.getHarmOfUnit(_unitMergeLevel, powerUpLevel, _baseHarm),
             CommonData.instance.getSpeedOfShotOfUnit(_unitMergeLevel, powerUpLevel, _baseAttackSpeed), 
-            CommonData.instance.getAccuracyOfUnit(_unitMergeLevel, powerUpLevel, _baseAccuracy));
+            CommonData.instance.getAccuracyOfUnit(_unitMergeLevel, powerUpLevel, _baseAccuracy),
+            CommonData.instance.getSuperHitHarm(_unitMergeLevel, powerUpLevel, _baseSuperHitHarm),
+            CommonData.instance.getSuperHitTime(_unitMergeLevel, powerUpLevel, _baseSuperHitTime)
+            );
         MergeOrPowerUpEffect.Play();
     }
     public void setUnitMergeLevel(int level) => _unitMergeLevel = level;
@@ -137,6 +153,10 @@ public class PlayerUnit : MonoBehaviour
             attackDirection.x * Mathf.Cos(delta) - attackDirection.y * Mathf.Sin(delta),
             attackDirection.x * Mathf.Sin(delta) + attackDirection.y * Mathf.Cos(delta)
         );
+    }
+
+    public virtual void superHit() { 
+    
     }
 
     private void Update()

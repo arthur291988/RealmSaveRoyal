@@ -133,11 +133,11 @@ public class DragController : MonoBehaviour
         unit.setUnitMergeLevel(unitToMergeWith._unitMergeLevel + 1);
         unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         unit.setSpriteOfUnit();
-        unit.updatePropertiesToLevel();
         CommonData.instance.playerUnits.Add(unit);
 
         ObjectPulled.SetActive(true);
         unit.setUnitPosition();
+        unit.updatePropertiesToLevel();
         toPutOnTile._playerUnit = unit;
         draggedFromTile._playerUnit = null;
 

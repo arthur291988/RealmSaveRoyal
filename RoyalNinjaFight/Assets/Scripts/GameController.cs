@@ -43,8 +43,15 @@ public class GameController : MonoBehaviour
     public List<Text> powerUpButtonTextsList;
     public List<int> energyToNextPowerUpList;
 
+    //public ParticleSystem bonusHitEffect;
+
+    private int indexOfNextMegaHitUnit;
+
+    public float unitYShift; //is used to put unit little bit up on castle tile. because castle tile is isometric
+
     private void Awake()
     {
+        unitYShift = 1;
         instance = this;
         gameIsOn = true;
     }
@@ -67,6 +74,7 @@ public class GameController : MonoBehaviour
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
         energyToNextCastleTileAdd = CommonData.instance.energyToNextUnitAddStep;
 
+        indexOfNextMegaHitUnit = Random.Range(0,CommonData.instance.playerUnitTypesOnScene.Length);
 
 
         Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(0, lowerPanelRect.anchoredPosition.y + lowerPanelRect.sizeDelta.y* Screen.height/canvasScaler.referenceResolution.y, 0));
@@ -183,7 +191,7 @@ public class GameController : MonoBehaviour
 
         ObjectPulledList = ObjectPuller.current.GetPlayerUnitsPullList(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-        ObjectPulled.transform.position = CommonData.instance.castlePointsWithNoUnits[positionIndex];
+        ObjectPulled.transform.position = new Vector2 (CommonData.instance.castlePointsWithNoUnits[positionIndex].x, CommonData.instance.castlePointsWithNoUnits[positionIndex].y+ unitYShift);
         CommonData.instance.castlePointsWithNoUnits.RemoveAt(positionIndex);
         PlayerUnit unit = ObjectPulled.GetComponent<PlayerUnit>();
         unit.setUnitMergeLevel(0);
@@ -280,6 +288,13 @@ public class GameController : MonoBehaviour
 
     public void bonusHit() {
         bonusHitButton.interactable = false;
+        for (int i=0;i<CommonData.instance.playerUnits.Count;i++) {
+            if (CommonData.instance.playerUnits[i]._unitType == indexOfNextMegaHitUnit) CommonData.instance.playerUnits[i].superHit();
+        }
+
+        //bonusHitEffect.Play();
+
+        indexOfNextMegaHitUnit = Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length);
     }
 
     public void poweUpUnits(int index) {

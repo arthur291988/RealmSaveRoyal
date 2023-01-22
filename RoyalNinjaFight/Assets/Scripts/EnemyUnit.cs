@@ -1,4 +1,6 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyUnit : MonoBehaviour
@@ -13,32 +15,49 @@ public class EnemyUnit : MonoBehaviour
 
     [HideInInspector]
     public Transform _transform;
-    [HideInInspector]
-    public Vector2 _unitStartPosition;
+    //[HideInInspector]
+    //public Vector2 _unitStartPosition;
     [HideInInspector]
     public Vector2 _movePoint;
     private SpriteRenderer _unitSpriteRenderer;
 
     private bool _includedToShotPull;
 
-    [SerializeField] 
+    [SerializeField]
     private Transform _lifeLine;
     private float LifelineMaxXPositionModule;
     private float HPtoTransforOfLifeLine;
 
+    private int lastingEffectIndex;
 
-    public void Start()
-    {
-        _transform = transform;
-        _unitStartPosition = new Vector2(_transform.position.x, _transform.position.y);
-    }
+    [NonSerialized]
+    public bool underLastingFireInjure;
+    private float lastingFireEffectTimer;
+    private float lastingFireEffectInjureTimer;
+    private float lastingFireEffectInjureTime;
+    private int lastingFireEffectInjure;
+
+    [NonSerialized]
+    public bool underLastingFrost;
+    private float lastingFrostEffectTimer;
+
+    [SerializeField]
+    private List<ParticleSystem> effectsOnEnemy;
+
 
     private void OnEnable()
     {
+        underLastingFireInjure = false;
+        underLastingFrost = false;
+
+        lastingFireEffectInjureTime = 0.25f; //all injures from lasting effects are applied per 0.25 of second
+
+
         LifelineMaxXPositionModule = 3;
         _lifeLine.localPosition = new Vector2(0, 1.4f);
         HPtoTransforOfLifeLine = LifelineMaxXPositionModule / HP;
         _includedToShotPull = false;
+        if (_transform==null) _transform = transform;
         Invoke("setMoveToPoint", 1f);
     }
 
@@ -103,10 +122,10 @@ public class EnemyUnit : MonoBehaviour
         }
         _moveSpeed = floatHolder / 4;
     }
-    
+
 
     private void setMoveToPoint() =>
-        _movePoint =/* CommonData.instance.platformPoints.Count > 0 ? CommonData.instance.platformPoints[Random.Range(0, CommonData.instance.platformPoints.Count)] : */Vector2.zero;
+        _movePoint = new Vector2(_transform.position.x, 0);/* CommonData.instance.platformPoints.Count > 0 ? CommonData.instance.platformPoints[Random.Range(0, CommonData.instance.platformPoints.Count)] : Vector2.zero;*/
 
     public void reduceHP(int harm)
     {
@@ -128,6 +147,28 @@ public class EnemyUnit : MonoBehaviour
         GameController.instance.updateEneryText();
         removeFromCommonData();
         gameObject.SetActive(false);
+        underLastingFireInjure = false;
+        underLastingFrost=false;
+        effectsOnEnemy[lastingEffectIndex].Stop();
+    }
+
+    public void lastingInjure(float time, int injurePerFourthOfSecont, int effectIndex)
+    {
+        if (effectIndex == 0 && !underLastingFireInjure)
+        {
+            lastingEffectIndex = effectIndex;
+            lastingFireEffectInjureTimer = lastingFireEffectInjureTime;
+            lastingFireEffectTimer = time;
+            lastingFireEffectInjure = injurePerFourthOfSecont;
+            effectsOnEnemy[lastingEffectIndex].Play();
+            underLastingFireInjure = true;
+        }
+        else if (effectIndex == 1 && !underLastingFrost) {
+            lastingEffectIndex = effectIndex;
+            lastingFrostEffectTimer = time;
+            effectsOnEnemy[lastingEffectIndex].Play();
+            underLastingFrost = true;
+        }
     }
 
     private void Update()
@@ -147,10 +188,33 @@ public class EnemyUnit : MonoBehaviour
                 _includedToShotPull = true;
             }
         }
+
+        //counting the time of lasting effect and reducing HP per fixed time
+        if (underLastingFireInjure) {
+            lastingFireEffectInjureTimer -= Time.deltaTime;
+            if (lastingFireEffectInjureTimer <= 0)
+            {
+                lastingFireEffectInjureTimer = lastingFireEffectInjureTime;
+                reduceHP(lastingFireEffectInjure);
+            }
+            lastingFireEffectTimer -= Time.deltaTime;
+            if (lastingFireEffectTimer <= 0) {
+                underLastingFireInjure = false;
+                effectsOnEnemy[lastingEffectIndex].Stop();
+            }
+        }
+        if (underLastingFrost) {
+            lastingFrostEffectTimer -= Time.deltaTime;
+            if (lastingFrostEffectTimer <= 0)
+            {
+                underLastingFrost = false;
+                effectsOnEnemy[lastingEffectIndex].Stop();
+            }
+        }
     }
 
     private void FixedUpdate()
     {
-        if (GameController.instance.gameIsOn) _transform.position = Vector2.MoveTowards(_transform.position, _movePoint, _moveSpeed);
+        if (GameController.instance.gameIsOn && !underLastingFrost) _transform.position = Vector2.MoveTowards(_transform.position, _movePoint, _moveSpeed);
     }
 }

@@ -11,6 +11,7 @@ public class CastleTiles : MonoBehaviour
     public GameObject _gameObject;
     [HideInInspector]
     public Vector2 _position;
+    public Vector2 _playerPosition;
     [HideInInspector]
     public SpriteRenderer _spriteRenderer;
     [HideInInspector]
@@ -22,6 +23,7 @@ public class CastleTiles : MonoBehaviour
     private void OnEnable()
     {
         _gameObject = gameObject;
+        setCastleTileLayer();
     }
 
     public void addCastleTilePropertiesToCommonData(int tileSide, Vector2 position)
@@ -29,6 +31,7 @@ public class CastleTiles : MonoBehaviour
         HP = CommonData.instance.HPOfTile;
         _tileSide = tileSide;
         _position = position;
+        _playerPosition = new Vector2(position.x, position.y+GameController.instance.unitYShift);
         if (tileSide == 0)
         {
             CommonData.instance.castlePointsUp.Add(_position);
@@ -45,6 +48,13 @@ public class CastleTiles : MonoBehaviour
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerUnit = null;
+    }
+
+    public void setCastleTileLayer() {
+        if (_position.y==-8) _spriteRenderer.sortingOrder = 6;
+        else if (_position.y == -4) _spriteRenderer.sortingOrder = 5;
+        else if(_position.y == 4) _spriteRenderer.sortingOrder = 3;
+        else if(_position.y == 8) _spriteRenderer.sortingOrder = 2;
     }
 
    
@@ -65,7 +75,7 @@ public class CastleTiles : MonoBehaviour
 
     private void destroyPlayerUnitStayingOnThisPlatform() {
         for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {
-            if (CommonData.instance.playerUnits[i]._unitStartPosition == _position)
+            if (CommonData.instance.playerUnits[i]._unitStartPosition == _playerPosition)
             {
                 CommonData.instance.playerUnits[i].disactivateUnit();
                 return;

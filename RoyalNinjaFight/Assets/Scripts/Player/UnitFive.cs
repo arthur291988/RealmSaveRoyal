@@ -6,9 +6,9 @@ public class UnitFive : PlayerUnit
 {
     private void OnEnable()
     {
-        _baseHarm = 23;
-        _baseAccuracy = 0.25f;
-        _baseAttackSpeed = 1.9f;
+        _baseHarm = 10;
+        _baseAccuracy = 0.2f;
+        _baseAttackSpeed = 1.1f;
 
         setStartProperties();
     }
@@ -16,5 +16,9 @@ public class UnitFive : PlayerUnit
     public override void updatePropertiesToLevel()
     {
         base.updatePropertiesToLevel();
+    }
+    public override void superHit()
+    {
+        Debug.Log("SuperHitOfFive");
     }
 }

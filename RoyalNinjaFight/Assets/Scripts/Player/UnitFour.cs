@@ -6,9 +6,9 @@ public class UnitFour : PlayerUnit
 {
     private void OnEnable()
     {
-        _baseHarm = 17;
+        _baseHarm = 11;
         _baseAccuracy = 0.22f;
-        _baseAttackSpeed = 1.7f;
+        _baseAttackSpeed = 1.2f;
 
         setStartProperties();
     }
@@ -16,5 +16,10 @@ public class UnitFour : PlayerUnit
     public override void updatePropertiesToLevel()
     {
         base.updatePropertiesToLevel();
+    }
+
+    public override void superHit()
+    {
+        Debug.Log("SuperHitOfFour");
     }
 }

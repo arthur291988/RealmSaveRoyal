@@ -3,12 +3,20 @@ using UnityEngine;
 
 public class UnitTwo : PlayerUnit
 {
+    //frost wizard, index of unit 2
+    //index of super hit particle system 1
+    //index of super hit weapon none
+
+    private int superHitEffectIndex;
 
     private void OnEnable()
     {
-        _baseHarm = 30;
-        _baseAccuracy = 0.3f;
-        _baseAttackSpeed = 2f;
+        _baseHarm = 12;
+        _baseAccuracy = 0.2f;
+        _baseAttackSpeed = 1.25f;
+        _baseSuperHitHarm = 0;
+        _baseSuperHitTime = 4;
+        superHitEffectIndex = 1; //frost circle effect index
 
         setStartProperties();
 
@@ -18,5 +26,14 @@ public class UnitTwo : PlayerUnit
     {
         base.updatePropertiesToLevel();
     }
-
+    public override void superHit()
+    {
+        float attacPointX = _unitStartPosition.x;
+        float attacPointY = unitSide == 0 ? Random.Range(10, GameController.instance.topShotLine) : Random.Range(-10, GameController.instance.bottomShotLine);
+        ObjectPulledList = ObjectPuller.current.GetSuperShotParticleEffects(superHitEffectIndex);//0 is fire circle effect
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = new Vector2(attacPointX, attacPointY);
+        ObjectPulled.GetComponent<ParticleCollision>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectIndex);
+        ObjectPulled.SetActive(true);
+    }
 }

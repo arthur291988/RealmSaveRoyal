@@ -13,11 +13,15 @@ public class AttackWaves : MonoBehaviour
 
     private const int maxEnemyCountOnOneLine = 7;
     private int enemyCountOnOneLine;
-    private float lineGap;
+    private float VerticalLineGap;
+    private float HorizontalLineGap;
+    private float horizontalLineGapMultiplier;
 
     // Start is called before the first frame update
     void Start()
     {
+        horizontalLineGapMultiplier = 1;
+        HorizontalLineGap = 0;
         attackTimeBase = 30;
         attackWaveTimeBase = 20;
         StartCoroutine (initiateAttackWave(CommonData.instance.locationWaves[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]));
@@ -25,16 +29,30 @@ public class AttackWaves : MonoBehaviour
 
     private Vector2 pointOfEnemy(int side)
     {
-        //to set lines with gap when too many enemy waves 
-        enemyCountOnOneLine++;
+        if (enemyCountOnOneLine != 0) {
+            if (enemyCountOnOneLine % 2!= 0) HorizontalLineGap += 3;
+        }
+        
+        if (HorizontalLineGap != 0) horizontalLineGapMultiplier = horizontalLineGapMultiplier < 0 ? 1 : -1;
+
+
         if (enemyCountOnOneLine >= maxEnemyCountOnOneLine)
         {
             enemyCountOnOneLine=0;
-            lineGap +=1.5f;
+            VerticalLineGap += 3f;
+            HorizontalLineGap = 0;
         }
 
-        if (side == 0) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), CommonData.instance.vertScreenSize / 2+ lineGap + Random.Range(2, 4f));
-        else return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), -CommonData.instance.vertScreenSize / 2 - lineGap - Random.Range(2, 4.5f));
+        //to set lines with gap when too many enemy waves
+        enemyCountOnOneLine++;
+
+        //if (side == 0) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), CommonData.instance.vertScreenSize / 2+ VerticalLineGap + Random.Range(2, 4f));
+        //else return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), -CommonData.instance.vertScreenSize / 2 - VerticalLineGap - Random.Range(2, 4.5f));
+
+
+        if (side == 0) return new Vector2(HorizontalLineGap * horizontalLineGapMultiplier, CommonData.instance.vertScreenSize / 2 + VerticalLineGap + Random.Range(0, 1f));
+        else return new Vector2(HorizontalLineGap * horizontalLineGapMultiplier, -CommonData.instance.vertScreenSize / 2 - VerticalLineGap - Random.Range(0, 1f));
+
 
         //if (side == 0) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), CommonData.instance.vertScreenSize / 2 + Random.Range(2, 3.5f));
         //else if (side == 1) return new Vector2(CommonData.instance.horisScreenSize / 2 + Random.Range(2, 3.5f), Random.Range(-CommonData.instance.vertScreenSize / 2, CommonData.instance.vertScreenSize / 2));
@@ -120,7 +138,8 @@ public class AttackWaves : MonoBehaviour
 
                 //each side attack troops [0] is the holder of side counts (there are only two sides max)
                 for (int y = 0; y < attackWaves[i][j][0]; y++) {
-                    lineGap = 0;
+                    VerticalLineGap = 0;
+                    HorizontalLineGap = 0;
                     sideOfWave = sideOfWave == 0 ? 1 : 0; //change attack side
 
                     //1 - index that holds the count of first level enemies 
@@ -175,14 +194,18 @@ public class AttackWaves : MonoBehaviour
                 //gap btwn mini wave attacks
                 yield return new WaitForSeconds(attackTimeBase);
             }
-            lineGap = 0;
+            VerticalLineGap = 0;
+            HorizontalLineGap = 0;
             instantiateBosses(10, i,1);
 
             yield return new WaitForSeconds(attackWaveTimeBase);
 
             if (i == attackWaves.Count - 1)
             {
-                lineGap = 0; instantiateBosses(100, i, 2);
+                VerticalLineGap = 0; 
+                HorizontalLineGap = 0;
+                instantiateBosses(100, i, 2);
+                
             }
         }
 

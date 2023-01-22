@@ -53,8 +53,4 @@ public class PlayerShot : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-    //private void FixedUpdate()
-    //{
-    //    //_shotRigidBody2D.MoveRotation(_shotRigidBody2D.rotation - BALL_ROTATION_SPEED * Time.fixedDeltaTime);
-    //}
 }

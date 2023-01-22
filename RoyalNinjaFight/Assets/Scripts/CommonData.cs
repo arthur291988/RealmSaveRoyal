@@ -56,6 +56,9 @@ public class CommonData : MonoBehaviour
     public List<Vector2> castlePointsWithNoUnits;
 
     [HideInInspector]
+    public List<Vector2> insideCastlePointsForEnemyUnits;
+
+    [HideInInspector]
     public int[] playerUnitTypesOnScene;
     [HideInInspector]
     public int[] playerUnitTypesOnScenePowerUpLevel;
@@ -97,6 +100,11 @@ public class CommonData : MonoBehaviour
     public int subLocation;
     [HideInInspector]
     public int location;
+
+    [HideInInspector]
+    public float leftEdgeofCastleTiles;
+    [HideInInspector]
+    public float rightEdgeofCastleTiles;
 
     #region levelParameters
     //index explanation: 0 - attack side counts (2 means attack will go from up and down simultaniously); 1-2-3 first-second-third level enemies count 
@@ -150,6 +158,7 @@ public class CommonData : MonoBehaviour
     public int HPMultiplierForMiniBoss;
     [HideInInspector]
     public int HPMultiplierForBigBoss;
+
 
     //indexes to change pararmeters of enemy units
     private void populateEnemyLevelIndexes()
@@ -275,16 +284,23 @@ public class CommonData : MonoBehaviour
     public float[,] indexesForPlayerUnits;
     private void populatePlayerUnitsTypesArray()
     {
-        for (int i = 0; i < playerUnitTypesOnScene.Length; i++)
-        {
-            playerUnitTypesOnScene[i] = i; //TO DO with more than 5 types (for now there only 5 types). Also necessary to limit unittypes on scene with ones chosen by player 
+        //for (int i = 0; i < playerUnitTypesOnScene.Length; i++)
+        //{
+        //    playerUnitTypesOnScene[i] = i; //TO DO with more than 5 types (for now there only 5 types). Also necessary to limit unittypes on scene with ones chosen by player 
             
-        }
+        //}
+        playerUnitTypesOnScene[0] = 0;
+        playerUnitTypesOnScene[1] = 1;
+        playerUnitTypesOnScene[2] = 2;
+        playerUnitTypesOnScene[3] = 4;
+        playerUnitTypesOnScene[4] = 5;
+
     }
 
     private void populatePlayerUnitsTypesStartPowerUpLevels()
     {
         for (int i = 0; i < playerUnitTypesOnScenePowerUpLevel.Length; i++) playerUnitTypesOnScenePowerUpLevel[i] = 0;
+
     }
 
     //indexes to change pararmeters of player units
@@ -336,11 +352,22 @@ public class CommonData : MonoBehaviour
     {
         return baseAccuracy / indexesForPlayerUnits[mergeLevel, powerUpCount];
     }
+    public int getSuperHitHarm(int mergeLevel, int powerUpCount, int baseSuperHitHarm)
+    {
+        return (int) (baseSuperHitHarm * indexesForPlayerUnits[mergeLevel, powerUpCount]);
+    }
+    public float getSuperHitTime(int mergeLevel, int powerUpCount, float baseSuperHitTime)
+    {
+        return baseSuperHitTime * indexesForPlayerUnits[mergeLevel, powerUpCount];
+    }
+
 
     #endregion PlayerUnit
 
     private void Awake()
     {
+        leftEdgeofCastleTiles = -10;
+        rightEdgeofCastleTiles = 10;
         cameraOfGame = Camera.main;
         //determine the sizes of view screen
         vertScreenSize = cameraOfGame.orthographicSize * 2;
@@ -350,19 +377,19 @@ public class CommonData : MonoBehaviour
         location = 0;
         playerUnitMaxLevel = 5;
 
-        HPOfTile = 3;
+        HPOfTile = 5;
 
         energyOnStart = 100;
 
-        energyToNextUnitAddStep = 10;
+        energyToNextUnitAddStep = 11;
 
         shotImpulse = 60;
 
-        baseHPOfRegularEnemy = 15;
+        baseHPOfRegularEnemy = 17;
 
         baseSpeedOfEnemy = 0.02f;
 
-        energyFromEnemyBase = 10;
+        energyFromEnemyBase = 9;
         energyFromRegularEnemyIncreaser = 10;
 
         energyToPowerUpBase = 100;
@@ -389,45 +416,51 @@ public class CommonData : MonoBehaviour
 
         platformTilesUp = new Dictionary<Vector2, int>
         {
-            {new Vector2(0, 3.5f),0},
-            {new Vector2(-3.5f, 3.5f),0},
-            {new Vector2(3.5f, 3.5f),0},
-            {new Vector2(-7, 3.5f),0},
-            {new Vector2(7, 3.5f),0},
+            {new Vector2(0, 4),0},
+            {new Vector2(-4, 4),0},
+            {new Vector2(4, 4),0},
+            {new Vector2(-8, 4),0},
+            {new Vector2(8, 4),0},
 
-            {new Vector2(0, 7),0},
-            {new Vector2(-3.5f, 7),0},
-            {new Vector2(3.5f, 7),0},
-            {new Vector2(-7, 7),0},
-            {new Vector2(7, 7),0},
+            {new Vector2(0, 8),0},
+            {new Vector2(-4, 8),0},
+            {new Vector2(4, 8),0},
+            {new Vector2(-8, 8),0},
+            {new Vector2(8, 8),0},
 
-            {new Vector2(0, 10.5f),0},
-            {new Vector2(-3.5f, 10.5f),0},
-            {new Vector2(3.5f, 10.5f),0},
-            {new Vector2(-7, 10.5f),0},
-            {new Vector2(7, 10.5f),0},
+            //{new Vector2(0, 10.5f),0},
+            //{new Vector2(-3.5f, 10.5f),0},
+            //{new Vector2(3.5f, 10.5f),0},
+            //{new Vector2(-7, 10.5f),0},
+            //{new Vector2(7, 10.5f),0},
         }; 
         platformTilesDown = new Dictionary<Vector2, int>
         {
-            {new Vector2(0, -3.5f),0},
-            {new Vector2(-3.5f, -3.5f),0},
-            {new Vector2(3.5f, -3.5f),0},
-            {new Vector2(-7, -3.5f),0},
-            {new Vector2(7, -3.5f),0},
+            {new Vector2(0, -4f),0},
+            {new Vector2(-4, -4f),0},
+            {new Vector2(4, -4f),0},
+            {new Vector2(-8, -4f),0},
+            {new Vector2(8, -4f),0},
 
-            {new Vector2(0, -7),0},
-            {new Vector2(-3.5f, -7),0},
-            {new Vector2(3.5f, -7),0},
-            {new Vector2(-7, -7),0},
-            {new Vector2(7, -7),0},
+            {new Vector2(0, -8),0},
+            {new Vector2(-4, -8),0},
+            {new Vector2(4, -8),0},
+            {new Vector2(-8, -8),0},
+            {new Vector2(8, -8),0},
 
-            {new Vector2(0, -10.5f),0},
-            {new Vector2(-3.5f, -10.5f),0},
-            {new Vector2(3.5f, -10.5f),0},
-            {new Vector2(-7, -10.5f),0},
-            {new Vector2(7, -10.5f),0},
+            //{new Vector2(0, -10.5f),0},
+            //{new Vector2(-3.5f, -10.5f),0},
+            //{new Vector2(3.5f, -10.5f),0},
+            //{new Vector2(-7, -10.5f),0},
+            //{new Vector2(7, -10.5f),0},
         };
-
+        insideCastlePointsForEnemyUnits = new List<Vector2>{
+            new Vector2(0, 0),
+            new Vector2(-3.5f, 0),
+            new Vector2(3.5f, 0),
+            new Vector2(-7, 0),
+            new Vector2(7, 0)
+        }; 
 
         enemyUnits = new Dictionary<int, List<EnemyUnit>>
         {
@@ -436,6 +469,7 @@ public class CommonData : MonoBehaviour
         };
         playerUnits = new List<PlayerUnit>();
 
+        
         populatePlayerUnitsTypesStartPowerUpLevels();
         populatePlayerUnitsTypesArray();
         populateEnemyLevelIndexes();
