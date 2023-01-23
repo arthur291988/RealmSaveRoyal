@@ -609,6 +609,8 @@ MonoBehaviour:
   superHitEffects:
   - {fileID: 6903629287546206240, guid: 3f3392c6471deb9438876bbbaeac69e1, type: 3}
   - {fileID: 4325919647539601428, guid: e14c44e27c7b16a47a5126248f36832b, type: 3}
+  - {fileID: 5589239338648412465, guid: 74cb7c90dfc463146b832ec4b6745462, type: 3}
+  - {fileID: 8405011834608994586, guid: 95f6117120f38da4ab7ad18bcf1c5816, type: 3}
 --- !u!114 &99078301
 MonoBehaviour:
   m_ObjectHideFlags: 0

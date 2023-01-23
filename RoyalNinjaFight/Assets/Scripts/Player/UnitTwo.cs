@@ -7,7 +7,9 @@ public class UnitTwo : PlayerUnit
     //index of super hit particle system 1
     //index of super hit weapon none
 
-    private int superHitEffectIndex;
+    private int superHitEffectOnEnemyIndex;
+
+    private int superHitIndexOnObjectPuller;
 
     private void OnEnable()
     {
@@ -16,7 +18,8 @@ public class UnitTwo : PlayerUnit
         _baseAttackSpeed = 1.25f;
         _baseSuperHitHarm = 0;
         _baseSuperHitTime = 4;
-        superHitEffectIndex = 1; //frost circle effect index
+        superHitEffectOnEnemyIndex = 1; //frost effect on enemy
+        superHitIndexOnObjectPuller = 1; //frost circle onject puller index 
 
         setStartProperties();
 
@@ -30,10 +33,10 @@ public class UnitTwo : PlayerUnit
     {
         float attacPointX = _unitStartPosition.x;
         float attacPointY = unitSide == 0 ? Random.Range(10, GameController.instance.topShotLine) : Random.Range(-10, GameController.instance.bottomShotLine);
-        ObjectPulledList = ObjectPuller.current.GetSuperShotParticleEffects(superHitEffectIndex);//0 is fire circle effect
+        ObjectPulledList = ObjectPuller.current.GetSuperShotParticleEffects(superHitIndexOnObjectPuller);//0 is fire circle effect
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = new Vector2(attacPointX, attacPointY);
-        ObjectPulled.GetComponent<ParticleCollision>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectIndex);
+        ObjectPulled.GetComponent<ParticleCollision>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectOnEnemyIndex);
         ObjectPulled.SetActive(true);
     }
 }

@@ -135,7 +135,6 @@ public class PlayerUnit : MonoBehaviour
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = _transform.position;
         ObjectPulled.GetComponent<PlayerShot>()._harm = _harm;
-        ObjectPulled.SetActive(true);
 
         EnemyUnit unitToAttack = CommonData.instance.enemyUnits[unitSide].Count == 1 ? CommonData.instance.enemyUnits[unitSide][0] :
                 CommonData.instance.enemyUnits[unitSide][UnityEngine.Random.Range(0, CommonData.instance.enemyUnits[unitSide].Count)];
@@ -143,6 +142,9 @@ public class PlayerUnit : MonoBehaviour
         attackDirection = new Vector2(unitToAttack._transform.position.x, unitToAttack._transform.position.y);
         attackDirection -= _unitStartPosition;
         attackDirection = RotateAttackVector(attackDirection, UnityEngine.Random.Range(-_accuracy, _accuracy));
+
+        ObjectPulled.SetActive(true);
+
         ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * _shotImpulse, ForceMode2D.Impulse);
     }
 

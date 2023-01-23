@@ -25,12 +25,13 @@ public class GameController : MonoBehaviour
     public Button addUnitButton;
     public Button addCastleTileButton;
     public Button bonusHitButton;
+    private Image bonusHitButtonImage;
 
     public Slider bonusFillSlider;
     private int bonusHitSliderMaxValue;
     private int bonusHitSliderMaxValueBase;
     private int bonusHitSliderMinValueMultiplier;
-    private int bonusHitSliderValueStep;
+    //private int bonusHitSliderValueStep;
 
     private Text energyToNextUnitAddTxt;
     private int energyToNextUnitAdd;
@@ -60,10 +61,11 @@ public class GameController : MonoBehaviour
     void Start()
     {
         bonusHitButton.interactable = false;
+        bonusHitButtonImage = bonusHitButton.image; 
         bonusHitSliderMinValueMultiplier = 1;
         bonusHitSliderMaxValue = 100;
         bonusHitSliderMaxValueBase = bonusHitSliderMaxValue;
-        bonusHitSliderValueStep = 10;
+        //bonusHitSliderValueStep = 10;
         bonusFillSlider.maxValue = bonusHitSliderMaxValue;
         bonusFillSlider.value = 0;
         energyToNextUnitAddTxt = addUnitButton.GetComponentInChildren<Text>();
@@ -74,8 +76,7 @@ public class GameController : MonoBehaviour
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
         energyToNextCastleTileAdd = CommonData.instance.energyToNextUnitAddStep;
 
-        indexOfNextMegaHitUnit = Random.Range(0,CommonData.instance.playerUnitTypesOnScene.Length);
-
+        setNextSuperHIt();
 
         Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(0, lowerPanelRect.anchoredPosition.y + lowerPanelRect.sizeDelta.y* Screen.height/canvasScaler.referenceResolution.y, 0));
         bottomShotLine = worldPosition.y;
@@ -103,7 +104,7 @@ public class GameController : MonoBehaviour
     public void incrementEnergy(int energy) {
         CommonData.instance.energy += energy;
         updateUnitsAndCastleTileAddButtonsUI();
-        updateBonusSliderFill();
+        updateBonusSliderFill(energy);
         updatePowerUpButtonsUI();
     }
 
@@ -271,8 +272,8 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void updateBonusSliderFill() {
-        bonusFillSlider.value += bonusHitSliderValueStep;
+    public void updateBonusSliderFill(int energy) {
+        bonusFillSlider.value += energy;
         if (bonusFillSlider.value >= bonusHitSliderMaxValue) {
             bonusHitSliderMinValueMultiplier++;
             bonusHitSliderMaxValue = bonusHitSliderMaxValueBase*bonusHitSliderMinValueMultiplier;
@@ -291,10 +292,13 @@ public class GameController : MonoBehaviour
         for (int i=0;i<CommonData.instance.playerUnits.Count;i++) {
             if (CommonData.instance.playerUnits[i]._unitType == indexOfNextMegaHitUnit) CommonData.instance.playerUnits[i].superHit();
         }
+        setNextSuperHIt();
+    }
 
-        //bonusHitEffect.Play();
-
-        indexOfNextMegaHitUnit = Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length);
+    private void setNextSuperHIt()
+    {
+        indexOfNextMegaHitUnit = CommonData.instance.playerUnitTypesOnScene[Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length)];
+        bonusHitButtonImage.sprite = CommonData.instance.playerSpriteAtlases.GetSprite(indexOfNextMegaHitUnit.ToString());
     }
 
     public void poweUpUnits(int index) {
