@@ -7,60 +7,67 @@ using UnityEngine.U2D;
 
 public class PlayerUnit : MonoBehaviour
 {
-    [HideInInspector]
+    [NonSerialized]
     public int _harm;
-    [HideInInspector]
+    [NonSerialized]
     public int _baseHarm;
-    [HideInInspector]
+    [NonSerialized]
     public float _attackSpeed;
-    [HideInInspector]
+    [NonSerialized]
     public int _superHitHarm;
-    [HideInInspector]
+    [NonSerialized]
     public float _superHitTime;
-    [HideInInspector]
+    [NonSerialized]
     public float _baseAttackSpeed;
-    [HideInInspector]
+    [NonSerialized]
     public float _accuracy;
-    [HideInInspector]
+    [NonSerialized]
     public float _baseAccuracy;
-    [HideInInspector]
+    [NonSerialized]
     public int _baseSuperHitHarm;
-    [HideInInspector]
+    [NonSerialized]
     public float _baseSuperHitTime;
 
-    [HideInInspector]
+    [NonSerialized]
     public int _unitMergeLevel;
     //[HideInInspector]
     //public int _unitPowerUpLevel;
 
-    [HideInInspector]
+    [NonSerialized]
     public int _unitType;
 
-    [HideInInspector]
+    [NonSerialized]
     public GameObject ObjectPulled;
-    [HideInInspector]
+    [NonSerialized]
     public List<GameObject> ObjectPulledList;
 
-    [HideInInspector]
+    [NonSerialized]
     public Transform _transform;
-    [HideInInspector]
+    [NonSerialized]
     public GameObject _gameObject;
-    [HideInInspector]
+    [NonSerialized]
     public Vector2 _unitStartPosition;
-    [HideInInspector]
+    [NonSerialized]
     public int unitSide; //0 up 1 down
 
-    [HideInInspector]
+    [NonSerialized]
     public float _shotImpulse;
-    [HideInInspector]
+    [NonSerialized]
     public float attackTimer;
-    [HideInInspector]
+    [NonSerialized]
     public Vector2 attackDirection;
 
-    [HideInInspector]
+    [NonSerialized]
     public float superHitsCount;
-    [HideInInspector]
+    [NonSerialized]
     public float superHitsCounter;
+
+    [NonSerialized]
+    public float simpleShotsCount;
+    [NonSerialized]
+    public float simpleShotsCounter;
+    [NonSerialized]
+    public int playerTalantLevel;
 
     [HideInInspector]
     public SpriteRenderer _unitSpriteRenderer;
@@ -119,7 +126,10 @@ public class PlayerUnit : MonoBehaviour
         _unitSpriteRenderer.sprite = CommonData.instance.playerSpriteAtlases.GetSprite(_unitType.ToString());
         _rangeSprite.sprite = CommonData.instance.playerRangeSpriteAtlases.GetSprite(_unitMergeLevel.ToString());
     }
-
+    public void addToCommonData()
+    {
+        CommonData.instance.playerUnits.Add(this);
+    }
     public void removeFromCommonData()
     {
         CommonData.instance.playerUnits.Remove(this);

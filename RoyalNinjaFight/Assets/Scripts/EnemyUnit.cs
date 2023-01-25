@@ -52,13 +52,19 @@ public class EnemyUnit : MonoBehaviour
 
         lastingFireEffectInjureTime = 0.25f; //all injures from lasting effects are applied per 0.25 of second
 
-
         LifelineMaxXPositionModule = 3;
         _lifeLine.localPosition = new Vector2(0, 1.4f);
         HPtoTransforOfLifeLine = LifelineMaxXPositionModule / HP;
         _includedToShotPull = false;
         if (_transform==null) _transform = transform;
+
+        //Debug.Log(CommonData.instance.enemyUnitsAll.Count + " " + _enemyLevel + " " + _energyOnDestroy);
+    }
+
+    public void addToCommonDataOnEnableaAndSetParameters()
+    {
         Invoke("setMoveToPoint", 1f);
+        CommonData.instance.enemyUnitsAll.Add(this);
     }
 
     public void setEnemyLevel(int level, int attackWaveCount)
@@ -83,7 +89,7 @@ public class EnemyUnit : MonoBehaviour
 
     private void setMiniBossFeatures(int waveNumber) {
         if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString());
+        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString()); //100 - location 0 mini boss, 101-location 1 mini boss 
 
         int intHolder = 0;
         for (int i = 0; i < 4; i++) {
@@ -103,7 +109,7 @@ public class EnemyUnit : MonoBehaviour
 
     private void setBigBossFeatures(int waveNumber) {
         if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString());
+        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString()); //1000 - location 0 mini boss, 1001-location 1 mini boss 
 
         int intHolder = 0;
         for (int i = 0; i < 4; i++)
@@ -138,6 +144,7 @@ public class EnemyUnit : MonoBehaviour
 
     public void removeFromCommonData()
     {
+        CommonData.instance.enemyUnitsAll.Remove(this);
         CommonData.instance.enemyUnits[_enemySide].Remove(this);
     }
 

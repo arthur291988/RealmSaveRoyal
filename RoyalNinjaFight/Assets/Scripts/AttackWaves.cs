@@ -17,6 +17,14 @@ public class AttackWaves : MonoBehaviour
     private float HorizontalLineGap;
     private float horizontalLineGapMultiplier;
 
+    private Dictionary<int, List<List<int>>> _attackWaves;
+    private int sideOfWave;
+    private int firstLevelWavesOfSubLocation;
+    private int secondLevelWavesOfSubLocation;
+    private bool attackWaveIsOn;
+    private bool bossAttackPassed;
+    private bool finalBossAttackPassed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +32,12 @@ public class AttackWaves : MonoBehaviour
         HorizontalLineGap = 0;
         attackTimeBase = 30;
         attackWaveTimeBase = 20;
-        StartCoroutine (initiateAttackWave(CommonData.instance.locationWaves[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]));
+        //StartCoroutine (initiateAttackWave(CommonData.instance.locationWaves[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]));
+        attackWaveIsOn = false;
+        bossAttackPassed = false;
+        finalBossAttackPassed = false;
+        setAttackWaves(CommonData.instance.locationWaves[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]);
+
     }
 
     private Vector2 pointOfEnemy(int side)
@@ -36,7 +49,7 @@ public class AttackWaves : MonoBehaviour
         if (HorizontalLineGap != 0) horizontalLineGapMultiplier = horizontalLineGapMultiplier < 0 ? 1 : -1;
 
 
-        if (enemyCountOnOneLine >= maxEnemyCountOnOneLine)
+        if (enemyCountOnOneLine >=maxEnemyCountOnOneLine)
         {
             enemyCountOnOneLine=0;
             VerticalLineGap += 3f;
@@ -113,6 +126,7 @@ public class AttackWaves : MonoBehaviour
         EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
         enemyUnit.setEnemySide(side);
         enemyUnit.setEnemyLevel(enemyLevel, waveCount);
+        enemyUnit.addToCommonDataOnEnableaAndSetParameters();
         ObjectPulled.SetActive(true);
 
         side++;
@@ -123,6 +137,7 @@ public class AttackWaves : MonoBehaviour
         enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
         enemyUnit.setEnemySide(side);
         enemyUnit.setEnemyLevel(enemyLevel, waveCount);
+        enemyUnit.addToCommonDataOnEnableaAndSetParameters();
         ObjectPulled.SetActive(true);
     }
 
@@ -133,7 +148,7 @@ public class AttackWaves : MonoBehaviour
         //big waves of subLocation each finishes with mini boss 
         for (int i = 0; i< attackWaves.Count; i++)
         {
-            //mini waves of subLocation big waves (no mini boos btw these ones)
+            //mini waves of subLocation big waves (no mini boss btw these ones)
             for (int j = 0; j < attackWaves[i].Count; j++) {
 
                 //each side attack troops [0] is the holder of side counts (there are only two sides max)
@@ -211,6 +226,123 @@ public class AttackWaves : MonoBehaviour
 
     }
 
+
+    private void setAttackWaves(Dictionary<int, List<List<int>>> attackWaves)
+    {
+        _attackWaves = attackWaves;
+        firstLevelWavesOfSubLocation = 0;
+        secondLevelWavesOfSubLocation = 0;// attackWaves[firstLevelWavesOfSubLocation].Count;
+        sideOfWave = Random.Range(0, 2); //top or bottom
+        initiateSecondLevelAttackWaves();
+    }
+
+    //private void initiateFirstLevelAttackWaves() {
+    //    initiateSecondLevelAttackWaves();
+    //}
+
+    public void initiateSecondLevelAttackWaves()
+    {
+        //each side attack troops [0] is the holder of side counts (there are only two sides max)
+        for (int y = 0; y < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][0]; y++)
+        {
+            VerticalLineGap = 0;
+            HorizontalLineGap = 0;
+            sideOfWave = sideOfWave == 0 ? 1 : 0; //change attack side
+
+            //1 - index that holds the count of first level enemies 
+            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][1]; x++)
+            {
+                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0); //0-is index that pulls the regular enemy prefab from pull, not boss
+                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+                ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
+                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
+                enemyUnit.setEnemySide(sideOfWave);
+                enemyUnit.setEnemyLevel(0, firstLevelWavesOfSubLocation);
+                enemyUnit.addToCommonDataOnEnableaAndSetParameters();
+                ObjectPulled.SetActive(true);
+            }
+            
+            //2 - index that holds the count of second level enemies
+            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][2]; x++)
+            {
+                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0);
+                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+                ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
+                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
+                enemyUnit.setEnemySide(sideOfWave);
+                enemyUnit.setEnemyLevel(1, firstLevelWavesOfSubLocation);
+                enemyUnit.addToCommonDataOnEnableaAndSetParameters();
+                ObjectPulled.SetActive(true);
+            }
+
+            //3 - index that holds the count of third level enemies
+            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][3]; x++)
+            {
+                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0);
+                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+                ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
+                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
+                enemyUnit.setEnemySide(sideOfWave);
+                enemyUnit.setEnemyLevel(2, firstLevelWavesOfSubLocation);
+                enemyUnit.addToCommonDataOnEnableaAndSetParameters();
+                ObjectPulled.SetActive(true);
+
+            }
+            //4 - index that holds the count of forth level enemies
+            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][4]; x++)
+            {
+                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0);
+                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+                ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
+                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
+                enemyUnit.setEnemySide(sideOfWave);
+                enemyUnit.setEnemyLevel(3, firstLevelWavesOfSubLocation);
+                enemyUnit.addToCommonDataOnEnableaAndSetParameters();
+                ObjectPulled.SetActive(true);
+
+            }
+        }
+        if (bossAttackPassed) bossAttackPassed = false;
+        attackWaveIsOn = true;
+        secondLevelWavesOfSubLocation++;
+    }
+
+    private void Update()
+    {
+        if (attackWaveIsOn) {
+            if (CommonData.instance.enemyUnitsAll.Count == 0) {
+                attackWaveIsOn = false;
+                if (secondLevelWavesOfSubLocation < _attackWaves[firstLevelWavesOfSubLocation].Count)
+                {
+                    initiateSecondLevelAttackWaves();
+                }
+                else if (!bossAttackPassed)
+                {
+                    VerticalLineGap = 0;
+                    HorizontalLineGap = 0;
+                    instantiateBosses(10, firstLevelWavesOfSubLocation, 1); //100 - location 0 mini boss, 101-location 1 mini boss. It works as following 10+0 where 0 is location count
+                    if (firstLevelWavesOfSubLocation < _attackWaves.Count-1) firstLevelWavesOfSubLocation++;
+                    attackWaveIsOn = true;
+                    bossAttackPassed = true;
+                }
+                //else if (firstLevelWavesOfSubLocation < _attackWaves.Count)
+                //{
+                //    initiateFirstLevelAttackWaves();
+                //}
+                else if (!finalBossAttackPassed)
+                {
+                    VerticalLineGap = 0;
+                    HorizontalLineGap = 0;
+                    instantiateBosses(100, firstLevelWavesOfSubLocation, 2); //1000 - location 0 mini boss, 1001-location 1 mini boss. It works as following 10+0 where 0 is location count
+                    attackWaveIsOn = true;
+                    finalBossAttackPassed = true;
+                }
+                else {
+                    Debug.Log("Victory");
+                }
+            }
+        }
+    }
 
 
     // Update is called once per frame

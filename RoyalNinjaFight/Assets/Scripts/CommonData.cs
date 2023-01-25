@@ -31,6 +31,9 @@ public class CommonData : MonoBehaviour
     public bool gameIsOn;
 
     [HideInInspector]
+    public List<EnemyUnit> enemyUnitsAll; //this one is used on attack wave sequence control
+
+    [HideInInspector]
     public Dictionary<int, List<EnemyUnit>> enemyUnits;
 
     [HideInInspector]
@@ -107,7 +110,8 @@ public class CommonData : MonoBehaviour
     public float rightEdgeofCastleTiles;
 
     #region levelParameters
-    //index explanation: 0 - attack side counts (2 means attack will go from up and down simultaniously); 1-2-3 first-second-third level enemies count 
+    //index explanation: 0 - attack side counts (2 means attack will go from up and down simultaniously); 1-2-3-4 first-second-third-forth level enemies count 
+    //keys are the wave counts
     [HideInInspector]
     public Dictionary<int, List<List<int>>> attackWavesForLocation00 = new Dictionary<int, List<List<int>>>
     {
@@ -134,7 +138,7 @@ public class CommonData : MonoBehaviour
     };
 
     [HideInInspector]
-    public Dictionary<Vector2, Dictionary<int, List<List<int>>>> locationWaves;
+    public Dictionary<Vector2, Dictionary<int, List<List<int>>>> locationWaves; //Vector2 key determined by location and sub location, for example 0 - location and 1 is sub locatio new Vector2 (0,1);
 
     #endregion levelParameters
 
@@ -383,7 +387,7 @@ public class CommonData : MonoBehaviour
 
         energyToNextUnitAddStep = 11;
 
-        shotImpulse = 60;
+        shotImpulse = 50;
 
         baseHPOfRegularEnemy = 17;
 
@@ -405,8 +409,9 @@ public class CommonData : MonoBehaviour
 
         locationWaves = new Dictionary<Vector2, Dictionary<int, List<List<int>>>>
         {
-            [new Vector2 (0,0)] = attackWavesForLocation00
+            [new Vector2 (0,0)] = attackWavesForLocation00 //0 - location, 0- sub location
         };
+        enemyUnitsAll = new List<EnemyUnit>();
 
         castleTiles = new List<CastleTiles>();
 

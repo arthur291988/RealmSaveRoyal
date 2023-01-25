@@ -52,7 +52,7 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
-        unitYShift = 1;
+        unitYShift = 0.5f;
         instance = this;
         gameIsOn = true;
     }
@@ -162,7 +162,7 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
         {
-            if (CommonData.instance.castleTiles[i]._position == position)
+            if (CommonData.instance.castleTiles[i]._position == new Vector2(position.x, position.y-unitYShift))
             {
                 CommonData.instance.castleTiles[i]._playerUnit = unit;
                 break;
@@ -198,7 +198,7 @@ public class GameController : MonoBehaviour
         unit.setUnitMergeLevel(0);
         unit.SetUnitType(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
         unit.setSpriteOfUnit();
-        CommonData.instance.playerUnits.Add(unit);
+        unit.addToCommonData();
 
 
         ObjectPulled.SetActive(true);
@@ -212,6 +212,8 @@ public class GameController : MonoBehaviour
         updateEneryToNextUnitAddText();
         updateUnitsAndCastleTileAddButtonsUI();
         updatePowerUpButtonsUI();
+
+        //foreach (CastleTiles ct in CommonData.instance.castleTiles) Debug.Log(ct._playerUnit == null);
     }
 
     public void addNewCastleTile(bool start) {
@@ -270,6 +272,9 @@ public class GameController : MonoBehaviour
         {
             addNewCastleTile(true);
         }
+
+
+        //foreach (CastleTiles ct in CommonData.instance.castleTiles) Debug.Log(ct._playerUnit == null);
     }
 
     public void updateBonusSliderFill(int energy) {

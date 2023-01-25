@@ -40,16 +40,19 @@ public class ObjectPuller : MonoBehaviour
     private GameObject playerUnit5;
 
 
+    //[SerializeField]
+    //private GameObject playerShot0;
+    //[SerializeField]
+    //private GameObject playerShot1;
+    //[SerializeField]
+    //private GameObject playerShot2;
+    //[SerializeField]
+    //private GameObject playerShot4;
+    //[SerializeField]
+    //private GameObject playerShot5;
+
     [SerializeField]
-    private GameObject playerShot0;
-    [SerializeField]
-    private GameObject playerShot1;
-    [SerializeField]
-    private GameObject playerShot2;
-    [SerializeField]
-    private GameObject playerShot4;
-    [SerializeField]
-    private GameObject playerShot5;
+    private List<GameObject> playerShotsList;
 
     [SerializeField]
     private GameObject peakSuperShot;
@@ -78,15 +81,18 @@ public class ObjectPuller : MonoBehaviour
     public List<GameObject> playerUnit5Pull;
 
     [NonSerialized]
-    public List<GameObject> playerShot0Pull;
-    [NonSerialized]
-    public List<GameObject> playerShot1Pull;
-    [NonSerialized]
-    public List<GameObject> playerShot2Pull;
-    [NonSerialized]
-    public List<GameObject> playerShot4Pull;
-    [NonSerialized]
-    public List<GameObject> playerShot5Pull;
+    private List<List<GameObject>> playerShotsPull;
+
+    //[NonSerialized]
+    //public List<GameObject> playerShot0Pull;
+    //[NonSerialized]
+    //public List<GameObject> playerShot1Pull;
+    //[NonSerialized]
+    //public List<GameObject> playerShot2Pull;
+    //[NonSerialized]
+    //public List<GameObject> playerShot4Pull;
+    //[NonSerialized]
+    //public List<GameObject> playerShot5Pull;
 
     [NonSerialized]
     public List<GameObject> peakSuperShotPull;
@@ -114,11 +120,13 @@ public class ObjectPuller : MonoBehaviour
         playerUnit4Pull = new List<GameObject>();
         playerUnit5Pull = new List<GameObject>();
 
-        playerShot0Pull = new List<GameObject>();
-        playerShot1Pull = new List<GameObject>();
-        playerShot2Pull = new List<GameObject>();
-        playerShot4Pull = new List<GameObject>();
-        playerShot5Pull = new List<GameObject>();
+        playerShotsPull = new List<List<GameObject>>();
+
+        //playerShot0Pull = new List<GameObject>();
+        //playerShot1Pull = new List<GameObject>();
+        //playerShot2Pull = new List<GameObject>();
+        //playerShot4Pull = new List<GameObject>();
+        //playerShot5Pull = new List<GameObject>();
 
         peakSuperShotPull = new List<GameObject>();
 
@@ -157,26 +165,38 @@ public class ObjectPuller : MonoBehaviour
 
         }
 
-        for (int i = 0; i < pullOfObjects10; i++)
+        //for (int i = 0; i < pullOfObjects10; i++)
+        //{
+        //    GameObject obj = Instantiate(playerShot0);
+        //    obj.SetActive(false);
+        //    playerShot0Pull.Add(obj);
+
+        //    GameObject obj2 = Instantiate(playerShot1);
+        //    obj2.SetActive(false);
+        //    playerShot1Pull.Add(obj2);
+
+        //    GameObject obj1 = Instantiate(playerShot2);
+        //    obj1.SetActive(false);
+        //    playerShot2Pull.Add(obj1);
+
+        //    GameObject obj3 = Instantiate(playerShot4);
+        //    obj3.SetActive(false);
+        //    playerShot4Pull.Add(obj3);
+        //    GameObject obj4 = Instantiate(playerShot5);
+        //    obj4.SetActive(false);
+        //    playerShot5Pull.Add(obj4);
+        //}
+
+        //special loop for pulling the super effects
+        for (int i = 0; i < playerShotsList.Count; i++)
         {
-            GameObject obj = Instantiate(playerShot0);
-            obj.SetActive(false);
-            playerShot0Pull.Add(obj);
-
-            GameObject obj2 = Instantiate(playerShot1);
-            obj2.SetActive(false);
-            playerShot1Pull.Add(obj2);
-
-            GameObject obj1 = Instantiate(playerShot2);
-            obj1.SetActive(false);
-            playerShot2Pull.Add(obj1);
-
-            GameObject obj3 = Instantiate(playerShot4);
-            obj3.SetActive(false);
-            playerShot4Pull.Add(obj3);
-            GameObject obj4 = Instantiate(playerShot5);
-            obj4.SetActive(false);
-            playerShot5Pull.Add(obj4);
+            playerShotsPull.Add(new List<GameObject>());
+            for (int y = 0; y < pullOfObjects10; y++)
+            {
+                GameObject obj = Instantiate(playerShotsList[i]);
+                obj.SetActive(false);
+                playerShotsPull[i].Add(obj);
+            }
         }
 
         //special loop for pulling the super effects
@@ -214,11 +234,10 @@ public class ObjectPuller : MonoBehaviour
     }
     public List<GameObject> GetPlayerShotPullList(int shotType) //TO DO WITH OTHER TYPES OF player shots
     {
-        if (shotType == 0) return playerShot0Pull;
-        else if (shotType == 1) return playerShot1Pull;
-        else if(shotType == 2) return playerShot2Pull;
-        else if (shotType == 4) return playerShot4Pull;
-        else return playerShot5Pull;
+        if (shotType == 0) return playerShotsPull[shotType];
+        else if (shotType == 1 || shotType == 4) return playerShotsPull[1];//same for fire elf and fire wizard
+        else if (shotType == 2 || shotType == 5) return playerShotsPull[2];//2 shot type is frost ball is the same for frost elf and frost wizzard
+        return null;
     }
 
     //0-regularUnit, //1-miniBossUnit //2-bigBossUnit

@@ -72,6 +72,7 @@ public class DragController : MonoBehaviour
                     {
                         if (tile._playerUnit != null)
                         {
+                            //Debug.Log(tile._playerUnit != null);
                             toPutOnTile = tile;
                             return unitToMergeWith = tile._playerUnit;
                         }
@@ -151,7 +152,7 @@ public class DragController : MonoBehaviour
     }
 
     private void putUnitOnNewPosition() {
-        draggedUnitScript._transform.position = toPutOnTile._position;
+        draggedUnitScript._transform.position = new Vector2(toPutOnTile._position.x, toPutOnTile._position.y + GameController.instance.unitYShift); //units stay little bit upper than castle tile
         draggedUnitScript.setUnitPosition();
 
         CommonData.instance.castlePointsWithNoUnits.Add(draggedFromTile._position);
@@ -214,6 +215,8 @@ public class DragController : MonoBehaviour
             }
         }
     }
+
+
     private void FixedUpdate()
     {
         if (unitToDragTransorm != null && !unitIsDragged && draggedUnitScript._unitStartPosition != (Vector2)unitToDragTransorm.position) {
