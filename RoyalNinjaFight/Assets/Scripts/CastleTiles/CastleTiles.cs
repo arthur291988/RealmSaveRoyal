@@ -1,28 +1,34 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class CastleTiles : MonoBehaviour
 {
-    [HideInInspector]
+    [NonSerialized]
     public int HP;
-    [HideInInspector]
+    [NonSerialized]
     public GameObject _gameObject;
-    [HideInInspector]
+    [NonSerialized]
     public Vector2 _position;
+    [NonSerialized]
     public Vector2 _playerPosition;
-    [HideInInspector]
+    [NonSerialized]
     public SpriteRenderer _spriteRenderer;
-    [HideInInspector]
+    [NonSerialized]
     public PlayerUnit _playerUnit;
 
-    [HideInInspector]
+    [NonSerialized]
     public int _tileSide; //0 up 1 down
+
+    private Animator _animator;
+
 
     private void OnEnable()
     {
         _gameObject = gameObject;
+        if (_animator == null) _animator = _gameObject.GetComponent<Animator>();
         setCastleTileLayer();
     }
 
@@ -48,6 +54,7 @@ public class CastleTiles : MonoBehaviour
 
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _playerUnit = null;
+        setTileSprite();
     }
 
     public void setCastleTileLayer() {
@@ -57,6 +64,12 @@ public class CastleTiles : MonoBehaviour
         else if(_position.y == 8) _spriteRenderer.sortingOrder = 2;
     }
 
+    private void setTileSprite() {
+        if (HP > 4) _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("0");
+        else if (HP > 3) _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("1");
+        else if (HP > 2) _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("2");
+        else _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("3");
+    }
    
     //tile destruction by enemy hit
     private void OnTriggerEnter2D(Collider2D collision)
@@ -67,11 +80,22 @@ public class CastleTiles : MonoBehaviour
             reduceHP();
         }
     }
-    private void reduceHP()
+    public virtual void reduceHP()
     {
         HP--;
         if (HP < 1) disactivateTile();
+        else
+        {
+            setTileSprite();
+            _animator.SetBool("Play",true);
+        }
     }
+
+    public void animationFalse()
+    {
+        _animator.SetBool("Play", false);
+    }
+
 
     private void destroyPlayerUnitStayingOnThisPlatform() {
         for (int i = 0; i < CommonData.instance.playerUnits.Count; i++) {

@@ -1,5 +1,7 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,9 +30,11 @@ public class GameController : MonoBehaviour
     private Image bonusHitButtonImage;
 
     public Slider bonusFillSlider;
+    public TextMeshProUGUI bonusHitsAvailableTMP;
     private int bonusHitSliderMaxValue;
     private int bonusHitSliderMaxValueBase;
     private int bonusHitSliderMinValueMultiplier;
+    private int bounsHitsAvailable;
     //private int bonusHitSliderValueStep;
 
     private Text energyToNextUnitAddTxt;
@@ -48,7 +52,11 @@ public class GameController : MonoBehaviour
 
     private int indexOfNextMegaHitUnit;
 
+    [NonSerialized]
     public float unitYShift; //is used to put unit little bit up on castle tile. because castle tile is isometric
+
+    public GameObject messagePanel;
+    public TextMeshProUGUI messagePanleText;
 
     private void Awake()
     {
@@ -60,6 +68,8 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bounsHitsAvailable = 0;
+        updateBonusHitsAvailable();
         bonusHitButton.interactable = false;
         bonusHitButtonImage = bonusHitButton.image; 
         bonusHitSliderMinValueMultiplier = 1;
@@ -76,7 +86,7 @@ public class GameController : MonoBehaviour
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
         energyToNextCastleTileAdd = CommonData.instance.energyToNextUnitAddStep;
 
-        setNextSuperHIt();
+        setNextSuperHit();
 
         Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(0, lowerPanelRect.anchoredPosition.y + lowerPanelRect.sizeDelta.y* Screen.height/canvasScaler.referenceResolution.y, 0));
         bottomShotLine = worldPosition.y;
@@ -84,6 +94,13 @@ public class GameController : MonoBehaviour
         addInitialCastleTiles();
         //gameTurn = 0;
         //timerText.text = "0";
+    }
+
+    public void showMessage(string message)
+    {
+        messagePanleText.text = message;
+        messagePanleText.color = new Color(1, 0.2f, 0.2f, 1);
+        messagePanel.SetActive(true);
     }
 
     private void setStartPowerUpSettings()
@@ -183,11 +200,11 @@ public class GameController : MonoBehaviour
 
     public void addNewUnit() {
         int positionIndex = 0;
-        int unitTypeIndex = Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length);
+        int unitTypeIndex = UnityEngine.Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length);
 
         //position index on all castle points with no units (randome if there more than ont empty castle tile and first one if only one empty tile left)
         if (CommonData.instance.castlePointsWithNoUnits.Count > 1)
-            positionIndex = Random.Range(0, CommonData.instance.castlePointsWithNoUnits.Count);
+            positionIndex = UnityEngine.Random.Range(0, CommonData.instance.castlePointsWithNoUnits.Count);
         else if (CommonData.instance.castlePointsWithNoUnits.Count == 1) positionIndex = 0;
 
         ObjectPulledList = ObjectPuller.current.GetPlayerUnitsPullList(CommonData.instance.playerUnitTypesOnScene[unitTypeIndex]);
@@ -229,7 +246,7 @@ public class GameController : MonoBehaviour
         {
             if (x == 0) downEmptyPlatformTiles++;
         }
-        sideOfCastleTile = upEmptyPlatformTiles == downEmptyPlatformTiles? Random.Range(0,2) : upEmptyPlatformTiles < downEmptyPlatformTiles?1:0;
+        sideOfCastleTile = upEmptyPlatformTiles == downEmptyPlatformTiles? UnityEngine.Random.Range(0,2) : upEmptyPlatformTiles < downEmptyPlatformTiles?1:0;
 
         ObjectPulledList = ObjectPuller.current.GetCastleTilePullList();
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
@@ -280,6 +297,8 @@ public class GameController : MonoBehaviour
     public void updateBonusSliderFill(int energy) {
         bonusFillSlider.value += energy;
         if (bonusFillSlider.value >= bonusHitSliderMaxValue) {
+            bounsHitsAvailable++;
+            updateBonusHitsAvailable();
             bonusHitSliderMinValueMultiplier++;
             bonusHitSliderMaxValue = bonusHitSliderMaxValueBase*bonusHitSliderMinValueMultiplier;
             bonusFillSlider.maxValue = bonusHitSliderMaxValue;
@@ -289,20 +308,31 @@ public class GameController : MonoBehaviour
     }
 
     public void updateBonusHitButton() {
-        if (!bonusHitButton.interactable) bonusHitButton.interactable = true;
+        if (bounsHitsAvailable > 0) {
+            if (!bonusHitButton.interactable) bonusHitButton.interactable = true;
+        }
+        else if (bonusHitButton.interactable) bonusHitButton.interactable = false;
     }
 
+    private void updateBonusHitsAvailable()
+    {
+        bonusHitsAvailableTMP.text = bounsHitsAvailable.ToString();
+    }  
+
     public void bonusHit() {
-        bonusHitButton.interactable = false;
+
+        bounsHitsAvailable--;
+        updateBonusHitsAvailable();
+        updateBonusHitButton();
         for (int i=0;i<CommonData.instance.playerUnits.Count;i++) {
             if (CommonData.instance.playerUnits[i]._unitType == indexOfNextMegaHitUnit) CommonData.instance.playerUnits[i].superHit();
         }
-        setNextSuperHIt();
+        setNextSuperHit();
     }
 
-    private void setNextSuperHIt()
+    private void setNextSuperHit()
     {
-        indexOfNextMegaHitUnit = CommonData.instance.playerUnitTypesOnScene[Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length)];
+        indexOfNextMegaHitUnit = CommonData.instance.playerUnitTypesOnScene[UnityEngine.Random.Range(0, CommonData.instance.playerUnitTypesOnScene.Length)];
         bonusHitButtonImage.sprite = CommonData.instance.playerSpriteAtlases.GetSprite(indexOfNextMegaHitUnit.ToString());
     }
 

@@ -16,6 +16,7 @@ public class CommonData : MonoBehaviour
     public SpriteAtlas enemyAtlas;
     public SpriteAtlas playerSpriteAtlases;
     public SpriteAtlas playerRangeSpriteAtlases;
+    public SpriteAtlas castleTileSpriteAtlases;
 
     [HideInInspector]
     public Camera cameraOfGame;
@@ -391,7 +392,7 @@ public class CommonData : MonoBehaviour
 
         baseHPOfRegularEnemy = 17;
 
-        baseSpeedOfEnemy = 0.02f;
+        baseSpeedOfEnemy = 0.03f;
 
         energyFromEnemyBase = 9;
         energyFromRegularEnemyIncreaser = 10;
@@ -399,10 +400,10 @@ public class CommonData : MonoBehaviour
         energyToPowerUpBase = 100;
         energyToPowerUpMax = 800;
 
-        energyMultiplierForMiniBoss =5;
-        energyMultiplierForBigBoss=20;
-        HPMultiplierForMiniBoss=5;
-        HPMultiplierForBigBoss=10;
+        energyMultiplierForMiniBoss =15;
+        energyMultiplierForBigBoss=35;
+        HPMultiplierForMiniBoss=10;
+        HPMultiplierForBigBoss=20;
 
         playerUnitTypesOnScene = new int[5];
         playerUnitTypesOnScenePowerUpLevel = new int[5];

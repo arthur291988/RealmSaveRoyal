@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3859213313038362320}
   - component: {fileID: 3859213313038362322}
   - component: {fileID: 3859213313038362323}
+  - component: {fileID: 904744731861404968}
   m_Layer: 10
   m_Name: RegularEnemy
   m_TagString: Untagged
@@ -123,6 +124,25 @@ MonoBehaviour:
   effectsOnEnemy:
   - {fileID: 5501669706920662782}
   - {fileID: 1234969287461399207}
+--- !u!95 &904744731861404968
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3859213313038362327}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d36e6126c8171fc41b494486cf3c3742, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4136414808358484295
 GameObject:
   m_ObjectHideFlags: 0
