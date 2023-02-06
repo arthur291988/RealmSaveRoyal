@@ -40,7 +40,7 @@ public class UnitFour : PlayerUnit
     {
         if (CommonData.instance.enemyUnits[unitSide].Count>0)
         {
-            ObjectPulledList = ObjectPuller.current.GetSuperShotParticleEffects(indexOnSuperShotsObjectPuller);//0 is fire circle effect
+            ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect
             ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
             ObjectPulled.transform.position = _unitStartPosition;
             ObjectPulled.GetComponent<SuperHitBase>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectOnEnemyIndex);

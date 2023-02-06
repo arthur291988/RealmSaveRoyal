@@ -40,7 +40,7 @@ public class UnitFive : PlayerUnit
     {
         if (CommonData.instance.enemyUnits[unitSide].Count > 0)
         {
-            ObjectPulledList = ObjectPuller.current.GetSuperShotParticleEffects(indexOnSuperShotsObjectPuller);
+            ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);
             ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
             ObjectPulled.transform.position = _unitStartPosition;
             ObjectPulled.GetComponent<SuperHitBase>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectOnEnemyIndex);

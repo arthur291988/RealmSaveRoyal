@@ -19,7 +19,7 @@ public class UnitTTwo : PlayerUnit
         _baseAttackSpeed = 1.4f;
         _baseSuperHitHarm = _baseHarm - 4;
         superHitsCount = 3;
-        indexOnSuperShotsObjectPuller = 0; //zero is peak
+        indexOnSuperShotsObjectPuller = 5; //five is peak
         superHitsCounter = 0;
         setStartProperties();
     }

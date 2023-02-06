@@ -62,6 +62,7 @@ public class UnitTwo : PlayerUnit
         ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * _shotImpulse, ForceMode2D.Impulse);
 
         if (simpleShotsCounter == 0) animationPlay(); // play animation only once
+
         //repeat the method to make additional shots according the features of unit
         simpleShotsCounter++;
         if (simpleShotsCounter < simpleShotsCount) attackSimple();
@@ -79,7 +80,7 @@ public class UnitTwo : PlayerUnit
     {
         float attacPointX = _unitStartPosition.x;
         float attacPointY = unitSide == 0 ? Random.Range(13, 21/*GameController.instance.topShotLine*/) : Random.Range(-13, -21 /*GameController.instance.bottomShotLine*/);
-        ObjectPulledList = ObjectPuller.current.GetSuperShotParticleEffects(indexOnSuperShotsObjectPuller);//0 is fire circle effect
+        ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = new Vector2(attacPointX, attacPointY);
         ObjectPulled.GetComponent<SuperHitBase>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectOnEnemyIndex);

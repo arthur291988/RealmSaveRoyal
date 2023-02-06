@@ -46,7 +46,7 @@ public class UnitFifteen : PlayerUnit
     {
         float attacPointX = _unitStartPosition.x;
         float attacPointY = unitSide == 0 ? Random.Range(13, 21) : Random.Range(-13, -21);
-        ObjectPulledList = ObjectPuller.current.GetSuperShotParticleEffects(indexOnSuperShotsObjectPuller);//0 is fire circle effect
+        ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = new Vector2(attacPointX, attacPointY);
         ObjectPulled.GetComponent<SuperHitBase>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectOnEnemyIndex); // no need to assign 

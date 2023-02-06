@@ -18,8 +18,9 @@ public class UnitZero : PlayerUnit
         _baseAccuracy = 0.22f;
         _baseAttackSpeed = 1.8f;
         _baseSuperHitHarm = _baseHarm - 4;
+        indexOnSuperShotsObjectPuller = 5; //five is peak
+
         superHitsCount = 3;
-        indexOnSuperShotsObjectPuller = 0; //zero is peak
         superHitsCounter = 0;
         setStartProperties();
     }

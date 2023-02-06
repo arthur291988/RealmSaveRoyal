@@ -317,7 +317,7 @@ public class CommonData : MonoBehaviour
         //    playerUnitTypesOnScene[i] = i; //TO DO with more than 5 types (for now there only 5 types). Also necessary to limit unittypes on scene with ones chosen by player 
             
         //}
-        playerUnitTypesOnScene[0] = 0;
+        playerUnitTypesOnScene[0] = 3;
         playerUnitTypesOnScene[1] = 27;
         playerUnitTypesOnScene[2] = 15;
         playerUnitTypesOnScene[3] = 22;

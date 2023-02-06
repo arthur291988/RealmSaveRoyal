@@ -35,6 +35,8 @@ public class ObjectPuller : MonoBehaviour
     [SerializeField]
     private GameObject playerUnit2;
     [SerializeField]
+    private GameObject playerUnit3;
+    [SerializeField]
     private GameObject playerUnit4;
     [SerializeField]
     private GameObject playerUnit5;
@@ -62,8 +64,8 @@ public class ObjectPuller : MonoBehaviour
     [SerializeField]
     private List<GameObject> playerShotsList;
 
-    [SerializeField]
-    private GameObject peakSuperShot;
+    //[SerializeField]
+    //private GameObject peakSuperShot;
     [SerializeField]
     private List<GameObject> superHitEffects;
 
@@ -83,6 +85,8 @@ public class ObjectPuller : MonoBehaviour
     public List<GameObject> playerUnit1Pull;
     [NonSerialized]
     public List<GameObject> playerUnit2Pull;
+    [NonSerialized]
+    public List<GameObject> playerUnit3Pull;
     [NonSerialized]
     public List<GameObject> playerUnit4Pull;
     [NonSerialized]
@@ -110,8 +114,8 @@ public class ObjectPuller : MonoBehaviour
     //[NonSerialized]
     //public List<GameObject> playerShot5Pull;
 
-    [NonSerialized]
-    public List<GameObject> peakSuperShotPull;
+    //[NonSerialized]
+    ////public List<GameObject> peakSuperShotPull;
 
     [NonSerialized]
     public List<List<GameObject>> superHitEffectsPull;
@@ -133,6 +137,7 @@ public class ObjectPuller : MonoBehaviour
         playerUnit0Pull = new List<GameObject>();
         playerUnit1Pull = new List<GameObject>();
         playerUnit2Pull = new List<GameObject>();
+        playerUnit3Pull = new List<GameObject>();
         playerUnit4Pull = new List<GameObject>();
         playerUnit5Pull = new List<GameObject>();
         playerUnit10Pull = new List<GameObject>();
@@ -148,7 +153,7 @@ public class ObjectPuller : MonoBehaviour
         //playerShot4Pull = new List<GameObject>();
         //playerShot5Pull = new List<GameObject>();
 
-        peakSuperShotPull = new List<GameObject>();
+        //peakSuperShotPull = new List<GameObject>();
 
         superHitEffectsPull = new List<List<GameObject>>();
 
@@ -176,6 +181,10 @@ public class ObjectPuller : MonoBehaviour
             GameObject obj2 = Instantiate(playerUnit2);
             obj2.SetActive(false);
             playerUnit2Pull.Add(obj2);
+
+            GameObject obj9 = Instantiate(playerUnit3);
+            obj9.SetActive(false);
+            playerUnit3Pull.Add(obj9);
 
             GameObject obj3 = Instantiate(playerUnit4);
             obj3.SetActive(false);
@@ -262,18 +271,19 @@ public class ObjectPuller : MonoBehaviour
             castleTilePull.Add(obj1);
         }
 
-        for (int i = 0; i < pullOfObjects60; i++)
-        {
-            GameObject obj1 = Instantiate(peakSuperShot);
-            obj1.SetActive(false);
-            peakSuperShotPull.Add(obj1);
-        }
+        //for (int i = 0; i < pullOfObjects60; i++)
+        //{
+        //    GameObject obj1 = Instantiate(peakSuperShot);
+        //    obj1.SetActive(false);
+        //    peakSuperShotPull.Add(obj1);
+        //}
     }
     public List<GameObject> GetPlayerShotPullList(int shotType) //TO DO WITH OTHER TYPES OF player shots
     {
         if (shotType == 0) return playerShotsPull[shotType];
         else if (shotType == 1 || shotType == 4) return playerShotsPull[1];//same for fire elf and fire wizard
         else if (shotType == 2 || shotType == 5) return playerShotsPull[2];//2 shot type is frost ball is the same for frost elf and frost wizzard
+        else if (shotType == 3) return playerShotsPull[7]; //7 is archer arrow shot
         else if (shotType == 10) return playerShotsPull[3]; //3 is enngineer gear shot
         else if (shotType == 15) return playerShotsPull[4]; //4 is peak woman peak shot
         else if (shotType == 22) return playerShotsPull[5]; //5 is desert warrior blade shot
@@ -293,6 +303,7 @@ public class ObjectPuller : MonoBehaviour
         if (unitType == 0) return playerUnit0Pull;
         else if (unitType == 1) return playerUnit1Pull;
         else if (unitType == 2) return playerUnit2Pull;
+        else if (unitType == 3) return playerUnit3Pull;
         else if (unitType == 4) return playerUnit4Pull;
         else if (unitType == 5) return playerUnit5Pull;
         else if (unitType == 10) return playerUnit10Pull;
@@ -306,12 +317,12 @@ public class ObjectPuller : MonoBehaviour
     {
         return castleTilePull;
     }
+    //public List<GameObject> GetSuperShot(int index)
+    //{
+    //    if (index == 0) return peakSuperShotPull;
+    //    return null;
+    //}
     public List<GameObject> GetSuperShot(int index)
-    {
-        if (index == 0) return peakSuperShotPull;
-        return null;
-    }
-    public List<GameObject> GetSuperShotParticleEffects(int index)
     {
         return superHitEffectsPull[index];
     }

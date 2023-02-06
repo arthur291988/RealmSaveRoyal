@@ -745,6 +745,7 @@ MonoBehaviour:
   playerUnit0: {fileID: 8385832067656155475, guid: 01f6af972e1637e4ca0e9fa777b6ba50, type: 3}
   playerUnit1: {fileID: 8385832067656155475, guid: 0bbbbfe6b965c824680dde352ba8460e, type: 3}
   playerUnit2: {fileID: 8385832067656155475, guid: 941270bfb5fd58342a6cf8c476a39e94, type: 3}
+  playerUnit3: {fileID: 8385832067656155475, guid: 13f4346d0f9f64f45976289ef4d42d39, type: 3}
   playerUnit4: {fileID: 8385832067656155475, guid: e069d0a1eccb67243a56dbcfb0d3557c, type: 3}
   playerUnit5: {fileID: 8385832067656155475, guid: 5338e191bf3bc704cafc3afd98c58be1, type: 3}
   playerUnit10: {fileID: 8385832067656155475, guid: 7e3ce01a2c76798479756e7518aeb75b, type: 3}
@@ -759,13 +760,14 @@ MonoBehaviour:
   - {fileID: 5851021026593795559, guid: 53d8ebc559747c7479a0b6fd8a6aa472, type: 3}
   - {fileID: 5851021026593795559, guid: 48eda436777c4344db49ced53483cf2a, type: 3}
   - {fileID: 5851021026593795559, guid: 8e8532931f9e3be46999eddecfeb3d3b, type: 3}
-  peakSuperShot: {fileID: 381366586806911739, guid: f990b48325cc62e45a9199f8dd497497, type: 3}
+  - {fileID: 5851021026593795559, guid: 809d64d0464cbcf48883e37504abcae5, type: 3}
   superHitEffects:
   - {fileID: 6903629287546206240, guid: 3f3392c6471deb9438876bbbaeac69e1, type: 3}
   - {fileID: 4325919647539601428, guid: e14c44e27c7b16a47a5126248f36832b, type: 3}
   - {fileID: 5589239338648412465, guid: 74cb7c90dfc463146b832ec4b6745462, type: 3}
   - {fileID: 8405011834608994586, guid: 95f6117120f38da4ab7ad18bcf1c5816, type: 3}
   - {fileID: 2391713420316979457, guid: 0762da662479a6b4bb7c0f1642e20b7a, type: 3}
+  - {fileID: 381366586806911739, guid: f990b48325cc62e45a9199f8dd497497, type: 3}
 --- !u!114 &99078301
 MonoBehaviour:
   m_ObjectHideFlags: 0

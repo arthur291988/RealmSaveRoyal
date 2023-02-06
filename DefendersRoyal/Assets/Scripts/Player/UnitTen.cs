@@ -30,6 +30,7 @@ public class UnitTen : PlayerUnit
 
         _shotImpulse -= 10; //shot impulse is slower for engineer
 
+        simpleShotsCounter = 0;
         simpleShotsCount = 3;
         towerFixTime = 7;
         towerFixTimer = 7;
@@ -75,9 +76,6 @@ public class UnitTen : PlayerUnit
         ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
         ObjectPulled.transform.position = _transform.position;
         ObjectPulled.GetComponent<PlayerShot>()._harm = _harm;
-
-        EnemyUnit unitToAttack = CommonData.instance.enemyUnits[unitSide].Count == 1 ? CommonData.instance.enemyUnits[unitSide][0] :
-                CommonData.instance.enemyUnits[unitSide][UnityEngine.Random.Range(0, CommonData.instance.enemyUnits[unitSide].Count)];
 
         int sideMultiplier = unitSide == 0 ? 1 : -1; //0 is up
 
