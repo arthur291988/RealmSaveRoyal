@@ -40,6 +40,10 @@ public class CommonData : MonoBehaviour
 
     [NonSerialized]
     public List<PlayerUnit> playerUnits;
+    //[NonSerialized]
+    //public List<PlayerUnit> playerUnitsUp;
+    //[NonSerialized]
+    //public List<PlayerUnit> playerUnitsDown;
 
     [NonSerialized]
     public List<CastleTiles> castleTiles;
@@ -406,7 +410,7 @@ public class CommonData : MonoBehaviour
 
         towerHPReduceAmount = 1000;
 
-        subLocation = 0;
+        //subLocation = 0;
         location = 0;
         playerUnitMaxLevel = 5;
 
@@ -503,7 +507,7 @@ public class CommonData : MonoBehaviour
         };
         playerUnits = new List<PlayerUnit>();
 
-        
+
         populatePlayerUnitsTypesStartPowerUpLevels();
         populatePlayerUnitsTypesArray();
         populateEnemyLevelIndexes();

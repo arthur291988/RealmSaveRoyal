@@ -82,6 +82,12 @@ public class PlayerUnit : MonoBehaviour
     [SerializeField]
     private Animator _animator;
 
+    [NonSerialized]
+    public bool isBlocked;
+    private float blockedTime;
+    [SerializeField]
+    private ParticleSystem frozenEffect;
+
     public void Start()
     {
         isMoved = false;
@@ -135,14 +141,23 @@ public class PlayerUnit : MonoBehaviour
     public void addToCommonData()
     {
         CommonData.instance.playerUnits.Add(this);
+        //if (unitSide == 0) CommonData.instance.playerUnitsUp.Add(this);
+        //else CommonData.instance.playerUnitsDown.Add(this);
     }
     public void removeFromCommonData()
     {
         CommonData.instance.playerUnits.Remove(this);
+        //if (unitSide == 0) CommonData.instance.playerUnitsUp.Remove(this);
+        //else CommonData.instance.playerUnitsDown.Remove(this);
     }
     public void disactivateUnit()
     {
         removeFromCommonData();
+        isBlocked = false;
+        blockedTime = 0;
+        frozenEffect.Stop();
+        simpleShotsCounter = 0;
+        superHitsCounter = 0;
         _gameObject.SetActive(false);
     }
     public virtual void attackSimple()
@@ -184,8 +199,14 @@ public class PlayerUnit : MonoBehaviour
         );
     }
 
-    public virtual void superHit() { 
-    
+    public virtual void superHit() {
+        if (isBlocked) return;
+    }
+
+    public void blockTheUnit(float time) {
+        frozenEffect.Play();
+        blockedTime = time;
+        isBlocked = true;
     }
 
     public virtual void Update()
@@ -195,7 +216,7 @@ public class PlayerUnit : MonoBehaviour
             attackTimer -= Time.deltaTime;
             if (attackTimer <= 0)
             {
-                if (CommonData.instance.enemyUnits[unitSide].Count > 0 && !isMoved)
+                if (CommonData.instance.enemyUnits[unitSide].Count > 0 && !isMoved && !isBlocked)
                 {
                     attackSimple();
                 }
@@ -203,6 +224,15 @@ public class PlayerUnit : MonoBehaviour
                 attackTimer = _attackSpeed;
             }
 
+        }
+
+        if (isBlocked) {
+            blockedTime -= Time.deltaTime;
+            if (blockedTime <= 0)
+            {
+                frozenEffect.Stop();
+                isBlocked = false;
+            }
         }
     }
 

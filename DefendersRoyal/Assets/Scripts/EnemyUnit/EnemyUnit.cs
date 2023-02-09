@@ -5,17 +5,23 @@ using UnityEngine;
 
 public class EnemyUnit : MonoBehaviour
 {
-    private int _enemyLevel; //each level has its own sprite
-    private int _enemySide;
-    private int _energyOnDestroy;
-    private float _moveSpeed;
+    [NonSerialized]
+    public int _enemyLevel; //each level has its own sprite
+    [NonSerialized]
+    public int _enemySide;
+    [NonSerialized]
+    public int _energyOnDestroy;
+    [NonSerialized]
+    public float _moveSpeed;
 
     public SpriteRenderer _spriteRendererOfLifeLine;
-    private MaterialPropertyBlock matBlockOfLifeLineSprite;
+    [NonSerialized]
+    public MaterialPropertyBlock matBlockOfLifeLineSprite;
 
     [NonSerialized]
     public int HP;
-    private float maxHP;
+    [NonSerialized]
+    public float maxHP;
     //[NonSerialized]
     //public int TowerHP;
 
@@ -25,7 +31,8 @@ public class EnemyUnit : MonoBehaviour
     //public Vector2 _unitStartPosition;
     [NonSerialized]
     public Vector2 _movePoint;
-    private SpriteRenderer _unitSpriteRenderer;
+    [NonSerialized]
+    public SpriteRenderer _unitSpriteRenderer;
 
     private bool _includedToShotPull;
 
@@ -57,15 +64,36 @@ public class EnemyUnit : MonoBehaviour
     private bool isPushedBack;
     private Vector2 pushBackPoint;
 
-    private void Awake()
+
+    //private void OnEnable()
+    //{
+
+    //    if (matBlockOfLifeLineSprite==null) matBlockOfLifeLineSprite = new MaterialPropertyBlock();
+
+    //    lastingPeakBloodEffectTimer = 0;
+    //    lastingFrostEffectTimer = 0;
+    //    lastingFireEffectTimer = 0;
+
+    //    isPushedBack = false;
+    //    underLastingFireInjure = false;
+    //    underLastingFrost = false;
+
+    //    lastingFireEffectInjureTime = 0.25f; //all injures from lasting effects are applied per 0.25 of second
+
+    //    //LifelineMaxXPositionModule = 3;
+    //    //_lifeLine.localPosition = new Vector2(0, 1.4f);
+    //    //HPtoTransforOfLifeLine = LifelineMaxXPositionModule / HP;
+    //    _includedToShotPull = false;
+    //    if (_transform==null) _transform = transform;
+
+
+    //    UpdateParams();
+    //    //Debug.Log(_enemyLevel.ToString()+"0"+ CommonData.instance.location.ToString());
+    //}
+
+    public virtual void startSettings()
     {
-    }
-
-
-    private void OnEnable()
-    {
-
-        if (matBlockOfLifeLineSprite==null) matBlockOfLifeLineSprite = new MaterialPropertyBlock();
+        if (matBlockOfLifeLineSprite == null) matBlockOfLifeLineSprite = new MaterialPropertyBlock();
 
         lastingPeakBloodEffectTimer = 0;
         lastingFrostEffectTimer = 0;
@@ -77,15 +105,10 @@ public class EnemyUnit : MonoBehaviour
 
         lastingFireEffectInjureTime = 0.25f; //all injures from lasting effects are applied per 0.25 of second
 
-        //LifelineMaxXPositionModule = 3;
-        //_lifeLine.localPosition = new Vector2(0, 1.4f);
-        //HPtoTransforOfLifeLine = LifelineMaxXPositionModule / HP;
         _includedToShotPull = false;
-        if (_transform==null) _transform = transform;
-
+        if (_transform == null) _transform = transform;
 
         UpdateParams();
-        //Debug.Log(_enemyLevel.ToString()+"0"+ CommonData.instance.location.ToString());
     }
 
     public void addToCommonDataOnEnableaAndSetParameters()
@@ -94,74 +117,77 @@ public class EnemyUnit : MonoBehaviour
         CommonData.instance.enemyUnitsAll.Add(this);
     }
 
-    public void setEnemyLevel(int level, int attackWaveCount)
+    public virtual void setEnemyLevel(int level, int attackWaveCount)
     {
         _enemyLevel = level;
-        if (_enemyLevel < 10) setEnemyFeatures(attackWaveCount);
-        else if (_enemyLevel < 100) setMiniBossFeatures(attackWaveCount);
-        else setBigBossFeatures(attackWaveCount);
+        //if (_enemyLevel < 10) setEnemyFeatures(attackWaveCount);
+        //else if (_enemyLevel < 100) setMiniBossFeatures(attackWaveCount);
+        //else setBigBossFeatures(attackWaveCount);
+
+        //setEnemyFeatures(attackWaveCount);
+
     }
 
     public void setEnemySide (int side) => _enemySide = side; //0 - up; 1 - down;
 
-    private void setEnemyFeatures(int waveNumber)
-    {
-        if (_unitSpriteRenderer==null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString()); 
+    //private void setEnemyFeatures(int waveNumber)
+    //{
+    //    if (_unitSpriteRenderer==null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+    //    _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString()); 
         
-        _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber];
-        _moveSpeed = CommonData.instance.regularEnemySpeed[_enemyLevel];
-        HP = CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, _enemyLevel];
-        maxHP = HP;
-    }
+    //    _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber];
+    //    _moveSpeed = CommonData.instance.regularEnemySpeed[_enemyLevel];
+    //    HP = CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, _enemyLevel];
+    //    maxHP = HP;
+    //}
 
-    private void setMiniBossFeatures(int waveNumber) {
-        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        //1010 - 10 is mini boss, 1 wave count, location 0 mini boss: 1011 - 10 is mini boss, 1 wave count, location 1 mini boss 
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + waveNumber.ToString() + CommonData.instance.location.ToString());
+    //private void setMiniBossFeatures(int waveNumber) {
+    //    if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+    //    //1010 - 10 is mini boss, 1 wave count, location 0 mini boss: 1011 - 10 is mini boss, 1 wave count, location 1 mini boss 
+    //    _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + waveNumber.ToString() + CommonData.instance.location.ToString());
 
-        int intHolder = 0;
-        for (int i = 0; i < 4; i++) {
-            intHolder += CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, i] * CommonData.instance.HPMultiplierForMiniBoss;
-        }
-        HP = intHolder / 4;
-        maxHP = HP;
+    //    int intHolder = 0;
+    //    for (int i = 0; i < 4; i++) {
+    //        intHolder += CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, i] * CommonData.instance.HPMultiplierForMiniBoss;
+    //    }
+    //    HP = intHolder / 4;
+    //    maxHP = HP;
 
-        _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber]* CommonData.instance.energyMultiplierForMiniBoss;
+    //    _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber]* CommonData.instance.energyMultiplierForMiniBoss;
 
-        float floatHolder = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            floatHolder += CommonData.instance.regularEnemySpeed[i];
-        }
-        _moveSpeed = floatHolder / 4;
-    }
+    //    float floatHolder = 0;
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        floatHolder += CommonData.instance.regularEnemySpeed[i];
+    //    }
+    //    _moveSpeed = floatHolder / 4;
+    //}
 
-    private void setBigBossFeatures(int waveNumber) {
-        if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+    //private void setBigBossFeatures(int waveNumber) {
+    //    if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
 
 
-        //10000 - 100 is location boss, 0 wave count (always zero), location 0 mini boss: 10001 - 100 is location boss, 0 wave count (always zero), location 1 mini boss 
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + "0" + CommonData.instance.location.ToString()); 
+    //    //10000 - 100 is location boss, 0 wave count (always zero), location 0 mini boss: 10001 - 100 is location boss, 0 wave count (always zero), location 1 mini boss 
+    //    _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + "0" + CommonData.instance.location.ToString()); 
 
-        int intHolder = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            intHolder += 
-                CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, i] * CommonData.instance.HPMultiplierForBigBoss;
-        }
-        HP = intHolder / 4;
-        maxHP = HP;
+    //    int intHolder = 0;
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        intHolder += 
+    //            CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, i] * CommonData.instance.HPMultiplierForBigBoss;
+    //    }
+    //    HP = intHolder / 4;
+    //    maxHP = HP;
 
-        _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber] * CommonData.instance.energyMultiplierForBigBoss;
+    //    _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber] * CommonData.instance.energyMultiplierForBigBoss;
 
-        float floatHolder = 0;
-        for (int i = 0; i < 4; i++)
-        {
-            floatHolder += CommonData.instance.regularEnemySpeed[i];
-        }
-        _moveSpeed = floatHolder / 4;
-    }
+    //    float floatHolder = 0;
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        floatHolder += CommonData.instance.regularEnemySpeed[i];
+    //    }
+    //    _moveSpeed = floatHolder / 4;
+    //}
 
 
     private void setMoveToPoint() =>
@@ -249,7 +275,7 @@ public class EnemyUnit : MonoBehaviour
         }
     }
 
-    private void Update()
+    public virtual void Update()
     {
         if (!_includedToShotPull) {
             if (_enemySide == 0)

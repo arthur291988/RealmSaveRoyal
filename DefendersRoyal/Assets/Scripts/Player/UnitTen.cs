@@ -28,7 +28,8 @@ public class UnitTen : PlayerUnit
         _baseSuperHitTime = 4;
         XSpreadOfSimpleShot = 13f;
 
-        _shotImpulse -= 10; //shot impulse is slower for engineer
+        _shotImpulse = CommonData.instance.shotImpulse-10; //shot impulse is slower for engineer
+
 
         simpleShotsCounter = 0;
         simpleShotsCount = 3;
@@ -103,6 +104,7 @@ public class UnitTen : PlayerUnit
     }
     public override void superHit()
     {
+        base.superHit();
         //setting fix counts, base fix count + upgrade level + merge level
         int castleTileFixCount = BASE_FIX_COUNT+_unitMergeLevel + CommonData.instance.playerUnitTypesOnScenePowerUpLevel[Array.IndexOf(CommonData.instance.playerUnitTypesOnScene, _unitType)];
 

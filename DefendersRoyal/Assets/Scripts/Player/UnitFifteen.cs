@@ -44,6 +44,7 @@ public class UnitFifteen : PlayerUnit
 
     public override void superHit()
     {
+        base.superHit();
         float attacPointX = _unitStartPosition.x;
         float attacPointY = unitSide == 0 ? Random.Range(13, 21) : Random.Range(-13, -21);
         ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect

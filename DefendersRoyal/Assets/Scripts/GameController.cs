@@ -85,6 +85,8 @@ public class GameController : MonoBehaviour
         setStartPowerUpSettings();
         energyToNextUnitAdd = CommonData.instance.energyToNextUnitAddStep;
         energyToNextCastleTileAdd = CommonData.instance.energyToNextUnitAddStep;
+        updateEneryToNextUnitAddText();
+        updateEneryToNextCastleTileAddText();
 
         setNextSuperHit();
 

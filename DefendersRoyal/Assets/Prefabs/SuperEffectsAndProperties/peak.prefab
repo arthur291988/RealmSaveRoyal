@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 381366586806911741}
   - component: {fileID: 381366586806911740}
   - component: {fileID: 4249785224372527483}
-  - component: {fileID: 3734405898067740418}
   - component: {fileID: 1047241623579521434}
+  - component: {fileID: 2778854226694822952}
   m_Layer: 8
   m_Name: peak
   m_TagString: Untagged
@@ -106,22 +106,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &3734405898067740418
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381366586806911739}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.06, y: 1.86}
-  serializedVersion: 2
-  m_Radius: 0.1
 --- !u!114 &1047241623579521434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,3 +118,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb93ae304d98db740849a0ade9499db5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!70 &2778854226694822952
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381366586806911739}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.27, y: 3.95}
+  m_Direction: 0

@@ -292,11 +292,12 @@ public class ObjectPuller : MonoBehaviour
     }
 
     //0-regularUnit, //1-miniBossUnit //2-bigBossUnit
-    public List<GameObject> GetEnemyUnitsPullList(int enemyIndex) //TO DO WITH OTHER TYPES OF ENEMY UNITS
+    public List<GameObject> GetEnemyUnitsPullList(/*int enemyIndex*/) //TO DO WITH OTHER TYPES OF ENEMY UNITS
     {
-        if (enemyIndex == 0) return enemyUnitsPull;
-        else if (enemyIndex == 1) return miniBossUnitsPull;
-        else return bigBossUnitsPull; 
+        return enemyUnitsPull;
+        //if (enemyIndex == 0) return enemyUnitsPull;
+        //else if (enemyIndex == 1) return miniBossUnitsPull;
+        //else return bigBossUnitsPull; 
     }
     public List<GameObject> GetPlayerUnitsPullList(int unitType) //TO DO WITH OTHER TYPES OF player UNITS
     {

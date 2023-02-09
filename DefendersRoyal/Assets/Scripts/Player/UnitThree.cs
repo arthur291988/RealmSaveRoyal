@@ -28,7 +28,7 @@ public class UnitThree : PlayerUnit
         //_baseSuperHitTime = 4;
         indexOnSuperShotsObjectPuller = 1; //frost circle onject puller index
                                            
-        XSpreadOfSimpleShot = 7f;
+        XSpreadOfSimpleShot = 4f;
 
 
         simpleShotsCounter = 0;
@@ -37,10 +37,10 @@ public class UnitThree : PlayerUnit
         superHitsCount = 9;
         superHitsCounter = 0;
 
-        XSpreadOfSuperShot1 = 15f;
-        XSpreadOfSuperShot2 = 12;
-        XSpreadOfSuperShot3 = 10;
-        XSpreadOfSuperShot4 = 7;
+        XSpreadOfSuperShot1 = 16f;
+        XSpreadOfSuperShot2 = 8;
+        XSpreadOfSuperShot3 = 4;
+        XSpreadOfSuperShot4 = 2;
 
         setStartProperties();
 
@@ -82,6 +82,7 @@ public class UnitThree : PlayerUnit
     }
     public override void superHit()
     {
+        base.superHit();
         if (CommonData.instance.enemyUnits[unitSide].Count > 0)
         {
             ObjectPulledList = ObjectPuller.current.GetPlayerShotPullList(_unitType);

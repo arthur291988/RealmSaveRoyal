@@ -31,7 +31,7 @@ public class DragController : MonoBehaviour
                 worldPosition.y < (tile._position.y + tile._spriteRenderer.bounds.size.y / 2) &&
                 worldPosition.y > (tile._position.y - tile._spriteRenderer.bounds.size.y / 2))
             {
-                if (tile._playerUnit != null)
+                if (tile._playerUnit != null && !tile._playerUnit.isBlocked)
                 {
                     draggedFromTile = tile;
                     draggedUnitScript = tile._playerUnit;
@@ -164,7 +164,7 @@ public class DragController : MonoBehaviour
 
     private bool checkIfCanMerge() {
         if (unitToMergeWith._unitMergeLevel == draggedUnitScript._unitMergeLevel && unitToMergeWith._unitType == draggedUnitScript._unitType
-            && unitToMergeWith._unitMergeLevel < CommonData.instance.playerUnitMaxLevel) return true;
+            && unitToMergeWith._unitMergeLevel < CommonData.instance.playerUnitMaxLevel && !unitToMergeWith.isBlocked) return true;
         else return false;
     }
 
@@ -185,31 +185,40 @@ public class DragController : MonoBehaviour
             }
             if (unitIsDragged)
             {
-                if (_touch.phase == TouchPhase.Moved)
+                if (_touch.phase == TouchPhase.Moved && unitToDragTransorm.gameObject.activeInHierarchy)
                 {
                     Vector2 worldPosition = CommonData.instance.cameraOfGame.ScreenToWorldPoint(new Vector3(_touch.position.x, _touch.position.y, 0));
                     unitToDragTransorm.position = worldPosition;
                 }
                 else if (_touch.phase == TouchPhase.Ended)
                 {
-                    if (getUnitToMergeWith(_touch.position) != null && checkIfCanMerge())
+                    if (unitToDragTransorm.gameObject.activeInHierarchy)
                     {
-                        unitToDragTransorm = null;
-                        unitIsDragged = false;
-                        mergeUnits();
-                    }
-                    else if (getTileToPutOn(_touch.position))
-                    {
-                        unitToDragTransorm = null;
-                        unitIsDragged = false;
-                        putUnitOnNewPosition();
+                        if (getUnitToMergeWith(_touch.position) != null && checkIfCanMerge())
+                        {
+                            unitToDragTransorm = null;
+                            unitIsDragged = false;
+                            mergeUnits();
+                        }
+                        else if (getTileToPutOn(_touch.position))
+                        {
+                            unitToDragTransorm = null;
+                            unitIsDragged = false;
+                            putUnitOnNewPosition();
 
+                        }
+                        else
+                        {
+                            unitIsDragged = false;
+                            unitToMergeWith = null;
+                            //draggedUnitScript = null;
+                        }
                     }
                     else
                     {
+                        unitToDragTransorm = null;
                         unitIsDragged = false;
                         unitToMergeWith = null;
-                        //draggedUnitScript = null;
                     }
                 }
             }
@@ -219,7 +228,7 @@ public class DragController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (unitToDragTransorm != null && !unitIsDragged && draggedUnitScript._unitStartPosition != (Vector2)unitToDragTransorm.position) {
+        if (unitToDragTransorm != null && unitToDragTransorm.gameObject.activeInHierarchy && !unitIsDragged && draggedUnitScript._unitStartPosition != (Vector2)unitToDragTransorm.position) {
             unitToDragTransorm.position = Vector2.Lerp((Vector2)unitToDragTransorm.position, draggedUnitScript._unitStartPosition, 0.2f);
             if ((draggedUnitScript._unitStartPosition - (Vector2)unitToDragTransorm.position).sqrMagnitude < 0.1f) {
                 unitToDragTransorm.position = draggedUnitScript._unitStartPosition;

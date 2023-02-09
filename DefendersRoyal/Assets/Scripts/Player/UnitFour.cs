@@ -38,6 +38,7 @@ public class UnitFour : PlayerUnit
 
     public override void superHit()
     {
+        base.superHit();
         if (CommonData.instance.enemyUnits[unitSide].Count>0)
         {
             ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect

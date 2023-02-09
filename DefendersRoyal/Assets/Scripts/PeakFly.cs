@@ -36,7 +36,7 @@ public class PeakFly : MonoBehaviour
         if (_transform == null) _transform = transform;
         //if (_circleCollider == null) _circleCollider = GetComponent<CircleCollider2D>();
         arcHeight = 3;
-        speed = 19;
+        speed = 25;
         timeToWithdraw = 0.7f;
     }
 

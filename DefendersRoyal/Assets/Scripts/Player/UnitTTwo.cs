@@ -17,7 +17,7 @@ public class UnitTTwo : PlayerUnit
         _baseHarm = 14;
         _baseAccuracy = 0.19f;
         _baseAttackSpeed = 1.4f;
-        _baseSuperHitHarm = _baseHarm - 4;
+        _baseSuperHitHarm = 20; //base peak harm
         superHitsCount = 3;
         indexOnSuperShotsObjectPuller = 5; //five is peak
         superHitsCounter = 0;
@@ -38,6 +38,7 @@ public class UnitTTwo : PlayerUnit
 
     public override void superHit()
     {
+        base.superHit();
         float attacPointX = Random.Range(CommonData.instance.leftEdgeofCastleTiles, CommonData.instance.rightEdgeofCastleTiles);
         float attacPointY = unitSide == 0 ? Random.Range(18, GameController.instance.topShotLine) : Random.Range(-18, GameController.instance.bottomShotLine);
         ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);
