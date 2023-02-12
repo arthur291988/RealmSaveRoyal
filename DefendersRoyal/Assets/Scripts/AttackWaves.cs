@@ -59,18 +59,9 @@ public class AttackWaves : MonoBehaviour
         //to set lines with gap when too many enemy waves
         enemyCountOnOneLine++;
 
-        //if (side == 0) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), CommonData.instance.vertScreenSize / 2+ VerticalLineGap + Random.Range(2, 4f));
-        //else return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), -CommonData.instance.vertScreenSize / 2 - VerticalLineGap - Random.Range(2, 4.5f));
-
-
         if (side == 0) return new Vector2(HorizontalLineGap * horizontalLineGapMultiplier, CommonData.instance.vertScreenSize / 2 + VerticalLineGap + Random.Range(0, 1f));
         else return new Vector2(HorizontalLineGap * horizontalLineGapMultiplier, -CommonData.instance.vertScreenSize / 2 - VerticalLineGap - Random.Range(0, 1f));
 
-
-        //if (side == 0) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), CommonData.instance.vertScreenSize / 2 + Random.Range(2, 3.5f));
-        //else if (side == 1) return new Vector2(CommonData.instance.horisScreenSize / 2 + Random.Range(2, 3.5f), Random.Range(-CommonData.instance.vertScreenSize / 2, CommonData.instance.vertScreenSize / 2));
-        //else if (side == 2) return new Vector2(Random.Range(-CommonData.instance.horisScreenSize / 2, CommonData.instance.horisScreenSize / 2), -CommonData.instance.vertScreenSize / 2 - Random.Range(2, 3.5f));
-        //else return new Vector2(-CommonData.instance.horisScreenSize / 2 - Random.Range(2, 3.5f), Random.Range(-CommonData.instance.vertScreenSize / 2, CommonData.instance.vertScreenSize / 2));
     }
 
     private Vector2 pointOfBoss(int side)
@@ -79,56 +70,13 @@ public class AttackWaves : MonoBehaviour
         else return new Vector2(0, -CommonData.instance.vertScreenSize / 2 - VerticalLineGap - 6);
     }
 
-
-    //public void initiateAttackWave(Dictionary<int, List<int>> attackWavesForLevel1)
-    //{
-    //    //int sideOfWave = Random.Range(0, 4); 
-    //    int sideOfWave = Random.Range(0, 2); //top or bottom
-    //    enemyCountOnOneLine = 0;
-    //    lineGap = 0;
-    //    //first index of attackWaves list is side counts feature 
-    //    for (int i = 0; i < attackWavesForLevel1[attackWaveCount][0]; i++)
-    //    {
-    //        //if (i != 0) {
-    //        //    if (sideOfWave < 3) sideOfWave++;
-    //        //    else sideOfWave = 0;
-    //        //}
-    //        if (i != 0)
-    //        {
-    //            sideOfWave = sideOfWave==0? 1 : 0; //change attack side
-    //        }
-    //        for (int j = 0; j < attackWavesForLevel1[attackWaveCount][1]; j++)
-    //        {
-    //            ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
-    //            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-    //            ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-    //            EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-    //            enemyUnit.setEnemySide(sideOfWave);
-    //            enemyUnit.setEnemyLevel(0, attackWaveCount);
-    //            ObjectPulled.SetActive(true);
-
-    //        }
-    //        for (int x = 0; x < attackWavesForLevel1[attackWaveCount][2]; x++)
-    //        {
-    //            ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
-    //            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-    //            ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-    //            EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-    //            enemyUnit.setEnemySide(sideOfWave);
-    //            enemyUnit.setEnemyLevel(1, attackWaveCount);
-    //            ObjectPulled.SetActive(true);
-
-    //        }
-    //    }
-
-    //}
-
     //bossIndex 1-miniBoss, 2-bigBoss  
     private void instantiateBosses(int enemyLevel, int waveCount, int bossIndex) {
         int side = 0;
 
         if (bossIndex == 1) ObjectPulled = EnemyPull.current.LocationMiniBossesPull[waveCount]; //1 is mini boss index 
-        else ObjectPulled = EnemyPull.current.allFinalBosses[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]; //2 is final boss index 
+        //it is necessary to instantiate final boss, because it is not instantiated on enemyPull
+        else ObjectPulled = Instantiate(EnemyPull.current.allFinalBosses[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]); //2 is final boss index 
 
         //ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(bossIndex);
         //ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
@@ -157,92 +105,6 @@ public class AttackWaves : MonoBehaviour
         _enemyUnit.startSettings();
     }
 
-    //public IEnumerator initiateAttackWave(Dictionary<int, List<List<int>>> attackWaves)
-    //{
-    //    int sideOfWave = Random.Range(0, 2); //top or bottom
-
-    //    //big waves of subLocation each finishes with mini boss 
-    //    for (int i = 0; i< attackWaves.Count; i++)
-    //    {
-    //        //mini waves of subLocation big waves (no mini boss btw these ones)
-    //        for (int j = 0; j < attackWaves[i].Count; j++) {
-
-    //            //each side attack troops [0] is the holder of side counts (there are only two sides max)
-    //            for (int y = 0; y < attackWaves[i][j][0]; y++) {
-    //                VerticalLineGap = 0;
-    //                HorizontalLineGap = 0;
-    //                sideOfWave = sideOfWave == 0 ? 1 : 0; //change attack side
-
-    //                //1 - index that holds the count of first level enemies 
-    //                for (int x = 0; x < attackWaves[i][j][1]; x++)
-    //                {
-    //                    ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0); //0-is index that pulls the regular enemy prefab from pull, not boss
-    //                    ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-    //                    ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-    //                    EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-    //                    enemyUnit.setEnemySide(sideOfWave);
-    //                    enemyUnit.setEnemyLevel(0, i);
-    //                    ObjectPulled.SetActive(true);
-    //                }
-    //                //2 - index that holds the count of second level enemies
-    //                for (int x = 0; x < attackWaves[i][j][2]; x++)
-    //                {
-    //                    ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0);
-    //                    ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-    //                    ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-    //                    EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-    //                    enemyUnit.setEnemySide(sideOfWave);
-    //                    enemyUnit.setEnemyLevel(1, i);
-    //                    ObjectPulled.SetActive(true);
-
-    //                }
-    //                //3 - index that holds the count of third level enemies
-    //                for (int x = 0; x < attackWaves[i][j][3]; x++)
-    //                {
-    //                    ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0);
-    //                    ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-    //                    ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-    //                    EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-    //                    enemyUnit.setEnemySide(sideOfWave);
-    //                    enemyUnit.setEnemyLevel(2, i);
-    //                    ObjectPulled.SetActive(true);
-
-    //                }
-    //                //4 - index that holds the count of forth level enemies
-    //                for (int x = 0; x < attackWaves[i][j][4]; x++)
-    //                {
-    //                    ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(0);
-    //                    ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-    //                    ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-    //                    EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-    //                    enemyUnit.setEnemySide(sideOfWave);
-    //                    enemyUnit.setEnemyLevel(3, i);
-    //                    ObjectPulled.SetActive(true);
-
-    //                }
-    //            }
-
-    //            //gap btwn mini wave attacks
-    //            yield return new WaitForSeconds(attackTimeBase);
-    //        }
-    //        VerticalLineGap = 0;
-    //        HorizontalLineGap = 0;
-    //        instantiateBosses(10, i,1);
-
-    //        yield return new WaitForSeconds(attackWaveTimeBase);
-
-    //        if (i == attackWaves.Count - 1)
-    //        {
-    //            VerticalLineGap = 0; 
-    //            HorizontalLineGap = 0;
-    //            instantiateBosses(100, i, 2);
-
-    //        }
-    //    }
-
-    //}
-
-
     private void setAttackWaves(Dictionary<int, List<List<int>>> attackWaves)
     {
         _attackWaves = attackWaves;
@@ -265,35 +127,21 @@ public class AttackWaves : MonoBehaviour
             HorizontalLineGap = 0;
             sideOfWave = sideOfWave == 0 ? 1 : 0; //change attack side
 
-            //1 - index that holds the count of first level enemies 
-            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][1]; x++)
-            {
-                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(); 
-                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-                ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
-                commonEnemyUnitSettings(enemyUnit, 0, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(0, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
-                ObjectPulled.SetActive(true);
-            }
-
-            //2 - index that holds the count of second level enemies
-            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][2]; x++)
+            //4 - index that holds the count of forth level enemies
+            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][4]; x++)
             {
                 ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
                 ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
                 ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
-                commonEnemyUnitSettings(enemyUnit, 1, firstLevelWavesOfSubLocation, sideOfWave);
+                commonEnemyUnitSettings(enemyUnit, 3, firstLevelWavesOfSubLocation, sideOfWave);
                 //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(1, firstLevelWavesOfSubLocation);
+                //enemyUnit.setEnemyLevel(3, firstLevelWavesOfSubLocation);
                 //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
-            }
 
+            } 
             //3 - index that holds the count of third level enemies
             for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][3]; x++)
             {
@@ -309,21 +157,37 @@ public class AttackWaves : MonoBehaviour
                 ObjectPulled.SetActive(true);
 
             }
-            //4 - index that holds the count of forth level enemies
-            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][4]; x++)
+            //2 - index that holds the count of second level enemies
+            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][2]; x++)
             {
                 ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
                 ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
                 ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
-                commonEnemyUnitSettings(enemyUnit, 3, firstLevelWavesOfSubLocation, sideOfWave);
+                commonEnemyUnitSettings(enemyUnit, 1, firstLevelWavesOfSubLocation, sideOfWave);
                 //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(3, firstLevelWavesOfSubLocation);
+                //enemyUnit.setEnemyLevel(1, firstLevelWavesOfSubLocation);
                 //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
-
             }
+
+            //1 - index that holds the count of first level enemies 
+            for (int x = 0; x < _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][1]; x++)
+            {
+                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
+                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+                ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
+                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
+                commonEnemyUnitSettings(enemyUnit, 0, firstLevelWavesOfSubLocation, sideOfWave);
+                //enemyUnit.setEnemySide(sideOfWave);
+                //enemyUnit.setEnemyLevel(0, firstLevelWavesOfSubLocation);
+                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
+                ObjectPulled.SetActive(true);
+            }
+
+            
+            
         }
         if (bossAttackPassed) bossAttackPassed = false;
         attackWaveIsOn = true;
@@ -358,35 +222,38 @@ public class AttackWaves : MonoBehaviour
             sideOfWave = sideOfWave == 0 ? 1 : 0; //change attack side
 
             //first level enemies 
-            for (int x = 0; x < level1EnemyCount; x++)
-            {
-                ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(); 
-                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-                ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
-                EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
+            //for (int x = 0; x < level1EnemyCount; x++)
+            //{
+            //    ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList(); 
+            //    ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+            //    ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
+            //    EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
-                commonEnemyUnitSettings(enemyUnit, 0, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(0, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
-                ObjectPulled.SetActive(true);
-            }
+            //    commonEnemyUnitSettings(enemyUnit, 0, firstLevelWavesOfSubLocation, sideOfWave);
+            //    //enemyUnit.setEnemySide(sideOfWave);
+            //    //enemyUnit.setEnemyLevel(0, firstLevelWavesOfSubLocation);
+            //    //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
+            //    ObjectPulled.SetActive(true);
+            //}
 
-            //second level enemies
-            for (int x = 0; x < level2EnemyCount; x++)
+            
+
+           
+            //forth level enemies
+            for (int x = 0; x < level4EnemyCount; x++)
             {
                 ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
                 ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
                 ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
-                commonEnemyUnitSettings(enemyUnit, 1, firstLevelWavesOfSubLocation, sideOfWave);
+                commonEnemyUnitSettings(enemyUnit, 3, firstLevelWavesOfSubLocation, sideOfWave);
                 //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(1, firstLevelWavesOfSubLocation);
+                //enemyUnit.setEnemyLevel(3, firstLevelWavesOfSubLocation);
                 //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
-            }
 
+            } 
             //third level enemies
             for (int x = 0; x < level3EnemyCount; x++)
             {
@@ -402,21 +269,23 @@ public class AttackWaves : MonoBehaviour
                 ObjectPulled.SetActive(true);
 
             }
-            //forth level enemies
-            for (int x = 0; x < level4EnemyCount; x++)
+
+            //second level enemies
+            for (int x = 0; x < level2EnemyCount; x++)
             {
                 ObjectPulledList = ObjectPuller.current.GetEnemyUnitsPullList();
                 ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
                 ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
-                commonEnemyUnitSettings(enemyUnit, 3, firstLevelWavesOfSubLocation, sideOfWave);
+                commonEnemyUnitSettings(enemyUnit, 1, firstLevelWavesOfSubLocation, sideOfWave);
                 //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(3, firstLevelWavesOfSubLocation);
+                //enemyUnit.setEnemyLevel(1, firstLevelWavesOfSubLocation);
                 //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
+            } 
 
-            }
+           
         }
     }
 
@@ -436,7 +305,11 @@ public class AttackWaves : MonoBehaviour
                     //1000 - location 0 mini boss, 1011-location 1 mini boss of 2-nd wave. It works as following 10 is mini boss,+0 is main wave count, 0 is location count
                     instantiateBosses(10, firstLevelWavesOfSubLocation, 1);
                     instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
-                    if (firstLevelWavesOfSubLocation < _attackWaves.Count-1) firstLevelWavesOfSubLocation++;
+                    if (firstLevelWavesOfSubLocation < _attackWaves.Count - 1)
+                    {
+                        secondLevelWavesOfSubLocation = 0;
+                        firstLevelWavesOfSubLocation++;
+                    }
                     attackWaveIsOn = true;
                     bossAttackPassed = true;
                 }
@@ -453,6 +326,7 @@ public class AttackWaves : MonoBehaviour
                     instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
                     attackWaveIsOn = true;
                     finalBossAttackPassed = true;
+
                 }
                 else {
                     GameController.instance.EndGame(true);
@@ -460,21 +334,4 @@ public class AttackWaves : MonoBehaviour
             }
         }
     }
-
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    //if (attackWaveTime > 0)
-    //    //{
-    //    //    attackWaveTime -= Time.deltaTime;
-    //    //    if (attackWaveTime <= 0 && attackWaveCount < CommonData.instance.attackWavesForLevel1.Count)
-    //    //    {
-    //    //        initiateAttackWave(CommonData.instance.attackWavesForLevel1);
-    //    //        attackWaveCount++;
-    //    //        attackWaveTime = 20;
-    //    //    }
-
-    //    //}
-    //}
 }

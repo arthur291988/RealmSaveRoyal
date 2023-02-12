@@ -1,9 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FinalBoss : EnemyUnit
 {
+    [NonSerialized]
+    public float bossSuperHitTimer;
+    [NonSerialized]
+    public float bossSuperHitTime;
+    [NonSerialized]
+    public int playerUnitUnderSuperHit;
+
+
+    public virtual void resetSuperHitTimer()
+    {
+        bossSuperHitTimer = bossSuperHitTime;
+    }
     public override void setEnemyLevel(int level, int attackWaveCount)
     {
         base.setEnemyLevel(level, attackWaveCount);

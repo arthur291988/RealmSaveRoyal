@@ -41,6 +41,13 @@ public class PlayerShot : MonoBehaviour
             enemyUnit.reduceHP(_harm);
             _gameObject.SetActive(false);
         }
+
+        if (collision.gameObject.TryGetComponent<EnemyShot>(out EnemyShot shot))
+        {
+            shot.reduceHP(_harm);
+            _gameObject.SetActive(false);
+        }
+
         _trailRenderer.Clear();
     }
 

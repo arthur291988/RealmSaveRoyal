@@ -13,15 +13,17 @@ public class MiniBoss : EnemyUnit
     [NonSerialized]
     public int playerUnitUnderSuperHit;
 
+    public virtual void resetSuperHitTimer()
+    {
+        miniBossSuperHitTimer = miniBossSuperHitTime;
+    }
+
     public override void setEnemyLevel(int level, int attackWaveCount)
     {
         base.setEnemyLevel(level, attackWaveCount);
         setMiniBossFeatures(attackWaveCount);
     }
 
-    public virtual void resetSuperHitTimer() {
-        miniBossSuperHitTimer = miniBossSuperHitTime;
-    }
 
     private void setMiniBossFeatures(int waveNumber)
     {

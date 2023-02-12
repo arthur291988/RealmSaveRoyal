@@ -84,6 +84,11 @@ public class CastleTiles : MonoBehaviour
             unit.reduceHPFromTower();
             reduceHP();
         }
+        if (collision.gameObject.TryGetComponent<EnemyShot>(out EnemyShot shot))
+        {
+            shot.reduceHP(CommonData.instance.towerHPReduceAmount);
+            reduceHP();
+        }
     }
     public virtual void reduceHP()
     {

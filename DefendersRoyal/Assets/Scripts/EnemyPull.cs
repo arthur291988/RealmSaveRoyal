@@ -6,7 +6,9 @@ using UnityEngine;
 public class EnemyPull : MonoBehaviour
 {
     public static EnemyPull current;
+    private bool willGrow;
 
+    private int pullOfObjects6 = 6;
 
     public Dictionary<Vector2, GameObject> miniBosses;
 
@@ -35,7 +37,11 @@ public class EnemyPull : MonoBehaviour
     [NonSerialized]
     public Dictionary<Vector2, GameObject> allFinalBosses;
 
+    [SerializeField]
+    private GameObject enemyShot;
 
+    [NonSerialized]
+    private List <GameObject> enemyShotPull;
     private void Awake()
     {
         current = this;
@@ -43,6 +49,8 @@ public class EnemyPull : MonoBehaviour
 
     private void OnEnable()
     {
+        enemyShotPull = new List<GameObject>();
+
         allFinalBosses = new Dictionary<Vector2, GameObject>()
         {
             [new Vector2 (0,0)] = FinalBoss00,
@@ -69,8 +77,34 @@ public class EnemyPull : MonoBehaviour
             obj.SetActive(false);
             LocationMiniBossesPull.Add(obj); 
         }
-
+        for (int i = 0; i < pullOfObjects6; i++)
+        {
+            GameObject obj1 = Instantiate(enemyShot);
+            obj1.SetActive(false);
+            enemyShotPull.Add(obj1);
+        }
 
     }
 
+    public List<GameObject> GetEnemyShotPullPullList()
+    {
+        return enemyShotPull;
+    }
+
+    //universal method to set active proper game object from the list of GOs, it just needs to get correct List of game objects
+    public GameObject GetGameObjectFromPull(List<GameObject> GOLists)
+    {
+        for (int i = 0; i < GOLists.Count; i++)
+        {
+            if (!GOLists[i].activeInHierarchy) return GOLists[i];
+        }
+        if (willGrow)
+        {
+            GameObject obj = Instantiate(GOLists[0]);
+            obj.SetActive(false);
+            GOLists.Add(obj);
+            return obj;
+        }
+        return null;
+    }
 }

@@ -200,7 +200,6 @@ public class PlayerUnit : MonoBehaviour
     }
 
     public virtual void superHit() {
-        if (isBlocked) return;
     }
 
     public void blockTheUnit(float time) {

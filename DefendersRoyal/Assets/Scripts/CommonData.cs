@@ -321,11 +321,11 @@ public class CommonData : MonoBehaviour
         //    playerUnitTypesOnScene[i] = i; //TO DO with more than 5 types (for now there only 5 types). Also necessary to limit unittypes on scene with ones chosen by player 
             
         //}
-        playerUnitTypesOnScene[0] = 3;
-        playerUnitTypesOnScene[1] = 27;
-        playerUnitTypesOnScene[2] = 15;
-        playerUnitTypesOnScene[3] = 22;
-        playerUnitTypesOnScene[4] = 10;
+        playerUnitTypesOnScene[0] = 1;
+        playerUnitTypesOnScene[1] = 2;
+        playerUnitTypesOnScene[2] = 3;
+        playerUnitTypesOnScene[3] = 4;
+        playerUnitTypesOnScene[4] = 5;
 
     }
 
@@ -408,7 +408,7 @@ public class CommonData : MonoBehaviour
         vertScreenSize = cameraOfGame.orthographicSize * 2;
         horisScreenSize = vertScreenSize * Screen.width / Screen.height;
 
-        towerHPReduceAmount = 1000;
+        towerHPReduceAmount = 700;
 
         //subLocation = 0;
         location = 0;

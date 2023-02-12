@@ -79,13 +79,15 @@ public class UnitOne : PlayerUnit
 
     public override void superHit()
     {
-        base.superHit();
-        float attacPointX = _unitStartPosition.x;
-        float attacPointY = unitSide == 0 ? Random.Range(13, 21/*GameController.instance.topShotLine*/) : Random.Range(-13, -21 /*GameController.instance.bottomShotLine*/);
-        ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect
-        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-        ObjectPulled.transform.position = new Vector2 (attacPointX, attacPointY);
-        ObjectPulled.GetComponent<SuperHitBase>().setPropertiesOfSuperHitEffect(_superHitHarm,_superHitTime, superHitEffectOnEnemyIndex);
-        ObjectPulled.SetActive(true);
+        if (!isBlocked)
+        {
+            float attacPointX = _unitStartPosition.x;
+            float attacPointY = unitSide == 0 ? Random.Range(13, 21/*GameController.instance.topShotLine*/) : Random.Range(-13, -21 /*GameController.instance.bottomShotLine*/);
+            ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect
+            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+            ObjectPulled.transform.position = new Vector2(attacPointX, attacPointY);
+            ObjectPulled.GetComponent<SuperHitBase>().setPropertiesOfSuperHitEffect(_superHitHarm, _superHitTime, superHitEffectOnEnemyIndex);
+            ObjectPulled.SetActive(true);
+        }
     }
 }

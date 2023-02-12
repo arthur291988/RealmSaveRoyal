@@ -106,7 +106,6 @@ public class GameController : MonoBehaviour
             showMessage(CommonData.instance.getWinText(), CommonData.instance.greenColor);
         }
         else showMessage(CommonData.instance.getLoseText(), CommonData.instance.redColor);
-
     }
 
     public void showMessage(string message, Color colorOfMessage)

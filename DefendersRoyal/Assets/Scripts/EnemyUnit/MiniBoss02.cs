@@ -3,38 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MiniBoss02 : MiniBoss
+
 {
+
+    private GameObject ObjectPulled;
+    private List<GameObject> ObjectPulledList;
+
     public override void startSettings()
     {
         base.startSettings();
-        miniBossSuperHitTime = 5f;
+        miniBossSuperHitTime = 8f;
         playerUnitUnderSuperHit = 2;
         resetSuperHitTimer();
     }
 
     private void superHit()
     {
-        int index = 0;
-        List<PlayerUnit> enemySideUnits = new List<PlayerUnit>();
-        for (int i = 0; i < CommonData.instance.playerUnits.Count; i++)
+        Vector2 shotPoint;
+        for (int i = 0; i < 2; i++)
         {
-            if (CommonData.instance.playerUnits[i].unitSide == _enemySide) enemySideUnits.Add(CommonData.instance.playerUnits[i]);
+            shotPoint = new Vector2(Random.Range(-8, 8), 0);
+            ObjectPulledList = EnemyPull.current.GetEnemyShotPullPullList();
+            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+            ObjectPulled.transform.position = _transform.position;
+            EnemyShot enemyShot = ObjectPulled.GetComponent<EnemyShot>();
+            enemyShot.startSettings(100, 0.3f, shotPoint, ObjectPulled);
+            ObjectPulled.SetActive(true);
         }
 
-        if (enemySideUnits.Count == 1) enemySideUnits[0].blockTheUnit(4);
-        else if (enemySideUnits.Count == 2)
-        {
-            enemySideUnits[0].blockTheUnit(4);
-            enemySideUnits[1].blockTheUnit(4);
-        }
-        else if (enemySideUnits.Count > 2)
-        {
-            index = Random.Range(0, enemySideUnits.Count);
-            enemySideUnits[index].blockTheUnit(4);
-            index = index < enemySideUnits.Count - 1 ? index + 1 : index - 1;
-            enemySideUnits[index].blockTheUnit(4);
-
-        }
         resetSuperHitTimer();
     }
 

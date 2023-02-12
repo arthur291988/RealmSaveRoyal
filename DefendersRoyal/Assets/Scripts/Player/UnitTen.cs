@@ -104,28 +104,31 @@ public class UnitTen : PlayerUnit
     }
     public override void superHit()
     {
-        base.superHit();
-        //setting fix counts, base fix count + upgrade level + merge level
-        int castleTileFixCount = BASE_FIX_COUNT+_unitMergeLevel + CommonData.instance.playerUnitTypesOnScenePowerUpLevel[Array.IndexOf(CommonData.instance.playerUnitTypesOnScene, _unitType)];
-
-        //0-up side unit 1-is down side unit
-        for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
+        if (!isBlocked)
         {
-            if (CommonData.instance.castleTiles[i]._tileSide == unitSide)
+            //setting fix counts, base fix count + upgrade level + merge level
+            int castleTileFixCount = BASE_FIX_COUNT + _unitMergeLevel + CommonData.instance.playerUnitTypesOnScenePowerUpLevel[Array.IndexOf(CommonData.instance.playerUnitTypesOnScene, _unitType)];
+
+            //0-up side unit 1-is down side unit
+            for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
             {
-                if (CommonData.instance.castleTiles[i].HP < CommonData.instance.HPOfTile)
+                if (CommonData.instance.castleTiles[i]._tileSide == unitSide)
                 {
-                    int HPToAdd = CommonData.instance.HPOfTile - CommonData.instance.castleTiles[i].HP;
-                    if (HPToAdd <castleTileFixCount)
+                    if (CommonData.instance.castleTiles[i].HP < CommonData.instance.HPOfTile)
                     {
-                        addHPToCastleTile(CommonData.instance.castleTiles[i], HPToAdd);
-                        castleTileFixCount -= HPToAdd;
+                        int HPToAdd = CommonData.instance.HPOfTile - CommonData.instance.castleTiles[i].HP;
+                        if (HPToAdd < castleTileFixCount)
+                        {
+                            addHPToCastleTile(CommonData.instance.castleTiles[i], HPToAdd);
+                            castleTileFixCount -= HPToAdd;
+                        }
+                        else
+                        {
+                            addHPToCastleTile(CommonData.instance.castleTiles[i], castleTileFixCount);
+                            castleTileFixCount = 0;
+                        }
+                        if (castleTileFixCount == 0) break;// stop if on fix counts left
                     }
-                    else {
-                        addHPToCastleTile(CommonData.instance.castleTiles[i], castleTileFixCount);
-                        castleTileFixCount = 0;
-                    }
-                    if (castleTileFixCount==0) break;// stop if on fix counts left
                 }
             }
         }

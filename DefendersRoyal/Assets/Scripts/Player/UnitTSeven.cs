@@ -38,17 +38,19 @@ public class UnitTSeven : PlayerUnit
 
     public override void superHit()
     {
-        base.superHit();
-        float attacPointX = Random.Range(CommonData.instance.leftEdgeofCastleTiles, CommonData.instance.rightEdgeofCastleTiles);
-        float attacPointY = unitSide == 0 ? Random.Range(18, GameController.instance.topShotLine) : Random.Range(-18, GameController.instance.bottomShotLine);
-        ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);
-        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-        ObjectPulled.transform.position = _unitStartPosition;
-        ObjectPulled.GetComponent<PeakFly>().setProperties(_unitStartPosition, new Vector2(attacPointX, attacPointY), _superHitHarm);
-        ObjectPulled.SetActive(true);
-        //repeat the method to make additional shots according the features of unit
-        superHitsCounter++;
-        if (superHitsCounter < superHitsCount) superHit();
-        else superHitsCounter = 0;
+        if (!isBlocked)
+        {
+            float attacPointX = Random.Range(CommonData.instance.leftEdgeofCastleTiles, CommonData.instance.rightEdgeofCastleTiles);
+            float attacPointY = unitSide == 0 ? Random.Range(18, GameController.instance.topShotLine) : Random.Range(-18, GameController.instance.bottomShotLine);
+            ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);
+            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+            ObjectPulled.transform.position = _unitStartPosition;
+            ObjectPulled.GetComponent<PeakFly>().setProperties(_unitStartPosition, new Vector2(attacPointX, attacPointY), _superHitHarm);
+            ObjectPulled.SetActive(true);
+            //repeat the method to make additional shots according the features of unit
+            superHitsCounter++;
+            if (superHitsCounter < superHitsCount) superHit();
+            else superHitsCounter = 0;
+        }
     }
 }

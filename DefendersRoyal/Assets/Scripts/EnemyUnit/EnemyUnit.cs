@@ -27,6 +27,8 @@ public class EnemyUnit : MonoBehaviour
 
     [NonSerialized]
     public Transform _transform;
+    [NonSerialized]
+    public GameObject _gameObject;
     //[HideInInspector]
     //public Vector2 _unitStartPosition;
     [NonSerialized]
@@ -106,6 +108,7 @@ public class EnemyUnit : MonoBehaviour
         lastingFireEffectInjureTime = 0.25f; //all injures from lasting effects are applied per 0.25 of second
 
         _includedToShotPull = false;
+        if (_gameObject == null) _gameObject = gameObject;
         if (_transform == null) _transform = transform;
 
         UpdateParams();
@@ -196,7 +199,7 @@ public class EnemyUnit : MonoBehaviour
     public void reduceHP(int harm)
     {
         HP -= harm;
-        if (HP > 0 && harm == 1000) pushEnemyBack();
+        //if (HP > 0 && harm == 1000) pushEnemyBack(); //harm equality is checket to make shure the this is tower hit
 
         UpdateParams();
         //_lifeLine.localPosition = new Vector2(HP * HPtoTransforOfLifeLine-LifelineMaxXPositionModule, 1.4f);  
@@ -239,7 +242,7 @@ public class EnemyUnit : MonoBehaviour
         GameController.instance.incrementEnergy(_energyOnDestroy);
         GameController.instance.updateEneryText();
         removeFromCommonData();
-        gameObject.SetActive(false);
+        _gameObject.SetActive(false);
         underLastingFireInjure = false;
         underLastingFrost=false;
         underLastingPeakBlood=false;

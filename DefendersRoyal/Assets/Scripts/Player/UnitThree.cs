@@ -82,37 +82,39 @@ public class UnitThree : PlayerUnit
     }
     public override void superHit()
     {
-        base.superHit();
-        if (CommonData.instance.enemyUnits[unitSide].Count > 0)
+        if (!isBlocked)
         {
-            ObjectPulledList = ObjectPuller.current.GetPlayerShotPullList(_unitType);
-            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-            ObjectPulled.transform.position = _transform.position;
-            ObjectPulled.GetComponent<PlayerShot>()._harm = _superHitHarm;
+            if (CommonData.instance.enemyUnits[unitSide].Count > 0)
+            {
+                ObjectPulledList = ObjectPuller.current.GetPlayerShotPullList(_unitType);
+                ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+                ObjectPulled.transform.position = _transform.position;
+                ObjectPulled.GetComponent<PlayerShot>()._harm = _superHitHarm;
 
-            int sideMultiplier = unitSide == 0 ? 1 : -1; //0 is up
+                int sideMultiplier = unitSide == 0 ? 1 : -1; //0 is up
 
-            if (superHitsCounter == 0) attackDirection = new Vector2(_unitStartPosition.x, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 1) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot1, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 2) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot1, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 3) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot2, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 4) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot2, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 5) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot3, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 6) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot3, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 5) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot4, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-            else if (superHitsCounter == 6) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot4, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
-
-
-            ObjectPulled.transform.rotation = Quaternion.FromToRotation(new Vector2(_unitStartPosition.x, _unitStartPosition.y + 1) - _unitStartPosition, attackDirection);
-
-            ObjectPulled.SetActive(true);
-            ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * _shotImpulse, ForceMode2D.Impulse);
+                if (superHitsCounter == 0) attackDirection = new Vector2(_unitStartPosition.x, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 1) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot1, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 2) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot1, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 3) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot2, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 4) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot2, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 5) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot3, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 6) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot3, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 5) attackDirection = new Vector2(_unitStartPosition.x + XSpreadOfSuperShot4, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
+                else if (superHitsCounter == 6) attackDirection = new Vector2(_unitStartPosition.x - XSpreadOfSuperShot4, GameController.instance.topShotLine * sideMultiplier) - _unitStartPosition;
 
 
-            //repeat the method to make additional shots according the features of unit
-            superHitsCounter++;
-            if (superHitsCounter < superHitsCount) superHit();
-            else superHitsCounter = 0;
+                ObjectPulled.transform.rotation = Quaternion.FromToRotation(new Vector2(_unitStartPosition.x, _unitStartPosition.y + 1) - _unitStartPosition, attackDirection);
+
+                ObjectPulled.SetActive(true);
+                ObjectPulled.GetComponent<Rigidbody2D>().AddForce(attackDirection.normalized * _shotImpulse, ForceMode2D.Impulse);
+
+
+                //repeat the method to make additional shots according the features of unit
+                superHitsCounter++;
+                if (superHitsCounter < superHitsCount) superHit();
+                else superHitsCounter = 0;
+            }
         }
 
     }
