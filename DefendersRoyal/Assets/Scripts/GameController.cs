@@ -132,6 +132,7 @@ public class GameController : MonoBehaviour
     private void incrementEnergyNeedToNextCatleTileAdd() => energyToNextCastleTileAdd += CommonData.instance.energyToNextUnitAddStep;
     public void incrementEnergy(int energy) {
         CommonData.instance.energy += energy;
+        updateEneryText();
         updateUnitsAndCastleTileAddButtonsUI();
         updateBonusSliderFill(energy);
         updatePowerUpButtonsUI();

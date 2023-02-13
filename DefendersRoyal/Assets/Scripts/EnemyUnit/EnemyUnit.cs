@@ -240,7 +240,7 @@ public class EnemyUnit : MonoBehaviour
     public void disactivateUnit()
     {
         GameController.instance.incrementEnergy(_energyOnDestroy);
-        GameController.instance.updateEneryText();
+        //GameController.instance.updateEneryText();
         removeFromCommonData();
         _gameObject.SetActive(false);
         underLastingFireInjure = false;

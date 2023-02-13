@@ -92,11 +92,12 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_11D9B3A2: {r: 74.38744, g: 74.38744, b: 74.38744, a: 0}
-    - Color_D82872F9: {r: 40.331886, g: 12.330123, b: 0, a: 0}
+    - Color_D82872F9: {r: 40.331882, g: 0, b: 6.1664267, a: 0}
     - Vector2_5026C22B: {r: -0.1, g: -0.5, b: 0, a: 0}
     - Vector2_BC5A2F0B: {r: 0, g: -0.2, b: 0, a: 0}
     - Vector2_C2F75F74: {r: 0, g: -0.5, b: 0, a: 0}
     - Vector2_D6D478D0: {r: 5, g: 5, b: 0, a: 0}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.26329383, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MainColor: {r: 18.970982, g: 6.3525276, b: 1.5212582, a: 0}
   m_BuildTextureStacks: []

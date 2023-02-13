@@ -40,13 +40,12 @@ public class CommonData : MonoBehaviour
 
     [NonSerialized]
     public List<PlayerUnit> playerUnits;
-    //[NonSerialized]
-    //public List<PlayerUnit> playerUnitsUp;
-    //[NonSerialized]
-    //public List<PlayerUnit> playerUnitsDown;
 
     [NonSerialized]
     public List<CastleTiles> castleTiles;
+
+    [NonSerialized]
+    public List<CastleFire> fireTiles;
 
     //value shows if tile is empty 0-empty 1 - not Empty 
     [NonSerialized]
@@ -136,6 +135,11 @@ public class CommonData : MonoBehaviour
         if (isEnglish) return "Victory!";
         else return "Победа!";
     }
+    public string getTheyAreComingText()
+    {
+        if (isEnglish) return "They are coming...";
+        else return "Они идут...";
+    }
 
     #region levelParameters
     //index explanation: 0 - attack side counts (2 means attack will go from up and down simultaniously); 1-2-3-4 first-second-third-forth level enemies count 
@@ -191,6 +195,10 @@ public class CommonData : MonoBehaviour
     [HideInInspector]
     public int HPMultiplierForBigBoss;
 
+    [HideInInspector]
+    public int energyMultiplyerBaseFromAttackWave;
+    [HideInInspector]
+    public float wavePauseTimeBase;
 
     //indexes to change pararmeters of enemy units
     private void populateEnemyLevelIndexes()
@@ -415,6 +423,8 @@ public class CommonData : MonoBehaviour
         playerUnitMaxLevel = 5;
 
         HPOfTile = 5;
+        wavePauseTimeBase = 12;
+        energyMultiplyerBaseFromAttackWave = 7;
 
         energyOnStart = 100;
 
@@ -447,6 +457,8 @@ public class CommonData : MonoBehaviour
         enemyUnitsAll = new List<EnemyUnit>();
 
         castleTiles = new List<CastleTiles>();
+
+        fireTiles = new List<CastleFire>();
 
         castlePointsWithNoUnits = new List<Vector2>();
         castlePointsUp = new List<Vector2>();

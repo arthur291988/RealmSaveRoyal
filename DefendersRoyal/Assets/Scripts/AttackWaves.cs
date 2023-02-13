@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AttackWaves : MonoBehaviour
 {
@@ -8,8 +10,8 @@ public class AttackWaves : MonoBehaviour
     public GameObject ObjectPulled;
     [HideInInspector]
     public List<GameObject> ObjectPulledList;
-    private float attackTimeBase;
-    private float attackWaveTimeBase;
+    private float attackWavePauseTime;
+    private float attackWavePauseTimer;
 
     private const int maxEnemyCountOnOneLine = 7;
     private int enemyCountOnOneLine;
@@ -25,14 +27,31 @@ public class AttackWaves : MonoBehaviour
     private bool bossAttackPassed;
     private bool finalBossAttackPassed;
 
+    [SerializeField]
+    private GameObject attackPauseAlertButtonUp;
+    [SerializeField]
+    private GameObject attackPauseAlertButtonDown;
+    [SerializeField]
+    private Image pauseAlerImageUp;
+    [SerializeField]
+    private Image pauseAlerImageDown;
+    [SerializeField]
+    private TextMeshProUGUI pauseAlertMessageUp;
+    [SerializeField]
+    private TextMeshProUGUI pauseAlertMessageDown;
+    private bool wavePause;
+
     // Start is called before the first frame update
     void Start()
     {
         horizontalLineGapMultiplier = 1;
         HorizontalLineGap = 0;
-        attackTimeBase = 30;
-        attackWaveTimeBase = 20;
-        //StartCoroutine (initiateAttackWave(CommonData.instance.locationWaves[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]));
+
+        attackWavePauseTime = CommonData.instance.wavePauseTimeBase;
+        resetPauseTimer();
+        pauseAlertMessageDown.text = CommonData.instance.getTheyAreComingText();
+        pauseAlertMessageUp.text = CommonData.instance.getTheyAreComingText();
+
         attackWaveIsOn = false;
         bossAttackPassed = false;
         finalBossAttackPassed = false;
@@ -136,9 +155,6 @@ public class AttackWaves : MonoBehaviour
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
                 commonEnemyUnitSettings(enemyUnit, 3, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(3, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
 
             } 
@@ -151,9 +167,6 @@ public class AttackWaves : MonoBehaviour
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
                 commonEnemyUnitSettings(enemyUnit, 2, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(2, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
 
             }
@@ -166,9 +179,6 @@ public class AttackWaves : MonoBehaviour
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
                 commonEnemyUnitSettings(enemyUnit, 1, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(1, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
             }
 
@@ -180,9 +190,6 @@ public class AttackWaves : MonoBehaviour
                 ObjectPulled.transform.position = pointOfEnemy(sideOfWave);
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
                 commonEnemyUnitSettings(enemyUnit, 0, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(0, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
             }
 
@@ -248,9 +255,6 @@ public class AttackWaves : MonoBehaviour
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
                 commonEnemyUnitSettings(enemyUnit, 3, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(3, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
 
             } 
@@ -263,9 +267,6 @@ public class AttackWaves : MonoBehaviour
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
                 commonEnemyUnitSettings(enemyUnit, 2, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(2, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
 
             }
@@ -279,14 +280,143 @@ public class AttackWaves : MonoBehaviour
                 EnemyUnit enemyUnit = ObjectPulled.GetComponent<EnemyUnit>();
 
                 commonEnemyUnitSettings(enemyUnit, 1, firstLevelWavesOfSubLocation, sideOfWave);
-                //enemyUnit.setEnemySide(sideOfWave);
-                //enemyUnit.setEnemyLevel(1, firstLevelWavesOfSubLocation);
-                //enemyUnit.addToCommonDataOnEnableaAndSetParameters();
                 ObjectPulled.SetActive(true);
-            } 
-
-           
+            }
         }
+    }
+
+    private void resetPauseTimer() {
+        attackWavePauseTimer = attackWavePauseTime;
+        pauseAlerImageUp.fillAmount = 0;
+        pauseAlerImageDown.fillAmount = 0;
+    }
+
+    private void attackWavePauseTimeCounter() {
+        if (attackWavePauseTimer > 0) {
+            //double sided regular attack
+            if (secondLevelWavesOfSubLocation < _attackWaves[firstLevelWavesOfSubLocation].Count && _attackWaves[firstLevelWavesOfSubLocation][secondLevelWavesOfSubLocation][0] == 2)
+            {
+                if (!attackPauseAlertButtonUp.activeInHierarchy) attackPauseAlertButtonUp.SetActive(true);
+                if (!attackPauseAlertButtonDown.activeInHierarchy) attackPauseAlertButtonDown.SetActive(true);
+                attackWavePauseTimer -= Time.deltaTime;
+                pauseAlerImageUp.fillAmount = 1-attackWavePauseTimer / attackWavePauseTime;
+                pauseAlerImageDown.fillAmount = pauseAlerImageUp.fillAmount;
+                if (attackWavePauseTimer <= 0)
+                {
+                    attackWavePauseTimer = 0;
+                    attackPauseAlertButtonUp.SetActive(false);
+                    attackPauseAlertButtonDown.SetActive(false);
+                    resetPauseTimer();
+                    startAttackWave();
+                    wavePause = false;
+                }
+            }
+            //double sided boss attack
+            else if (secondLevelWavesOfSubLocation == _attackWaves[firstLevelWavesOfSubLocation].Count) {
+                if (!attackPauseAlertButtonUp.activeInHierarchy) attackPauseAlertButtonUp.SetActive(true);
+                if (!attackPauseAlertButtonDown.activeInHierarchy) attackPauseAlertButtonDown.SetActive(true);
+                attackWavePauseTimer -= Time.deltaTime;
+                pauseAlerImageUp.fillAmount = 1 - attackWavePauseTimer / attackWavePauseTime;
+                pauseAlerImageDown.fillAmount = pauseAlerImageUp.fillAmount;
+                if (attackWavePauseTimer <= 0)
+                {
+                    attackWavePauseTimer = 0;
+                    attackPauseAlertButtonUp.SetActive(false);
+                    attackPauseAlertButtonDown.SetActive(false);
+                    resetPauseTimer();
+                    startAttackWave();
+                    wavePause = false;
+                }
+            }
+            //one sided regular attack
+            else
+            { //side of wave is taken into account in reverse, because if the side of wave is 0 (up), then it will be changed on for () loop to 1 (down)
+
+                attackWavePauseTimer -= Time.deltaTime;
+                if (sideOfWave == 0) {
+                    if (!attackPauseAlertButtonDown.activeInHierarchy) attackPauseAlertButtonDown.SetActive(true);
+                    pauseAlerImageDown.fillAmount = 1 - attackWavePauseTimer / attackWavePauseTime;
+                    if (attackWavePauseTimer <= 0)
+                    {
+                        attackWavePauseTimer = 0;
+                        attackPauseAlertButtonDown.SetActive(false);
+                        resetPauseTimer();
+                        startAttackWave();
+                        wavePause = false;
+                    }
+                }
+                else {
+                    if (!attackPauseAlertButtonUp.activeInHierarchy) attackPauseAlertButtonUp.SetActive(true);
+                    pauseAlerImageUp.fillAmount = 1 - attackWavePauseTimer / attackWavePauseTime;
+                    if (attackWavePauseTimer <= 0)
+                    {
+                        attackWavePauseTimer = 0;
+                        attackPauseAlertButtonUp.SetActive(false);
+                        resetPauseTimer();
+                        startAttackWave();
+                        wavePause = false;
+                    }
+                }
+            }
+        }
+    }
+
+    public void interruptAttackWavePause() {
+        attackWavePauseTimer = 0;
+        attackPauseAlertButtonDown.SetActive(false);
+        attackPauseAlertButtonUp.SetActive(false);
+        bonusEnergyForInteruption();
+        resetPauseTimer();
+        startAttackWave();
+        wavePause = false;
+    }
+
+    private void startAttackWave() {
+        if (secondLevelWavesOfSubLocation < _attackWaves[firstLevelWavesOfSubLocation].Count)
+        {
+            initiateSecondLevelAttackWaves();
+        }
+        else if (!bossAttackPassed)
+        {
+            VerticalLineGap = 0;
+            HorizontalLineGap = 0;
+            //1000 - location 0 mini boss, 1011-location 1 mini boss of 2-nd wave. It works as following 10 is mini boss,+0 is main wave count, 0 is location count
+            instantiateBosses(10, firstLevelWavesOfSubLocation, 1);
+            instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
+            if (firstLevelWavesOfSubLocation < _attackWaves.Count - 1)
+            {
+                secondLevelWavesOfSubLocation = 0;
+                firstLevelWavesOfSubLocation++;
+            }
+            attackWavePauseTime--; //each MiniBoss attack reduces the pause time 
+            attackWaveIsOn = true;
+            bossAttackPassed = true;
+        }
+        else if (!finalBossAttackPassed)
+        {
+            VerticalLineGap = 0;
+            HorizontalLineGap = 0;
+            //10000 - location 0 final boss, 10001-location 1 final boss. It works as following 100 is final boss, 0 wave count tha is alwais 0 for final boss, 0 is location count
+            instantiateBosses(100, firstLevelWavesOfSubLocation, 2);
+            instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
+            attackWaveIsOn = true;
+            finalBossAttackPassed = true;
+
+        }
+    }
+
+    private void bonusEnergyForInteruption() {
+        GameController.instance.incrementEnergy((int)(attackWavePauseTime-attackWavePauseTimer));
+    }
+
+    private int bonusEnergyBeforeWave() {
+        int energy = 0;
+        foreach (CastleFire fireTile in CommonData.instance.fireTiles) {
+            energy += fireTile.HP;
+        }
+        energy *= CommonData.instance.energyMultiplyerBaseFromAttackWave+ secondLevelWavesOfSubLocation;
+        return energy;
+
     }
 
     private void Update()
@@ -294,44 +424,53 @@ public class AttackWaves : MonoBehaviour
         if (attackWaveIsOn) {
             if (CommonData.instance.enemyUnitsAll.Count == 0) {
                 attackWaveIsOn = false;
-                if (secondLevelWavesOfSubLocation < _attackWaves[firstLevelWavesOfSubLocation].Count)
-                {
-                    initiateSecondLevelAttackWaves();
-                }
-                else if (!bossAttackPassed)
-                {
-                    VerticalLineGap = 0;
-                    HorizontalLineGap = 0;
-                    //1000 - location 0 mini boss, 1011-location 1 mini boss of 2-nd wave. It works as following 10 is mini boss,+0 is main wave count, 0 is location count
-                    instantiateBosses(10, firstLevelWavesOfSubLocation, 1);
-                    instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
-                    if (firstLevelWavesOfSubLocation < _attackWaves.Count - 1)
-                    {
-                        secondLevelWavesOfSubLocation = 0;
-                        firstLevelWavesOfSubLocation++;
-                    }
-                    attackWaveIsOn = true;
-                    bossAttackPassed = true;
-                }
-                //else if (firstLevelWavesOfSubLocation < _attackWaves.Count)
-                //{
-                //    initiateFirstLevelAttackWaves();
-                //}
-                else if (!finalBossAttackPassed)
-                {
-                    VerticalLineGap = 0;
-                    HorizontalLineGap = 0;
-                    //10000 - location 0 final boss, 10001-location 1 final boss. It works as following 100 is final boss, 0 wave count tha is alwais 0 for final boss, 0 is location count
-                    instantiateBosses(100, firstLevelWavesOfSubLocation, 2);
-                    instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
-                    attackWaveIsOn = true;
-                    finalBossAttackPassed = true;
 
-                }
-                else {
-                    GameController.instance.EndGame(true);
-                }
+                GameController.instance.incrementEnergy(bonusEnergyBeforeWave());
+                if (!finalBossAttackPassed) wavePause = true;
+                else GameController.instance.EndGame(true);
+                
+
+                //if (secondLevelWavesOfSubLocation < _attackWaves[firstLevelWavesOfSubLocation].Count)
+                //{
+                //    initiateSecondLevelAttackWaves();
+                //}
+                //else if (!bossAttackPassed)
+                //{
+                //    VerticalLineGap = 0;
+                //    HorizontalLineGap = 0;
+                //    //1000 - location 0 mini boss, 1011-location 1 mini boss of 2-nd wave. It works as following 10 is mini boss,+0 is main wave count, 0 is location count
+                //    instantiateBosses(10, firstLevelWavesOfSubLocation, 1);
+                //    instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
+                //    if (firstLevelWavesOfSubLocation < _attackWaves.Count - 1)
+                //    {
+                //        secondLevelWavesOfSubLocation = 0;
+                //        firstLevelWavesOfSubLocation++;
+                //    }
+                //    attackWaveIsOn = true;
+                //    bossAttackPassed = true;
+                //}
+                ////else if (firstLevelWavesOfSubLocation < _attackWaves.Count)
+                ////{
+                ////    initiateFirstLevelAttackWaves();
+                ////}
+                //else if (!finalBossAttackPassed)
+                //{
+                //    VerticalLineGap = 0;
+                //    HorizontalLineGap = 0;
+                //    //10000 - location 0 final boss, 10001-location 1 final boss. It works as following 100 is final boss, 0 wave count tha is alwais 0 for final boss, 0 is location count
+                //    instantiateBosses(100, firstLevelWavesOfSubLocation, 2);
+                //    instantiateSomeSoldersAroundBoss(firstLevelWavesOfSubLocation);
+                //    attackWaveIsOn = true;
+                //    finalBossAttackPassed = true;
+
+                //}
+                //else
+                //{
+                //    GameController.instance.EndGame(true);
+                //}
+
             }
         }
+        if (wavePause) attackWavePauseTimeCounter();
     }
 }

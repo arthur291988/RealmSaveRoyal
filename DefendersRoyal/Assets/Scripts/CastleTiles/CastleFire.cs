@@ -8,7 +8,13 @@ public class CastleFire : CastleTiles
     void Start()
     {
         HP = CommonData.instance.HPOfTile;
+        addToCommonData();
     }
+
+    private void addToCommonData() {
+        CommonData.instance.fireTiles.Add(this);
+    }
+
 
     public override void reduceHP()
     {
@@ -19,6 +25,7 @@ public class CastleFire : CastleTiles
     public override void disactivateTile()
     {
         GameController.instance.EndGame(false);
+        CommonData.instance.fireTiles.Remove(this);
         _gameObject.SetActive(false);
     }
 }
