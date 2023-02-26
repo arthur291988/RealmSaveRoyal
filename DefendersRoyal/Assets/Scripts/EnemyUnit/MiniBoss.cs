@@ -29,7 +29,7 @@ public class MiniBoss : EnemyUnit
     {
         if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
         //1010 - 10 is mini boss, 1 wave count, location 0 mini boss: 1011 - 10 is mini boss, 1 wave count, location 1 mini boss 
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + waveNumber.ToString() + CommonData.instance.location.ToString());
+        _unitSpriteRenderer.sprite = GameController.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + waveNumber.ToString() + CommonData.instance.location.ToString() + CommonData.instance.subLocation.ToString());
 
         int intHolder = 0;
         for (int i = 0; i < 4; i++)

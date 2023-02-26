@@ -21,7 +21,7 @@ public class UnitFive : PlayerUnit
         _baseAttackSpeed = 1.1f;
 
         _baseSuperHitHarm = 0;
-        _baseSuperHitTime = 4f;
+        _baseSuperHitTime = 7f; // 4f;
         superHitEffectOnEnemyIndex = 1; //frost on enemy effect index
         indexOnSuperShotsObjectPuller = 3; //frost ball index
 

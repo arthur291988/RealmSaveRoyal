@@ -21,7 +21,7 @@ public class UnitTwo : PlayerUnit
         _baseAccuracy = 0.2f;
         _baseAttackSpeed = 2.75f;
         _baseSuperHitHarm = 0;
-        _baseSuperHitTime = 4;
+        _baseSuperHitTime = 6; //4
         superHitEffectOnEnemyIndex = 1; //frost effect on enemy
         indexOnSuperShotsObjectPuller = 1; //frost circle onject puller index 
 
@@ -81,7 +81,8 @@ public class UnitTwo : PlayerUnit
         if (!isBlocked)
         {
             float attacPointX = _unitStartPosition.x;
-            float attacPointY = unitSide == 0 ? Random.Range(13, 21/*GameController.instance.topShotLine*/) : Random.Range(-13, -21 /*GameController.instance.bottomShotLine*/);
+            //float attacPointY = unitSide == 0 ? Random.Range(13, 21/*GameController.instance.topShotLine*/) : Random.Range(-13, -21 /*GameController.instance.bottomShotLine*/);
+            float attacPointY = unitSide == 0 ? _unitStartPosition.y+10 : _unitStartPosition.y - 10;
             ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect
             ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
             ObjectPulled.transform.position = new Vector2(attacPointX, attacPointY);

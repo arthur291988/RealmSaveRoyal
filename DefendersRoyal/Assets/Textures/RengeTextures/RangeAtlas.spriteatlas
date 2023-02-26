@@ -43,22 +43,22 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 82b9c7c449b8470438ef46f1df9b5cf9, type: 3}
-    totalSpriteSurfaceArea: 65280
+    totalSpriteSurfaceArea: 50000
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 49291a632276b33469b88103498568b2, type: 3}
-  - {fileID: 21300000, guid: 3e12cc78e2364a847a5e77f86d1edcc0, type: 3}
-  - {fileID: 21300000, guid: 91cee55bc7de5f449915165c47b77c74, type: 3}
-  - {fileID: 21300000, guid: 42002b0ebcea15d40908446c73473adf, type: 3}
-  - {fileID: 21300000, guid: 1d3b894e9623cc843bfb61efa2f4e6f0, type: 3}
+  - {fileID: 21300000, guid: b1936b20e36ec2f4e9b91f08b0a0a371, type: 3}
+  - {fileID: 21300000, guid: 2805f015cadc16a41afefdc151daed36, type: 3}
+  - {fileID: 21300000, guid: 0d809f557547c3b49b6dee8773ff1a83, type: 3}
+  - {fileID: 21300000, guid: 2fafebf85f9f3904194e6d3f6a98c930, type: 3}
+  - {fileID: 21300000, guid: 6abaa81fc4c670144839dbe2f5491413, type: 3}
   m_PackedSpriteNamesToIndex:
+  - 0
   - 4
+  - 2
   - 1
   - 3
-  - 0
-  - 2
   m_Tag: RangeAtlas
   m_IsVariant: 0

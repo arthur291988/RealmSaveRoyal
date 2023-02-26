@@ -17,7 +17,7 @@ public class UnitTSeven : PlayerUnit
         _baseHarm = 10;
         _baseAccuracy = 0.1f;
         _baseAttackSpeed = 0.9f;
-        _baseSuperHitHarm = 20; //base peak harm
+        _baseSuperHitHarm = 30; //20 //base peak harm
         superHitsCount = 3;
         indexOnSuperShotsObjectPuller = 5; //five is peak
         superHitsCounter = 0;

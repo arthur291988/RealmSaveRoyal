@@ -19,8 +19,8 @@ public class UnitFour : PlayerUnit
         _baseAccuracy = 0.18f;
         _baseAttackSpeed = 1.2f;
 
-        _baseSuperHitHarm = 2;
-        _baseSuperHitTime = 3.5f;
+        _baseSuperHitHarm = 3; //2
+        _baseSuperHitTime = 5.5f; //3.5
         superHitEffectOnEnemyIndex = 0; //fire on enemy effect index
         indexOnSuperShotsObjectPuller = 2; //fireball index
 

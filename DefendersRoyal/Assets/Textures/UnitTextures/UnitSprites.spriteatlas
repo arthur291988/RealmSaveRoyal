@@ -35,7 +35,7 @@ SpriteAtlas:
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     - serializedVersion: 3
       m_BuildTarget: Android
-      m_MaxTextureSize: 512
+      m_MaxTextureSize: 256
       m_ResizeAlgorithm: 0
       m_TextureFormat: 47
       m_TextureCompression: 1
@@ -55,40 +55,32 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 4ced7094a7c1189499611bdf15db639a, type: 3}
-    totalSpriteSurfaceArea: 924832
+    totalSpriteSurfaceArea: 615936
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 1bde1e81632acb245b04c688b0c3db43, type: 3}
-  - {fileID: 21300000, guid: f5da7332471b6eb40a6aa7210cd2be3f, type: 3}
-  - {fileID: 21300000, guid: 1fc60c643544b2e449ddcd4a68bfda76, type: 3}
-  - {fileID: 21300000, guid: 5da15c76268b26d4d912a36384fd2350, type: 3}
-  - {fileID: 21300000, guid: 016351b8139a8c4438f36aafc66fa68b, type: 3}
-  - {fileID: 21300000, guid: 2c4ebcd8dfbb1f14b985e29f91642952, type: 3}
-  - {fileID: 21300000, guid: e9b310e9e0dba274bb46d42cca33bf06, type: 3}
-  - {fileID: 21300000, guid: e8d84c6b0ff57384da93c3d9e1c6022e, type: 3}
-  - {fileID: 21300000, guid: 82ae2bbbe23f24a42a71305e5c539331, type: 3}
-  - {fileID: 21300000, guid: a3fd011d12483434b942ec94005d7166, type: 3}
-  - {fileID: 21300000, guid: fb7b778d44962c0409aca3c023d5d003, type: 3}
-  - {fileID: 21300000, guid: ab9642ddc57e7984ca3bf64ee09dcb80, type: 3}
-  - {fileID: 21300000, guid: 75c5da4fa6803b04988951bc742df1b4, type: 3}
-  - {fileID: 21300000, guid: c798679f669fb2645974518ff6f8157d, type: 3}
+  - {fileID: 21300000, guid: 856292c48bc2e5241bab156b549ba341, type: 3}
+  - {fileID: 21300000, guid: 17ce94d52b4b9244a924a6dd824d7f5b, type: 3}
+  - {fileID: 21300000, guid: f81fead52b531bd4c89a94df5357b745, type: 3}
+  - {fileID: 21300000, guid: a3fbfb06f58685e44b813419ea8008a1, type: 3}
+  - {fileID: 21300000, guid: 204259d827d56f745b9f00efbdb9153e, type: 3}
+  - {fileID: 21300000, guid: 622e668addfad49429d68f9b7ac6db04, type: 3}
+  - {fileID: 21300000, guid: 0270924b2d44ba84aa980be9c2121f28, type: 3}
+  - {fileID: 21300000, guid: c2dc545bed3dcdd4d988f048f85f95a3, type: 3}
+  - {fileID: 21300000, guid: ae1c2e5fdda1fb34cb8e3f8050b97b98, type: 3}
   m_PackedSpriteNamesToIndex:
   - 3
-  - aadd
-  - 4
-  - 5
-  - 123asdq
-  - 22
   - 0
   - 2
-  - 27
-  - awdawaa
-  - 15
-  - 1
-  - adwawd
+  - 22
+  - 5
   - 10
+  - 1
+  - 15
+  - 4
+  - 27
   m_Tag: UnitSprites
   m_IsVariant: 0

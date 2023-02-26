@@ -13,7 +13,7 @@ public class RegularEnemy : EnemyUnit
     private void setEnemyFeatures(int waveNumber)
     {
         if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString());
+        _unitSpriteRenderer.sprite = GameController.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + CommonData.instance.location.ToString() + CommonData.instance.subLocation.ToString());
 
         _energyOnDestroy = CommonData.instance.regularEnemyEnergy[waveNumber];
         _moveSpeed = CommonData.instance.regularEnemySpeed[_enemyLevel];

@@ -25,7 +25,7 @@ public class FinalBoss00 : FinalBoss
             ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
             ObjectPulled.transform.position = _transform.position;
             EnemyShot enemyShot = ObjectPulled.GetComponent<EnemyShot>();
-            enemyShot.startSettings(100, 0.3f, shotPoint, ObjectPulled);
+            enemyShot.startSettings(HP / 2, 0.3f, shotPoint, ObjectPulled);
             ObjectPulled.SetActive(true);
         }
 

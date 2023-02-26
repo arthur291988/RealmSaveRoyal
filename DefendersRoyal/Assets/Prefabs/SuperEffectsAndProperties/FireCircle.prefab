@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1385961806810901145}
   - component: {fileID: 9175378566533477548}
   - component: {fileID: 4136533085239639330}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FireCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

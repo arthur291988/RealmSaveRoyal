@@ -29,7 +29,7 @@ public class FinalBoss : EnemyUnit
 
 
         //10000 - 100 is location boss, 0 wave count (always zero), location 0 mini boss: 10001 - 100 is location boss, 0 wave count (always zero), location 1 mini boss 
-        _unitSpriteRenderer.sprite = CommonData.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + "0" + CommonData.instance.location.ToString());
+        _unitSpriteRenderer.sprite = GameController.instance.enemyAtlas.GetSprite(_enemyLevel.ToString() + "0" + CommonData.instance.location.ToString() + CommonData.instance.subLocation.ToString());
 
         int intHolder = 0;
         for (int i = 0; i < 4; i++)

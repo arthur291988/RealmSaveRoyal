@@ -43,26 +43,58 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: c46b26184a09c614a806c33f6733f09e, type: 3}
-    totalSpriteSurfaceArea: 389120
+    totalSpriteSurfaceArea: 1396741
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 867d18c77aacd584391091a0f1796ea0, type: 3}
-  - {fileID: 21300000, guid: 41ad14a812787dd4c8d70541bf7d8b23, type: 3}
-  - {fileID: 21300000, guid: 6d7a67494df152a498a9068ecf9e4aa4, type: 3}
-  - {fileID: 21300000, guid: c39909ccb3c4b114a84ea0c85c07808e, type: 3}
-  - {fileID: 21300000, guid: e6b128dd717ee534bb207c7845601951, type: 3}
-  - {fileID: 21300000, guid: fea6d36fc54c1dd49818d808a82f892e, type: 3}
-  - {fileID: 21300000, guid: 90b1abbfea3a5ae41bbcaef3c08fc2b5, type: 3}
+  - {fileID: 21300000, guid: 13bf1260eb0db3546ba8c573094297fc, type: 3}
+  - {fileID: 21300000, guid: fc26bbe282291ad4f85a3034a3b2932d, type: 3}
+  - {fileID: 21300000, guid: 0578cab3353d9924382dcc62aa354682, type: 3}
+  - {fileID: 21300000, guid: 6941640472a6eac43808b23aef7b5929, type: 3}
+  - {fileID: 21300000, guid: 9b8d0b946a0f9b3449cd9a8a884b7ec4, type: 3}
+  - {fileID: 21300000, guid: 5d9d87b480f93764ead8a8dbba505d04, type: 3}
+  - {fileID: 21300000, guid: a7c841455e3585648a687099afbab274, type: 3}
+  - {fileID: 21300000, guid: 51a166559f8e22a4fb999f9cec2dbea6, type: 3}
+  - {fileID: 21300000, guid: 87ea999592ac8bd45a764bd243a26a6d, type: 3}
+  - {fileID: 21300000, guid: 2d703e78247c47d4cb231d5f011f07b0, type: 3}
+  - {fileID: 21300000, guid: 4ba23219b440f554f91f28af2a9be385, type: 3}
+  - {fileID: 21300000, guid: c007d3d9ab5a82043853911a53a00235, type: 3}
+  - {fileID: 21300000, guid: 8c26346aa5f56ff4f9a2b15596b7baf7, type: 3}
+  - {fileID: 21300000, guid: 9cb2101b7fa86794aaedbf49fbe5ae31, type: 3}
+  - {fileID: 21300000, guid: 7c25958bd9e58024d95dec3e23691cfa, type: 3}
+  - {fileID: 21300000, guid: 895fb19be5805b44db43ac04c2e182c4, type: 3}
+  - {fileID: 21300000, guid: db290ffb0b1bf064f9fd334b0142dc32, type: 3}
+  - {fileID: 21300000, guid: 50f3af8ca40171445b6de7a0756a2d8d, type: 3}
+  - {fileID: 21300000, guid: 543febece2120464a8a4818d25cd7eaa, type: 3}
+  - {fileID: 21300000, guid: f664184dcdd7d3047a44a4e8bdb22f39, type: 3}
+  - {fileID: 21300000, guid: c57f605deeca9e9499e237e9f6aad2b8, type: 3}
+  - {fileID: 21300000, guid: af98c58fed4c50c4e99324b2917c3981, type: 3}
+  - {fileID: 21300000, guid: b1db2faf40b97004fb3345b5c96f688b, type: 3}
   m_PackedSpriteNamesToIndex:
-  - 1020
-  - 1010
-  - 1000
-  - 20
+  - 000
+  - 001
+  - 10200
+  - 200
+  - 101
+  - 10002
+  - 201
+  - 100002
+  - 10202
+  - 10100
+  - 10101
   - 10000
-  - 00
-  - 10
+  - 002
+  - 10201
+  - 100
+  - 202
+  - 100000
+  - 100001
+  - 10302
+  - 10001
+  - 10102
+  - 10301
+  - 102
   m_Tag: EnemyAtlas
   m_IsVariant: 0

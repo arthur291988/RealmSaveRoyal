@@ -11,6 +11,8 @@ public class CastleTiles : MonoBehaviour
     [NonSerialized]
     public GameObject _gameObject;
     [NonSerialized]
+    private Transform _transform;
+    [NonSerialized]
     public Vector2 _position;
     [NonSerialized]
     public Vector2 _playerPosition;
@@ -28,7 +30,8 @@ public class CastleTiles : MonoBehaviour
 
     private void OnEnable()
     {
-        _gameObject = gameObject;
+        if (_gameObject==null) _gameObject = gameObject;
+        if (_transform == null) _transform = _gameObject.transform;
         if (_animator == null) _animator = _gameObject.GetComponent<Animator>();
         setCastleTileLayer();
     }
@@ -70,10 +73,10 @@ public class CastleTiles : MonoBehaviour
     }
 
     public void setTileSprite() {
-        if (HP > 4) _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("0");
-        else if (HP > 3) _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("1");
-        else if (HP > 2) _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("2");
-        else _spriteRenderer.sprite = CommonData.instance.castleTileSpriteAtlases.GetSprite("3");
+        if (HP > 4) _spriteRenderer.sprite = GameController.instance.castleTileSpriteAtlases.GetSprite("0");
+        else if (HP > 3) _spriteRenderer.sprite = GameController.instance.castleTileSpriteAtlases.GetSprite("1");
+        else if (HP > 2) _spriteRenderer.sprite = GameController.instance.castleTileSpriteAtlases.GetSprite("2");
+        else _spriteRenderer.sprite = GameController.instance.castleTileSpriteAtlases.GetSprite("3");
     }
    
     //tile destruction by enemy hit
@@ -86,7 +89,7 @@ public class CastleTiles : MonoBehaviour
         }
         if (collision.gameObject.TryGetComponent<EnemyShot>(out EnemyShot shot))
         {
-            shot.reduceHP(CommonData.instance.towerHPReduceAmount);
+            shot.disactivateThis();
             reduceHP();
         }
     }
@@ -98,6 +101,7 @@ public class CastleTiles : MonoBehaviour
         {
             setTileSprite();
             _animator.SetBool("Play",true);
+            Invoke("animationFalse", 0.1f);
         }
     }
 
@@ -136,6 +140,7 @@ public class CastleTiles : MonoBehaviour
         CommonData.instance.castleTiles.Remove(this);
         _playerUnit = null;
         destroyPlayerUnitStayingOnThisPlatform();
+        _transform.rotation = Quaternion.Euler(0,0,0);
         _gameObject.SetActive(false);
         GameController.instance.updateUnitsAndCastleTileAddButtonsUI();
     }

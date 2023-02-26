@@ -47,7 +47,9 @@ public class UnitFifteen : PlayerUnit
         if (!isBlocked)
         {
             float attacPointX = _unitStartPosition.x;
-            float attacPointY = unitSide == 0 ? Random.Range(13, 21) : Random.Range(-13, -21);
+            //float attacPointY = unitSide == 0 ? Random.Range(13, 21) : Random.Range(-13, -21);
+
+            float attacPointY = unitSide == 0 ? _unitStartPosition.y + 10 : _unitStartPosition.y - 10;
             ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);//0 is fire circle effect
             ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
             ObjectPulled.transform.position = new Vector2(attacPointX, attacPointY);

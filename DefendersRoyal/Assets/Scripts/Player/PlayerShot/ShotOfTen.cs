@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShotOfTen : PlayerShot
 {
-
+    //this shot is used by unit 10 (engineer warrior). It disactivates the shots after some distance 
     // Update is called once per frame
     void Update()
     {

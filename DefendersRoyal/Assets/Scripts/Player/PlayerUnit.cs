@@ -131,8 +131,8 @@ public class PlayerUnit : MonoBehaviour
     public void setSpriteOfUnit()
     {
         if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
-        _unitSpriteRenderer.sprite = CommonData.instance.playerSpriteAtlases.GetSprite(_unitType.ToString());
-        _rangeSprite.sprite = CommonData.instance.playerRangeSpriteAtlases.GetSprite(_unitMergeLevel.ToString());
+        _unitSpriteRenderer.sprite = GameController.instance.playerSpriteAtlases.GetSprite(_unitType.ToString());
+        _rangeSprite.sprite = GameController.instance.playerRangeSpriteAtlases.GetSprite(_unitMergeLevel.ToString());
     }
 
     public virtual void setUnitTalentLevel(int talentLvl) {
@@ -158,6 +158,7 @@ public class PlayerUnit : MonoBehaviour
         frozenEffect.Stop();
         simpleShotsCounter = 0;
         superHitsCounter = 0;
+        _transform.rotation = Quaternion.Euler(0, 0, 0);
         _gameObject.SetActive(false);
     }
     public virtual void attackSimple()
@@ -188,6 +189,7 @@ public class PlayerUnit : MonoBehaviour
     public void animationPlay()
     {
         _animator.SetBool("Play", true);
+        Invoke("animationFalse", 0.1f);
     }
 
     //Rotates the attack vector to add some randomness
