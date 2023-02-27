@@ -1021,6 +1021,7 @@ MonoBehaviour:
   playerSpriteAtlases: {fileID: 4343727234628468602, guid: a0fd0e87b8fb2c74987d2ef46a8da3cc, type: 2}
   playerRangeSpriteAtlases: {fileID: 4343727234628468602, guid: b9740e5b91aa8e34587d38eeef6c73d8, type: 2}
   castleTileSpriteAtlases: {fileID: 4343727234628468602, guid: ae159b6ce32635e4284262cfcbdb236d, type: 2}
+  enemyWallSpriteAtlases: {fileID: 4343727234628468602, guid: 682f7fa6708e1b04682fc0387b7d7be3, type: 2}
 --- !u!4 &99078299
 Transform:
   m_ObjectHideFlags: 0
@@ -2727,7 +2728,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366979032}
   m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
-  m_LocalPosition: {x: -4, y: -8, z: 0}
+  m_LocalPosition: {x: -4, y: -12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1275452588}
@@ -6219,7 +6220,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 760255089}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: -8, z: 0}
+  m_LocalPosition: {x: 4, y: -12, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1275452588}
@@ -7628,11 +7629,21 @@ MonoBehaviour:
   - {fileID: 3859213313038362327, guid: 544002cf98294984183d4f33dbbb62ff, type: 3}
   - {fileID: 3859213313038362327, guid: ac62ebd85596e634ea5865606bede025, type: 3}
   - {fileID: 3859213313038362327, guid: f7a70b274ae3beb40a8dbae4fd284be8, type: 3}
-  Location01MiniBoss: []
-  Location02MiniBoss: []
+  Location01MiniBoss:
+  - {fileID: 3859213313038362327, guid: 551b9d3f43f61c748b54595c0e3c4eee, type: 3}
+  - {fileID: 3859213313038362327, guid: b3557aecf06f46f48bff7a85dadc66e0, type: 3}
+  - {fileID: 3859213313038362327, guid: 0fdbaacc0ecc2ea4fbc8e396df64d754, type: 3}
+  - {fileID: 3859213313038362327, guid: 280313dcb8a00b34ca53c0c6151e1e75, type: 3}
+  Location02MiniBoss:
+  - {fileID: 3859213313038362327, guid: c5563870bdfaf544eabd35000c7789a9, type: 3}
+  - {fileID: 3859213313038362327, guid: 7e3ffe03ecd9e0743b81a27271ec5ee1, type: 3}
+  - {fileID: 3859213313038362327, guid: e6692459b0df7424b94ea03d0324b812, type: 3}
+  - {fileID: 3859213313038362327, guid: 0815666a265cf644b9a11811e0dc515a, type: 3}
   FinalBoss00: {fileID: 3859213313038362327, guid: 9c3e7ad055cb5804c9aa726972ce9b31, type: 3}
-  FinalBoss01: {fileID: 0}
+  FinalBoss01: {fileID: 3859213313038362327, guid: 274b28043371330498bc32dd151740ce, type: 3}
+  FinalBoss02: {fileID: 3859213313038362327, guid: e81790ca528c1254ca6e7c1787bcac9f, type: 3}
   enemyShot: {fileID: 5001399089358951419, guid: 0d4192f22003a184eb075a4f39595a51, type: 3}
+  enemyWall: {fileID: 3369487630409653993, guid: 8ffe6f33f8770324daa35efc9a223d9b, type: 3}
 --- !u!4 &1152082520
 Transform:
   m_ObjectHideFlags: 0

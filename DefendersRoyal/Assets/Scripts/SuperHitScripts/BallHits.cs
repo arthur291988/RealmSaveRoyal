@@ -6,10 +6,12 @@ using UnityEngine;
 public class BallHits : SuperHitBase
 {
     private GameObject _gameObject;
+    private Transform _shotTransform;
 
     private void OnEnable()
     {
         if (_gameObject == null) _gameObject = gameObject;
+        if (_shotTransform == null) _shotTransform = transform;
     }
 
     public override void OnCollisionEnter2D(Collision2D collision)
@@ -33,5 +35,14 @@ public class BallHits : SuperHitBase
         _HPReduce = HPReduce;
         _effectTime = effectTime;
         _onEnemyEffectIndex = onEnemyEffectIndex;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (_shotTransform.position.y > CommonData.instance.vertScreenSize / 2 + 1 || _shotTransform.position.y < -CommonData.instance.vertScreenSize / 2 - 1)
+        {
+            _gameObject.SetActive(false);
+        }
     }
 }

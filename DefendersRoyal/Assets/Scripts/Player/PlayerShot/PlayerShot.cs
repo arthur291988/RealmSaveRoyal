@@ -47,6 +47,11 @@ public class PlayerShot : MonoBehaviour
             shot.reduceHP(_harm);
             _gameObject.SetActive(false);
         }
+        if (collision.gameObject.TryGetComponent<EnemyWall>(out EnemyWall wall))
+        {
+            wall.reduceHP();
+            _gameObject.SetActive(false);
+        }
 
         _trailRenderer.Clear();
     }

@@ -9,6 +9,7 @@ public class EnemyPull : MonoBehaviour
     private bool willGrow;
 
     private int pullOfObjects6 = 6;
+    private int pullOfObjects12 = 12;
 
     public Dictionary<Vector2, GameObject> miniBosses;
 
@@ -33,15 +34,21 @@ public class EnemyPull : MonoBehaviour
     private GameObject FinalBoss00;
     [SerializeField]
     private GameObject FinalBoss01;
+    [SerializeField]
+    private GameObject FinalBoss02;
 
     [NonSerialized]
     public Dictionary<Vector2, GameObject> allFinalBosses;
 
     [SerializeField]
     private GameObject enemyShot;
+    [SerializeField]
+    private GameObject enemyWall;
 
     [NonSerialized]
     private List <GameObject> enemyShotPull;
+    [NonSerialized]
+    private List<GameObject> enemyWallPull;
     private void Awake()
     {
         current = this;
@@ -50,11 +57,13 @@ public class EnemyPull : MonoBehaviour
     private void OnEnable()
     {
         enemyShotPull = new List<GameObject>();
+        enemyWallPull = new List<GameObject>();
 
         allFinalBosses = new Dictionary<Vector2, GameObject>()
         {
             [new Vector2 (0,0)] = FinalBoss00,
             [new Vector2(0, 1)] = FinalBoss01,
+            [new Vector2(0, 2)] = FinalBoss02,
         };
 
         location0MiniBosses = new List<List<GameObject>>()
@@ -72,7 +81,6 @@ public class EnemyPull : MonoBehaviour
 
         for (int i = 0; i < AllLocationMiniBosses[CommonData.instance.location][CommonData.instance.subLocation].Count; i++)
         {
-            //all bosses are instantiated twise for up and down sides
             GameObject obj = Instantiate(AllLocationMiniBosses[CommonData.instance.location][CommonData.instance.subLocation][i]);
             obj.SetActive(false);
             LocationMiniBossesPull.Add(obj); 
@@ -83,12 +91,22 @@ public class EnemyPull : MonoBehaviour
             obj1.SetActive(false);
             enemyShotPull.Add(obj1);
         }
+        for (int i = 0; i < pullOfObjects12; i++)
+        {
+            GameObject obj1 = Instantiate(enemyWall);
+            obj1.SetActive(false);
+            enemyWallPull.Add(obj1);
+        }
 
     }
 
     public List<GameObject> GetEnemyShotPullPullList()
     {
         return enemyShotPull;
+    }
+    public List<GameObject> GetEnemyWallPullPullList()
+    {
+        return enemyWallPull;
     }
 
     //universal method to set active proper game object from the list of GOs, it just needs to get correct List of game objects

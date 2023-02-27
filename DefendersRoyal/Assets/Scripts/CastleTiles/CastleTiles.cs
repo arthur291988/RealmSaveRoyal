@@ -134,9 +134,7 @@ public class CastleTiles : MonoBehaviour
             CommonData.instance.castlePointsDown.Remove(_position);
             CommonData.instance.platformTilesDown[_position] = 0;//set platform to empty mode
         }
-
-
-
+        animationFalse();
         CommonData.instance.castleTiles.Remove(this);
         _playerUnit = null;
         destroyPlayerUnitStayingOnThisPlatform();

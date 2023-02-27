@@ -746,7 +746,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 2.3
+      value: 2.92
       mode: 0
       spread: 0
       speed:
@@ -865,7 +865,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 50
+      scalar: 70
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -9718,10 +9718,9 @@ GameObject:
   - component: {fileID: 3859213313038362321}
   - component: {fileID: 3859213313038362320}
   - component: {fileID: 3859213313038362322}
-  - component: {fileID: 3892300757881767296}
   - component: {fileID: 5407957080702736761}
   m_Layer: 10
-  m_Name: MiniBoss00
+  m_Name: MiniBoss22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9785,12 +9784,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 9
-  m_Sprite: {fileID: 21300000, guid: c007d3d9ab5a82043853911a53a00235, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 87ea999592ac8bd45a764bd243a26a6d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.48, y: 4.2022643}
+  m_Size: {x: 4.181673, y: 4.1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -9812,23 +9811,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 2.85, y: 3.95}
   m_Direction: 0
---- !u!114 &3892300757881767296
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3859213313038362327}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c49e0f982e1b274491e53fdb9e34118, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spriteRendererOfLifeLine: {fileID: 3146158678630175036}
-  effectsOnEnemy:
-  - {fileID: 1887168584212245165}
-  - {fileID: 7064616589869475433}
-  - {fileID: 5708630917667839169}
 --- !u!95 &5407957080702736761
 Animator:
   serializedVersion: 3
@@ -10594,7 +10576,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1.7
+      value: 2.3
       mode: 0
       spread: 0
       speed:

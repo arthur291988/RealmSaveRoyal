@@ -12,6 +12,8 @@ public class SaveAndLoad : MonoBehaviour
 
     private void Awake()
     {
+        GameParams.achievedSubLocationStatic = 1;
+        saveGameData();
         instance = new SaveAndLoad();
         //get Saved achieved location and sub location
         if (File.Exists(Application.persistentDataPath + "/" + fileName + ".art"))
@@ -74,6 +76,8 @@ public class SaveAndLoad : MonoBehaviour
 
         sw.WriteLine(Crypt("achievedLocationStatic" + sp + GameParams.achievedLocationStatic));
         sw.WriteLine(Crypt("achievedSubLocationStatic" + sp + GameParams.achievedSubLocationStatic));
+
+        sw.Close();
     }
 
     public void savePlayerPrefs()
@@ -82,6 +86,9 @@ public class SaveAndLoad : MonoBehaviour
         string sp = " "; //space 
 
         sw.WriteLine(Crypt("isEnglishStatic" + sp + GameParams.isEnglishStatic));
+
+
+        sw.Close();
     }
 
     private void LoadSavedDataFromFile()

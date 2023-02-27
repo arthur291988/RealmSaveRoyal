@@ -69,6 +69,7 @@ public class GameController : MonoBehaviour
     public SpriteAtlas playerSpriteAtlases;
     public SpriteAtlas playerRangeSpriteAtlases;
     public SpriteAtlas castleTileSpriteAtlases;
+    public SpriteAtlas enemyWallSpriteAtlases;
 
     private bool victory;
 
@@ -114,8 +115,9 @@ public class GameController : MonoBehaviour
 
     public void backToMenu() {
         if (victory) {
+            //TODO in case of success of MVP test
             GameParams.achievedLocationStatic = CommonData.instance.location;
-            GameParams.achievedSubLocationStatic = CommonData.instance.subLocation+1;
+            if (GameParams.achievedSubLocationStatic<= CommonData.instance.subLocation) GameParams.achievedSubLocationStatic = CommonData.instance.subLocation+1;
         }
         SaveAndLoad.instance.saveGameData();
         SceneSwitchMngr.LoadMenuScene();
