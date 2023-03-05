@@ -4787,7 +4787,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -4883,7 +4883,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 14
   m_Sprite: {fileID: 21300000, guid: 110070ce03537f94ea118961c664f3be, type: 3}
   m_Color: {r: 0, g: 1, b: 0.018627405, a: 1}
   m_FlipX: 0
@@ -9681,7 +9681,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -9719,6 +9719,7 @@ GameObject:
   - component: {fileID: 3859213313038362320}
   - component: {fileID: 3859213313038362322}
   - component: {fileID: 5407957080702736761}
+  - component: {fileID: 3577411978893009209}
   m_Layer: 10
   m_Name: MiniBoss23
   m_TagString: Untagged
@@ -9783,7 +9784,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 13
   m_Sprite: {fileID: 21300000, guid: 543febece2120464a8a4818d25cd7eaa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9830,6 +9831,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3577411978893009209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3859213313038362327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66d3fc452fbf94f4e842ea48cd993d54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRendererOfLifeLine: {fileID: 3146158678630175036}
+  effectsOnEnemy:
+  - {fileID: 1887168584212245165}
+  - {fileID: 7064616589869475433}
+  - {fileID: 5708630917667839169}
+  superHitTime: 8
+  countOfContinuousSuperHits: 2
+  startSuperHitTime: 2
+  HPOfWall: 10
+  CountOfWalls: 3
 --- !u!1 &6384929291044876535
 GameObject:
   m_ObjectHideFlags: 0
@@ -14616,7 +14639,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0

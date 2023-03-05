@@ -52,6 +52,18 @@ public class ObjectPuller : MonoBehaviour
     private GameObject playerUnit27;
 
 
+    [SerializeField]
+    private GameObject regularEnemyDestroy;
+    [SerializeField]
+    private GameObject MiniBossDestroy;
+    [SerializeField]
+    private GameObject FinalBossDestroy;
+    [SerializeField]
+    private GameObject CastleDestroy;
+    [SerializeField]
+    private GameObject WallDestroy;
+
+
     //[SerializeField]
     //private GameObject playerShot0;
     //[SerializeField]
@@ -106,6 +118,18 @@ public class ObjectPuller : MonoBehaviour
 
     [NonSerialized]
     private List<List<GameObject>> playerShotsPull;
+
+
+    [SerializeField]
+    private List<GameObject> regularEnemyDestroyPull;
+    [SerializeField]
+    private List<GameObject> MiniBossDestroyPull;
+    [SerializeField]
+    private List<GameObject> FinalBossDestroyPull;
+    [SerializeField]
+    private List<GameObject> CastleDestroyPull;
+    [SerializeField]
+    private List<GameObject> WallDestroyPull;
 
     //[NonSerialized]
     //public List<GameObject> playerShot0Pull;
@@ -282,6 +306,29 @@ public class ObjectPuller : MonoBehaviour
             castleTilePull.Add(obj1);
         }
 
+        for (int i = 0; i < pullOfObjects10; i++)
+        {
+            GameObject obj = Instantiate(regularEnemyDestroy);
+            obj.SetActive(false);
+            regularEnemyDestroyPull.Add(obj);
+
+            GameObject obj1 = Instantiate(MiniBossDestroy);
+            obj1.SetActive(false);
+            MiniBossDestroyPull.Add(obj1); 
+
+            GameObject obj2 = Instantiate(FinalBossDestroy);
+            obj2.SetActive(false);
+            FinalBossDestroyPull.Add(obj2);
+
+            GameObject obj3 = Instantiate(CastleDestroy);
+            obj3.SetActive(false);
+            CastleDestroyPull.Add(obj3);
+
+            GameObject obj4 = Instantiate(WallDestroy);
+            obj4.SetActive(false);
+            WallDestroyPull.Add(obj4);
+        }
+
         //for (int i = 0; i < pullOfObjects60; i++)
         //{
         //    GameObject obj1 = Instantiate(peakSuperShot);
@@ -334,6 +381,29 @@ public class ObjectPuller : MonoBehaviour
     {
         return superHitEffectsPull[index];
     }
+
+    public List<GameObject> GetWallDestroyPullList()
+    {
+        return WallDestroyPull;
+    }
+    public List<GameObject> GetCastleDestroyPullList()
+    {
+        return CastleDestroyPull;
+    }
+    public List<GameObject> GetFinalBossDestroyPullList()
+    {
+        return FinalBossDestroyPull;
+    }
+    public List<GameObject> GetMiniBossDestroyPullList()
+    {
+        return MiniBossDestroyPull;
+    }
+    public List<GameObject> GetRegularEnemyDestroyPullList()
+    {
+        return regularEnemyDestroyPull;
+    }
+
+    
 
     //universal method to set active proper game object from the list of GOs, it just needs to get correct List of game objects
     public GameObject GetGameObjectFromPull(List<GameObject> GOLists)

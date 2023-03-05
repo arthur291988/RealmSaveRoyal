@@ -21,6 +21,9 @@ public class CastleTiles : MonoBehaviour
     [NonSerialized]
     public PlayerUnit _playerUnit;
 
+    private GameObject ObjectPulled;
+    private List<GameObject> ObjectPulledList;
+
     [NonSerialized]
     public int _tileSide; //0 up 1 down
 
@@ -60,16 +63,26 @@ public class CastleTiles : MonoBehaviour
         _playerUnit = null;
         setTileSprite();
     }
+    private void pullDestroyEffect()
+    {
+        ObjectPulledList = ObjectPuller.current.GetCastleDestroyPullList();
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = _transform.position;
+        ObjectPulled.SetActive(true);
+    }
 
     public void playEffect(int effectIndex) {
         if (effectIndex == 0) PowerUpEffect.Play();
     }
 
-    public void setCastleTileLayer() {
-        if (_position.y==-8) _spriteRenderer.sortingOrder = 6;
-        else if (_position.y == -4) _spriteRenderer.sortingOrder = 5;
-        else if(_position.y == 4) _spriteRenderer.sortingOrder = 3;
-        else if(_position.y == 8) _spriteRenderer.sortingOrder = 2;
+    public void setCastleTileLayer()
+    {
+        if (_position.y == -12) _spriteRenderer.sortingOrder = 8;
+        else if(_position.y==-8) _spriteRenderer.sortingOrder = 7;
+        else if (_position.y == -4) _spriteRenderer.sortingOrder = 6;
+        else if(_position.y == 4) _spriteRenderer.sortingOrder = 4;
+        else if(_position.y == 8) _spriteRenderer.sortingOrder = 3;
+        else if (_position.y == 12) _spriteRenderer.sortingOrder = 2;
     }
 
     public void setTileSprite() {
@@ -139,6 +152,7 @@ public class CastleTiles : MonoBehaviour
         _playerUnit = null;
         destroyPlayerUnitStayingOnThisPlatform();
         _transform.rotation = Quaternion.Euler(0,0,0);
+        pullDestroyEffect();
         _gameObject.SetActive(false);
         GameController.instance.updateUnitsAndCastleTileAddButtonsUI();
     }

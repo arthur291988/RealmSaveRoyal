@@ -11,15 +11,13 @@ public class MiniBoss01 : MiniBoss
     public override void startSettings()
     {
         base.startSettings();
-        miniBossSuperHitTime = 9f;
-        playerUnitUnderSuperHit = 2;
         resetSuperHitTimer();
     }
 
     private void superHit()
     {
         Vector2 shotPoint;
-        for (int i=0;i<1;i++)
+        for (int i=0;i< countOfContinuousSuperHits; i++)
         {
             shotPoint = new Vector2(Random.Range(-8, 8), 0);
             ObjectPulledList = EnemyPull.current.GetEnemyShotPullPullList();
@@ -36,10 +34,10 @@ public class MiniBoss01 : MiniBoss
     public override void Update()
     {
         base.Update();
-        if (miniBossSuperHitTimer > 0)
+        if (superHitTimer > 0)
         {
-            miniBossSuperHitTimer -= Time.deltaTime;
-            if (miniBossSuperHitTimer <= 0) superHit();
+            superHitTimer -= Time.deltaTime;
+            if (superHitTimer <= 0) superHit();
         }
     }
 }

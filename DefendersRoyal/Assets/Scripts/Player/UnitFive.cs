@@ -31,9 +31,9 @@ public class UnitFive : PlayerUnit
         setStartProperties();
     }
 
-    public override void updatePropertiesToLevel()
+    public override void updatePropertiesToLevel(bool powerUp)
     {
-        base.updatePropertiesToLevel();
+        base.updatePropertiesToLevel(powerUp);
     }
 
     public override void superHit()
@@ -62,7 +62,11 @@ public class UnitFive : PlayerUnit
                 //repeat the method to make additional shots according the features of unit
                 superHitsCounter++;
                 if (superHitsCounter < superHitsCount) superHit();
-                else superHitsCounter = 0;
+                else
+                {
+                    superHitsCounter = 0;
+                    base.superHit();
+                }
             }
         }
     }

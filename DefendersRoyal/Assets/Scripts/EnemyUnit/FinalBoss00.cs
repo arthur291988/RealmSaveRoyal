@@ -10,15 +10,13 @@ public class FinalBoss00 : FinalBoss
     public override void startSettings()
     {
         base.startSettings();
-        bossSuperHitTime = 7f;
-        playerUnitUnderSuperHit = 2;
         resetSuperHitTimer();
     }
 
     private void superHit()
     {
         Vector2 shotPoint;
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < countOfContinuousSuperHits; i++)
         {
             shotPoint = new Vector2(Random.Range(-8, 8), 0);
             ObjectPulledList = EnemyPull.current.GetEnemyShotPullPullList();
@@ -35,10 +33,10 @@ public class FinalBoss00 : FinalBoss
     public override void Update()
     {
         base.Update();
-        if (bossSuperHitTimer > 0)
+        if (superHitTimer > 0)
         {
-            bossSuperHitTimer -= Time.deltaTime;
-            if (bossSuperHitTimer <= 0) superHit();
+            superHitTimer -= Time.deltaTime;
+            if (superHitTimer <= 0) superHit();
         }
     }
 }

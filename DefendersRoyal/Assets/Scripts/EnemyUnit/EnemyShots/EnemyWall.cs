@@ -16,6 +16,9 @@ public class EnemyWall : MonoBehaviour
     [NonSerialized]
     public SpriteRenderer _spriteRenderer;
 
+    private GameObject ObjectPulled;
+    private List<GameObject> ObjectPulledList;
+
     private void OnEnable()
     {
         if (_animator == null) _animator = _gameObject.GetComponent<Animator>();
@@ -43,6 +46,15 @@ public class EnemyWall : MonoBehaviour
         }
     }
 
+    private void pullDestroyEffect()
+    {
+        ObjectPulledList = ObjectPuller.current.GetWallDestroyPullList();
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = _transform.position;
+        ObjectPulled.SetActive(true);
+    }
+
+
     public void animationFalse()
     {
         _animator.SetBool("Play", false);
@@ -57,6 +69,7 @@ public class EnemyWall : MonoBehaviour
 
     public void disactivateThis()
     {
+        pullDestroyEffect();
         _gameObject.SetActive(false);
         animationFalse();
     }

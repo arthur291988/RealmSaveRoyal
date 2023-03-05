@@ -131,18 +131,21 @@ public class CommonData : MonoBehaviour
     
     public string getLoseText()
     {
-        if (GameParams.isEnglishStatic) return "Defeat...";
-        else return "Поражение...";
+        if (GameParams.language == 0) return "Defeat...";
+        else if (GameParams.language == 1) return "Поражение...";
+        else return "Derrota...";
     }
     public string getWinText()
     {
-        if (GameParams.isEnglishStatic) return "Victory!";
-        else return "Победа!";
+        if (GameParams.language == 0) return "Victory!";
+        else if (GameParams.language == 1) return "Победа!";
+        else return "Victoria!";
     }
     public string getTheyAreComingText()
     {
-        if (GameParams.isEnglishStatic) return "They are coming...";
-        else return "Они идут...";
+        if (GameParams.language == 0) return "They are coming...";
+        else if (GameParams.language == 1) return "Они идут...";
+        else return "Ellos estan viniendo...";
     }
 
     #region levelParameters
@@ -175,49 +178,49 @@ public class CommonData : MonoBehaviour
 
     public Dictionary<int, List<List<int>>> attackWavesForLocation01 = new Dictionary<int, List<List<int>>>
     {
-        //[0] = new List<List<int>> {
-        //    new List<int> {2, 10, 20, 0, 0},
-        //    new List<int> { 1, 20, 20, 20, 0 },
-        //    new List<int> { 1, 5, 30, 25, 0 },
-        //    new List<int> { 2, 4, 25, 20, 0 },
-        //},
-        //[1] = new List<List<int>>
-        //{
-        //    new List<int>() { 2, 20, 25, 25, 0 },
-        //    new List<int>() { 2, 0, 20, 30, 0 },
-        //    new List<int>() { 1, 10, 10, 40, 0 },
-        //    new List<int>() { 2, 0, 25, 35, 0 },
-        //},
-        //[2] = new List<List<int>>
-        //{
-        //    new List<int>() { 2, 5, 25, 25, 0 },
-        //    new List<int>() { 1, 10, 15, 30, 0 },
-        //    new List<int>() { 2, 0, 15, 40, 0 },
-        //    new List<int>() { 2, 10, 20, 30, 0 },
-        //    new List<int>() { 1, 0, 30, 30, 0 },
-        //},
-        //[3] = new List<List<int>>
-        //{
-        //    new List<int>() { 2, 5, 25, 25, 0 },
-        //    new List<int>() { 2, 0, 10, 40, 0 },
-        //    new List<int>() { 2, 10, 20, 30, 0 },
-        //    new List<int>() { 2, 0, 10, 50, 0 },
-        //}
         [0] = new List<List<int>> {
-            new List<int> {2, 10, 20, 0, 0}
+            new List<int> {2, 10, 20, 0, 0},
+            new List<int> { 1, 20, 20, 20, 0 },
+            new List<int> { 1, 5, 30, 25, 0 },
+            new List<int> { 2, 4, 25, 20, 0 },
         },
         [1] = new List<List<int>>
         {
-            new List<int>() { 2, 20, 25, 25, 0 }
+            new List<int>() { 2, 20, 25, 25, 0 },
+            new List<int>() { 2, 0, 20, 30, 0 },
+            new List<int>() { 1, 10, 10, 40, 0 },
+            new List<int>() { 2, 0, 25, 35, 0 },
         },
         [2] = new List<List<int>>
         {
-            new List<int>() { 2, 5, 25, 25, 0 }
+            new List<int>() { 2, 5, 25, 25, 0 },
+            new List<int>() { 1, 10, 15, 30, 0 },
+            new List<int>() { 2, 0, 15, 40, 0 },
+            new List<int>() { 2, 10, 20, 30, 0 },
+            new List<int>() { 1, 0, 30, 30, 0 },
         },
         [3] = new List<List<int>>
         {
-            new List<int>() { 2, 5, 25, 25, 0 }
+            new List<int>() { 2, 5, 25, 25, 0 },
+            new List<int>() { 2, 0, 10, 40, 0 },
+            new List<int>() { 2, 10, 20, 30, 0 },
+            new List<int>() { 2, 0, 10, 50, 0 },
         }
+        //[0] = new List<List<int>> {
+        //    new List<int> {2, 10, 20, 0, 0}
+        //},
+        //[1] = new List<List<int>>
+        //{
+        //    new List<int>() { 2, 20, 25, 25, 0 }
+        //},
+        //[2] = new List<List<int>>
+        //{
+        //    new List<int>() { 2, 5, 25, 25, 0 }
+        //},
+        //[3] = new List<List<int>>
+        //{
+        //    new List<int>() { 2, 5, 25, 25, 0 }
+        //}
     }; 
     
     public Dictionary<int, List<List<int>>> attackWavesForLocation02 = new Dictionary<int, List<List<int>>>
@@ -557,8 +560,8 @@ public class CommonData : MonoBehaviour
 
         // TO DO in case of success
         if (subLocation == 0) energyOnStart = 100;
-        else if (subLocation == 1) energyOnStart = 1000;
-        else if (subLocation == 2) energyOnStart = 2500;
+        else if (subLocation == 1) energyOnStart = 2000;
+        else if (subLocation == 2) energyOnStart = 3500;
 
         energyToNextUnitAddStep = 11;
 

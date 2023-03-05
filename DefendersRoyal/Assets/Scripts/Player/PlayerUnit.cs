@@ -69,12 +69,17 @@ public class PlayerUnit : MonoBehaviour
 
     [HideInInspector]
     public SpriteRenderer _unitSpriteRenderer;
+    [HideInInspector]
+    public Transform _spriteRendererTransform;
     //public SpriteAtlas _unitSpriteAtlas;
 
     public SpriteRenderer _rangeSprite;
     //public SpriteAtlas _rangeSpriteAtlas;
 
-    public ParticleSystem MergeOrPowerUpEffect;
+    //public ParticleSystem MergeOrPowerUpEffect;
+    public ParticleSystem MergeAndSpawnEffect;
+    public ParticleSystem PowerUpEffect;
+    public ParticleSystem MegaHitEffect;
 
     [HideInInspector]
     public bool isMoved;
@@ -96,7 +101,9 @@ public class PlayerUnit : MonoBehaviour
     }
 
     public void setStartProperties() {
-        _transform = transform;
+        if (_transform==null) _transform = transform;
+        _transform.rotation = Quaternion.Euler(0, 0, 0);
+        _transform.localScale = Vector3.one;
         attackTimer = UnityEngine.Random.Range(0.5f, 1);
     }
 
@@ -107,7 +114,7 @@ public class PlayerUnit : MonoBehaviour
         _superHitHarm = superHitHarm;
         _superHitTime = superHItTime;
     }
-    public virtual void updatePropertiesToLevel()
+    public virtual void updatePropertiesToLevel(bool powerUp)
     {
         //getting index of unit type and after that getting the power up level of that index
         int powerUpLevel = CommonData.instance.playerUnitTypesOnScenePowerUpLevel[Array.IndexOf(CommonData.instance.playerUnitTypesOnScene, _unitType)];
@@ -118,7 +125,8 @@ public class PlayerUnit : MonoBehaviour
             CommonData.instance.getSuperHitHarm(_unitMergeLevel, powerUpLevel, _baseSuperHitHarm),
             CommonData.instance.getSuperHitTime(_unitMergeLevel, powerUpLevel, _baseSuperHitTime)
             );
-        MergeOrPowerUpEffect.Play();
+        if (powerUp) PowerUpEffect.Play();
+        else MergeAndSpawnEffect.Play();
     }
     public void setUnitMergeLevel(int level) => _unitMergeLevel = level;
     //public void setUnitPoweUpLevel(int level) => _unitPowerUpLevel = level;
@@ -131,6 +139,7 @@ public class PlayerUnit : MonoBehaviour
     public void setSpriteOfUnit()
     {
         if (_unitSpriteRenderer == null) _unitSpriteRenderer = GetComponent<SpriteRenderer>();
+        if (_spriteRendererTransform == null) _spriteRendererTransform = _unitSpriteRenderer.transform;
         _unitSpriteRenderer.sprite = GameController.instance.playerSpriteAtlases.GetSprite(_unitType.ToString());
         _rangeSprite.sprite = GameController.instance.playerRangeSpriteAtlases.GetSprite(_unitMergeLevel.ToString());
     }
@@ -158,7 +167,7 @@ public class PlayerUnit : MonoBehaviour
         frozenEffect.Stop();
         simpleShotsCounter = 0;
         superHitsCounter = 0;
-        _transform.rotation = Quaternion.Euler(0, 0, 0);
+        _spriteRendererTransform.localScale = Vector3.one;
         _gameObject.SetActive(false);
     }
     public virtual void attackSimple()
@@ -202,6 +211,7 @@ public class PlayerUnit : MonoBehaviour
     }
 
     public virtual void superHit() {
+        MegaHitEffect.Play();
     }
 
     public void blockTheUnit(float time) {

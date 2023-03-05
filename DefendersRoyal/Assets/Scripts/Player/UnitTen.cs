@@ -98,9 +98,9 @@ public class UnitTen : PlayerUnit
         }
     }
 
-    public override void updatePropertiesToLevel()
+    public override void updatePropertiesToLevel(bool powerUp)
     {
-        base.updatePropertiesToLevel();
+        base.updatePropertiesToLevel(powerUp);
     }
     public override void superHit()
     {
@@ -109,6 +109,7 @@ public class UnitTen : PlayerUnit
             //setting fix counts, base fix count + upgrade level + merge level
             int castleTileFixCount = BASE_FIX_COUNT + _unitMergeLevel + CommonData.instance.playerUnitTypesOnScenePowerUpLevel[Array.IndexOf(CommonData.instance.playerUnitTypesOnScene, _unitType)];
 
+            base.superHit();
             //0-up side unit 1-is down side unit
             for (int i = 0; i < CommonData.instance.castleTiles.Count; i++)
             {

@@ -5,12 +5,13 @@ using UnityEngine;
 
 public class MiniBoss00 : MiniBoss
 {
+
     public override void startSettings()
     {
         base.startSettings();
-        miniBossSuperHitTime = 5f;
-        playerUnitUnderSuperHit = 2;
-        resetSuperHitTimer();
+        //miniBossSuperHitTime = 5f;
+        //playerUnitUnderSuperHit = 2;
+        //resetSuperHitTimer();
     }
 
     //private void superHit()

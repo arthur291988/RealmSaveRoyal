@@ -6,21 +6,34 @@ using UnityEngine;
 public class FinalBoss : EnemyUnit
 {
     [NonSerialized]
-    public float bossSuperHitTimer;
+    public float superHitTimer;
+    public float superHitTime;
     [NonSerialized]
-    public float bossSuperHitTime;
-    [NonSerialized]
-    public int playerUnitUnderSuperHit;
+    public float startSuperHitTimer;
+    public float startSuperHitTime;
+    public int countOfContinuousSuperHits;
 
 
     public virtual void resetSuperHitTimer()
     {
-        bossSuperHitTimer = bossSuperHitTime;
+        superHitTimer = superHitTime;
+    }
+    public virtual void resetStartSuperHitTimer()
+    {
+        startSuperHitTimer = startSuperHitTime;
     }
     public override void setEnemyLevel(int level, int attackWaveCount)
     {
         base.setEnemyLevel(level, attackWaveCount);
         setBigBossFeatures(attackWaveCount);
+    }
+
+    public override void pullDestroyEffect()
+    {
+        ObjectPulledList = ObjectPuller.current.GetFinalBossDestroyPullList();
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = _transform.position;
+        ObjectPulled.SetActive(true);
     }
 
     private void setBigBossFeatures(int waveNumber)

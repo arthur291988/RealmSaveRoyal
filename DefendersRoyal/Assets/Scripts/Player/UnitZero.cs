@@ -25,9 +25,9 @@ public class UnitZero : PlayerUnit
         setStartProperties();
     }
 
-    public override void updatePropertiesToLevel()
+    public override void updatePropertiesToLevel(bool powerUp)
     {
-        base.updatePropertiesToLevel();
+        base.updatePropertiesToLevel(powerUp);
     }
 
     public override void attackSimple()
@@ -42,7 +42,7 @@ public class UnitZero : PlayerUnit
         if (!isBlocked)
         {
             float attacPointX = Random.Range(CommonData.instance.leftEdgeofCastleTiles, CommonData.instance.rightEdgeofCastleTiles);
-            float attacPointY = unitSide == 0 ? Random.Range(18, GameController.instance.topShotLine) : Random.Range(-18, GameController.instance.bottomShotLine);
+            float attacPointY = unitSide == 0 ? Random.Range(22, GameController.instance.topShotLine) : Random.Range(-22, GameController.instance.bottomShotLine);
             ObjectPulledList = ObjectPuller.current.GetSuperShot(indexOnSuperShotsObjectPuller);
             ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
             ObjectPulled.transform.position = _unitStartPosition;
@@ -51,7 +51,11 @@ public class UnitZero : PlayerUnit
             //repeat the method to make additional shots according the features of unit
             superHitsCounter++;
             if (superHitsCounter < superHitsCount) superHit();
-            else superHitsCounter = 0;
+            else
+            {
+                base.superHit();
+                superHitsCounter = 0;
+            }
         }
     }
 }

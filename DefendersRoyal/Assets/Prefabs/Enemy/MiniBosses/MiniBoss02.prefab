@@ -4787,7 +4787,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -4883,7 +4883,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 14
   m_Sprite: {fileID: 21300000, guid: 110070ce03537f94ea118961c664f3be, type: 3}
   m_Color: {r: 0, g: 1, b: 0.018627405, a: 1}
   m_FlipX: 0
@@ -9681,7 +9681,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -9719,7 +9719,7 @@ GameObject:
   - component: {fileID: 3859213313038362320}
   - component: {fileID: 3859213313038362322}
   - component: {fileID: 5407957080702736761}
-  - component: {fileID: 1203052602034069918}
+  - component: {fileID: 8568587494735690908}
   m_Layer: 10
   m_Name: MiniBoss02
   m_TagString: Untagged
@@ -9784,7 +9784,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
+  m_SortingOrder: 13
   m_Sprite: {fileID: 21300000, guid: 867d18c77aacd584391091a0f1796ea0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9793,7 +9793,7 @@ SpriteRenderer:
   m_Size: {x: 3.38, y: 4.120381}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!70 &3859213313038362322
@@ -9831,7 +9831,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1203052602034069918
+--- !u!114 &8568587494735690908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9840,7 +9840,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3859213313038362327}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd836e3b8ea9fa94695807641e30cd82, type: 3}
+  m_Script: {fileID: 11500000, guid: 08af3e92c12dc954f844e73558119302, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRendererOfLifeLine: {fileID: 3146158678630175036}
@@ -9848,6 +9848,9 @@ MonoBehaviour:
   - {fileID: 1887168584212245165}
   - {fileID: 7064616589869475433}
   - {fileID: 5708630917667839169}
+  superHitTime: 7
+  countOfContinuousSuperHits: 1
+  startSuperHitTime: 0
 --- !u!1 &6384929291044876535
 GameObject:
   m_ObjectHideFlags: 0
@@ -14634,7 +14637,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0

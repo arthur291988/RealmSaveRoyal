@@ -73,6 +73,7 @@ public class GameController : MonoBehaviour
 
     private bool victory;
 
+
     private void Awake()
     {
         unitYShift = 0.5f;
@@ -111,6 +112,7 @@ public class GameController : MonoBehaviour
         addGroundTilesOnStart();
         addPlatformTilesOnStart();
         addInitialCastleTiles();
+
     }
 
     public void backToMenu() {
@@ -352,7 +354,7 @@ public class GameController : MonoBehaviour
         ObjectPulled.SetActive(true);
         unit.setUnitPosition();
         getAndSetTileToUnit(unit._unitStartPosition,unit); 
-        unit.updatePropertiesToLevel();
+        unit.updatePropertiesToLevel(false);
         //unit.setUnitFeatures(unit._baseHarm, unit._baseAttackSpeed, unit._baseAccuracy);
 
         consumeTheEnergy(energyToNextUnitAdd);
@@ -527,7 +529,7 @@ public class GameController : MonoBehaviour
             if (CommonData.instance.playerUnits[i]._unitType == CommonData.instance.playerUnitTypesOnScene[index])
             {
                 //CommonData.instance.playerUnits[i].setUnitPoweUpLevel(CommonData.instance.playerUnitTypesOnScenePowerUpLevel[i]);
-                CommonData.instance.playerUnits[i].updatePropertiesToLevel();
+                CommonData.instance.playerUnits[i].updatePropertiesToLevel(true);
             }
         }
     }

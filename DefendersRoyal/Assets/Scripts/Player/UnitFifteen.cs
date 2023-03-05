@@ -29,9 +29,9 @@ public class UnitFifteen : PlayerUnit
         setStartProperties();
     }
 
-    public override void updatePropertiesToLevel()
+    public override void updatePropertiesToLevel(bool powerUp)
     {
-        base.updatePropertiesToLevel();
+        base.updatePropertiesToLevel(powerUp);
     }
     public override void attackSimple()
     {
@@ -46,6 +46,7 @@ public class UnitFifteen : PlayerUnit
     {
         if (!isBlocked)
         {
+            base.superHit();
             float attacPointX = _unitStartPosition.x;
             //float attacPointY = unitSide == 0 ? Random.Range(13, 21) : Random.Range(-13, -21);
 

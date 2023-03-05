@@ -14,8 +14,7 @@ public class MiniBoss11 : MiniBoss
     public override void startSettings()
     {
         base.startSettings();
-        miniBossSuperHitTime = 2f;
-        resetSuperHitTimer();
+        resetStartSuperHitTimer();
     }
 
     private void superHit()
@@ -104,10 +103,10 @@ public class MiniBoss11 : MiniBoss
     public override void Update()
     {
         base.Update();
-        if (miniBossSuperHitTimer > 0)
+        if (startSuperHitTimer > 0)
         {
-            miniBossSuperHitTimer -= Time.deltaTime;
-            if (miniBossSuperHitTimer <= 0) superHit();
+            startSuperHitTimer -= Time.deltaTime;
+            if (startSuperHitTimer <= 0) superHit();
         }
     }
 }

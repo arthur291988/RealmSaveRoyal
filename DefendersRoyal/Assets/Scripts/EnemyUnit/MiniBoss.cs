@@ -7,15 +7,21 @@ using UnityEngine;
 public class MiniBoss : EnemyUnit
 {
     [NonSerialized]
-    public float miniBossSuperHitTimer;
+    public float superHitTimer;
+    public float superHitTime; //to assign on editor to each boss separately
+    public int countOfContinuousSuperHits;
+
     [NonSerialized]
-    public float miniBossSuperHitTime;
-    [NonSerialized]
-    public int playerUnitUnderSuperHit;
+    public float startSuperHitTimer;
+    public float startSuperHitTime;
 
     public virtual void resetSuperHitTimer()
     {
-        miniBossSuperHitTimer = miniBossSuperHitTime;
+        superHitTimer = superHitTime;
+    }
+    public virtual void resetStartSuperHitTimer()
+    {
+        startSuperHitTimer = startSuperHitTime;
     }
 
     public override void setEnemyLevel(int level, int attackWaveCount)
@@ -23,7 +29,13 @@ public class MiniBoss : EnemyUnit
         base.setEnemyLevel(level, attackWaveCount);
         setMiniBossFeatures(attackWaveCount);
     }
-
+    public override void pullDestroyEffect()
+    {
+        ObjectPulledList = ObjectPuller.current.GetMiniBossDestroyPullList();
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = _transform.position;
+        ObjectPulled.SetActive(true);
+    }
 
     private void setMiniBossFeatures(int waveNumber)
     {

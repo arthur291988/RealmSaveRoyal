@@ -12,8 +12,7 @@ public class FinalBoss01 : FinalBoss
     public override void startSettings()
     {
         base.startSettings();
-        bossSuperHitTime = 3f;
-        resetSuperHitTimer();
+        resetStartSuperHitTimer();
     }
 
     private void superHit()
@@ -68,10 +67,10 @@ public class FinalBoss01 : FinalBoss
     public override void Update()
     {
         base.Update();
-        if (bossSuperHitTimer > 0)
+        if (startSuperHitTimer > 0)
         {
-            bossSuperHitTimer -= Time.deltaTime;
-            if (bossSuperHitTimer <= 0) superHit();
+            startSuperHitTimer -= Time.deltaTime;
+            if (startSuperHitTimer <= 0) superHit();
         }
     }
 }

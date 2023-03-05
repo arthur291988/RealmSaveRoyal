@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class EnemyUnit : MonoBehaviour
@@ -13,6 +14,11 @@ public class EnemyUnit : MonoBehaviour
     public int _energyOnDestroy;
     [NonSerialized]
     public float _moveSpeed;
+
+    [NonSerialized]
+    public GameObject ObjectPulled;
+    [NonSerialized]
+    public List<GameObject> ObjectPulledList;
 
     public SpriteRenderer _spriteRendererOfLifeLine;
     [NonSerialized]
@@ -242,12 +248,16 @@ public class EnemyUnit : MonoBehaviour
         GameController.instance.incrementEnergy(_energyOnDestroy);
         //GameController.instance.updateEneryText();
         removeFromCommonData();
+        pullDestroyEffect();
         _gameObject.SetActive(false);
         underLastingFireInjure = false;
         underLastingFrost=false;
         underLastingPeakBlood=false;
         foreach (ParticleSystem lastingEffect in effectsOnEnemy) lastingEffect.Stop(); // stop all playing effects
         isPushedBack = false;
+    }
+
+    public virtual void pullDestroyEffect() {
     }
 
     public void lastingInjure(float time, int injurePerFourthOfSecont, int effectIndex)

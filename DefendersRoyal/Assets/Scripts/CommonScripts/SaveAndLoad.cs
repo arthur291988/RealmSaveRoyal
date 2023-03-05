@@ -12,8 +12,8 @@ public class SaveAndLoad : MonoBehaviour
 
     private void Awake()
     {
-        GameParams.achievedSubLocationStatic = 1;
-        saveGameData();
+        //GameParams.achievedSubLocationStatic = 1;
+        //saveGameData();
         instance = new SaveAndLoad();
         //get Saved achieved location and sub location
         if (File.Exists(Application.persistentDataPath + "/" + fileName + ".art"))
@@ -24,6 +24,7 @@ public class SaveAndLoad : MonoBehaviour
         {
             GameParams.achievedLocationStatic = 0;
             GameParams.achievedSubLocationStatic = 0;
+            GameParams.language = 0;
         }
 
 
@@ -85,7 +86,7 @@ public class SaveAndLoad : MonoBehaviour
         StreamWriter sw = new StreamWriter(Application.persistentDataPath + "/" + fileNamePref + ".art");
         string sp = " "; //space 
 
-        sw.WriteLine(Crypt("isEnglishStatic" + sp + GameParams.isEnglishStatic));
+        sw.WriteLine(Crypt("language" + sp + GameParams.language));
 
 
         sw.Close();
@@ -106,8 +107,8 @@ public class SaveAndLoad : MonoBehaviour
     {
         string[] rows = File.ReadAllLines(Application.persistentDataPath + "/" + fileNamePref + ".art");
 
-        bool isEnglish;
-        if (bool.TryParse(getSavedValue(rows, "isEnglish"), out isEnglish)) GameParams.isEnglishStatic = isEnglish;
+        int language;
+        if (int.TryParse(getSavedValue(rows, "language"), out language)) GameParams.language = language;
     }
 
     private void OnApplicationQuit()

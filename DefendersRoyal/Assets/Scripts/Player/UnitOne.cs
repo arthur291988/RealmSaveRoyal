@@ -43,9 +43,9 @@ public class UnitOne : PlayerUnit
         else simpleShotsCount = 5;
     }
 
-    public override void updatePropertiesToLevel()
+    public override void updatePropertiesToLevel(bool powerUp)
     {
-        base.updatePropertiesToLevel();
+        base.updatePropertiesToLevel(powerUp);
     }
 
     public override void attackSimple()
@@ -81,6 +81,7 @@ public class UnitOne : PlayerUnit
     {
         if (!isBlocked)
         {
+            base.superHit();
             float attacPointX = _unitStartPosition.x;
             //float attacPointY = unitSide == 0 ? Random.Range(13, 21/*GameController.instance.topShotLine*/) : Random.Range(-13, -21 /*GameController.instance.bottomShotLine*/);
 

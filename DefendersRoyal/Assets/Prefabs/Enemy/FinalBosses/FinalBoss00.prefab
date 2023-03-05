@@ -4787,7 +4787,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -9599,7 +9599,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -9702,13 +9702,13 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 9
-  m_Sprite: {fileID: 21300000, guid: e6b128dd717ee534bb207c7845601951, type: 3}
+  m_SortingOrder: 13
+  m_Sprite: {fileID: 21300000, guid: db290ffb0b1bf064f9fd334b0142dc32, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4, y: 3.484375}
+  m_Size: {x: 4.0031247, y: 4.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -9725,7 +9725,7 @@ CapsuleCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 3.06, y: 3.04}
@@ -9766,6 +9766,9 @@ MonoBehaviour:
   - {fileID: 4374862451837219578}
   - {fileID: 9184414220035165493}
   - {fileID: 1356670322820199748}
+  superHitTime: 7
+  startSuperHitTime: 0
+  countOfContinuousSuperHits: 2
 --- !u!1 &7893701657848565756
 GameObject:
   m_ObjectHideFlags: 0
@@ -9836,7 +9839,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 11
+  m_SortingOrder: 14
   m_Sprite: {fileID: 21300000, guid: 110070ce03537f94ea118961c664f3be, type: 3}
   m_Color: {r: 0, g: 1, b: 0.018627405, a: 1}
   m_FlipX: 0
@@ -14634,7 +14637,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0

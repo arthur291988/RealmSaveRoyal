@@ -9600,7 +9600,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 19
   m_RenderMode: 0
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -9701,7 +9701,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 7
+  m_SortingOrder: 9
   m_Sprite: {fileID: 21300000, guid: 856292c48bc2e5241bab156b549ba341, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -9727,7 +9727,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitSpriteRenderer: {fileID: 0}
   _rangeSprite: {fileID: 3797078813534409023}
-  MergeOrPowerUpEffect: {fileID: 7861407614645261289}
+  MergeAndSpawnEffect: {fileID: 0}
+  PowerUpEffect: {fileID: 0}
+  MegaHitEffect: {fileID: 0}
   isMoved: 0
   _animator: {fileID: 1833908556382276143}
   frozenEffect: {fileID: 735541309399471046}
@@ -9820,7 +9822,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 0d809f557547c3b49b6dee8773ff1a83, type: 3}
   m_Color: {r: 1, g: 0.75357646, b: 0, a: 1}
   m_FlipX: 0

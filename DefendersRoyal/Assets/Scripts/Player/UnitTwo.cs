@@ -72,14 +72,15 @@ public class UnitTwo : PlayerUnit
         }
     }
 
-    public override void updatePropertiesToLevel()
+    public override void updatePropertiesToLevel(bool powerUp)
     {
-        base.updatePropertiesToLevel();
+        base.updatePropertiesToLevel(powerUp);
     }
     public override void superHit()
     {
         if (!isBlocked)
         {
+            base.superHit();
             float attacPointX = _unitStartPosition.x;
             //float attacPointY = unitSide == 0 ? Random.Range(13, 21/*GameController.instance.topShotLine*/) : Random.Range(-13, -21 /*GameController.instance.bottomShotLine*/);
             float attacPointY = unitSide == 0 ? _unitStartPosition.y+10 : _unitStartPosition.y - 10;

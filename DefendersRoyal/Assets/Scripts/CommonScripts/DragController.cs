@@ -138,7 +138,7 @@ public class DragController : MonoBehaviour
 
         ObjectPulled.SetActive(true);
         unit.setUnitPosition();
-        unit.updatePropertiesToLevel();
+        unit.updatePropertiesToLevel(false);
         toPutOnTile._playerUnit = unit;
         draggedFromTile._playerUnit = null;
 

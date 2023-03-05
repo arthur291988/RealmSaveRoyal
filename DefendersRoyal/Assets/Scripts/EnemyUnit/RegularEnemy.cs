@@ -20,4 +20,15 @@ public class RegularEnemy : EnemyUnit
         HP = CommonData.instance.regularEnemyHPForAllLocations[CommonData.instance.location, CommonData.instance.subLocation, waveNumber, _enemyLevel];
         maxHP = HP;
     }
+
+    public override void pullDestroyEffect()
+    {
+        ObjectPulledList = ObjectPuller.current.GetRegularEnemyDestroyPullList();
+        ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+        ObjectPulled.transform.position = _transform.position;
+        ObjectPulled.SetActive(true);
+    }
+
+
+
 }

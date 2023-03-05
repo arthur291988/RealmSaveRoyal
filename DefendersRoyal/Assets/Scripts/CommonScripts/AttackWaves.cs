@@ -41,6 +41,10 @@ public class AttackWaves : MonoBehaviour
     private TextMeshProUGUI pauseAlertMessageDown;
     private bool wavePause;
 
+    [SerializeField]
+    private TextMeshProUGUI wavesCountTextText;
+    private int totalWavesLeft;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +60,22 @@ public class AttackWaves : MonoBehaviour
         bossAttackPassed = false;
         finalBossAttackPassed = false;
         setAttackWaves(CommonData.instance.locationWaves[new Vector2(CommonData.instance.location, CommonData.instance.subLocation)]);
+        setTotalWavesCountOnStart();
+        updateWavesText();
+    }
 
+    private void setTotalWavesCountOnStart() {
+        for (int i = 0; i < _attackWaves.Count; i++) {
+            for (int y = 0; y < _attackWaves[i].Count; y++) {
+                totalWavesLeft++;
+            }
+            totalWavesLeft++;
+        }
+    }
+
+    private void updateWavesText()
+    {
+        wavesCountTextText.text = totalWavesLeft.ToString();
     }
 
     private Vector2 pointOfEnemy(int side)
@@ -404,6 +423,8 @@ public class AttackWaves : MonoBehaviour
             finalBossAttackPassed = true;
 
         }
+        totalWavesLeft--;
+        updateWavesText(); 
     }
 
     private void bonusEnergyForInteruption() {
