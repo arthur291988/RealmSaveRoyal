@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -73,6 +74,32 @@ public class GameController : MonoBehaviour
 
     private bool victory;
 
+    //[SerializeField]
+    //private GameObject tutorPanel;
+    [SerializeField]
+    private GameObject tutorPointer;
+    [SerializeField]
+    private GameObject tutorPointerUp;
+    [SerializeField]
+    private RawImage tutorPointerRawImage;
+    [SerializeField]
+    private RawImage tutorPointerUPRawImage;
+    [SerializeField]
+    private GameObject tutorMessageGO;
+    [SerializeField]
+    private RawImage tutorMessageRawImage;
+    [SerializeField]
+    private Text tutorMessageText;
+    [SerializeField]
+    private GameObject tutorMessageOkButton;
+    //0 - start to mana pointer; 1 - add unit pointer;
+    private int tutorStep;
+    private int tutorAddUnitCount;
+    private int tutorAddTowerCount;
+    private int tutorPowerUpCount;
+    [SerializeField]
+    private GameObject MergeTutorPanel;
+
 
     private void Awake()
     {
@@ -113,6 +140,165 @@ public class GameController : MonoBehaviour
         addPlatformTilesOnStart();
         addInitialCastleTiles();
 
+        if (GameParams.isTutor)
+        {
+            tutorStep = 0;
+            tutorProcessor();
+        }
+
+    }
+
+    public void tutorProcessor() {
+        //mana pointer tutor
+        if (tutorStep == 0)
+        {
+            tutorStep = 1;
+            gameIsOn = false;
+            tutorPointerRawImage.rectTransform.anchoredPosition = new Vector2(-250, 120);
+            tutorPointer.SetActive(true);
+            tutorMessageRawImage.rectTransform.anchoredPosition = new Vector2(0, 284);
+            tutorMessageText.text = CommonData.instance.getAvailableManaText();
+            tutorMessageGO.SetActive(true);
+            tutorMessageOkButton.SetActive(true);
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = false;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+        }
+
+        //unit add pointer tutor
+        else if (tutorStep == 1)
+        {
+            tutorAddUnitCount = 0;
+            tutorPointerRawImage.rectTransform.anchoredPosition = new Vector2(-118, 156);
+            tutorMessageText.text = CommonData.instance.getAddHeroesText();
+            tutorMessageOkButton.SetActive(false);
+            addUnitButton.interactable = true;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+        }
+
+        //tower add pointer tutor
+        else if (tutorStep == 2)
+        {
+            tutorAddTowerCount = 0;
+            tutorPointerRawImage.rectTransform.anchoredPosition = new Vector2(-3, 156);
+            tutorMessageText.text = CommonData.instance.getAddTowerText();
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = true;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+        }
+
+        //more units add pointer tutor
+        else if (tutorStep == 3)
+        {
+            tutorPointerRawImage.rectTransform.anchoredPosition = new Vector2(-118, 156);
+            tutorMessageText.text = CommonData.instance.getEvilIsCloseAddHeroesText();
+            addUnitButton.interactable = true;
+            addCastleTileButton.interactable = false;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+        }
+
+        //first wave battle
+        else if (tutorStep == 4)
+        {
+            tutorPointer.SetActive(false);
+            tutorMessageGO.SetActive(false);
+            tutorStep++;
+            gameIsOn = true;
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = false;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+        }
+
+        //next wave timer pointer tutor
+        else if (tutorStep == 5)
+        {
+            gameIsOn = false;
+            tutorStep++;
+            tutorMessageRawImage.rectTransform.anchoredPosition = new Vector2(0, 504);
+            tutorPointerRawImage.rectTransform.anchoredPosition = new Vector2(110, 330);
+            tutorPointer.SetActive(true);
+            tutorMessageGO.SetActive(true);
+            tutorMessageText.text = CommonData.instance.getTimeTilNextWaveText();
+            tutorMessageOkButton.SetActive(true);
+        }
+
+        //power up pointer tutor
+        else if (tutorStep == 6)
+        {
+            gameIsOn = false;
+            tutorPowerUpCount = 0;
+            tutorMessageRawImage.rectTransform.anchoredPosition = new Vector2(0, 284);
+            tutorPointerRawImage.rectTransform.anchoredPosition = new Vector2(225, 154);
+            tutorPointer.SetActive(true);
+            tutorMessageGO.SetActive(true);
+            tutorMessageText.text = CommonData.instance.getPowerUpText();
+            tutorMessageOkButton.SetActive(false);
+            foreach (Button button in powerUpButtonsList) button.interactable = true;
+        }
+
+        //second trial battle begin
+        else if (tutorStep == 7)
+        {
+            tutorPointer.SetActive(false);
+            tutorMessageGO.SetActive(false);
+            tutorStep++;
+            gameIsOn = true;
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = false;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+            Invoke("megaAttackTutor", 10);
+        }
+        //mega attack pointer tutor
+        else if (tutorStep == 8)
+        {
+            gameIsOn = false;
+            tutorMessageRawImage.rectTransform.anchoredPosition = new Vector2(0, 704);
+            tutorPointerUPRawImage.rectTransform.anchoredPosition = new Vector2(-146, -158);
+            tutorPointerUp.SetActive(true);
+            tutorMessageGO.SetActive(true);
+            tutorMessageOkButton.SetActive(false); 
+            bonusHitButton.interactable = true;
+            tutorMessageText.text = CommonData.instance.getSuperAttackText();
+        }
+        //second trial battle resumes
+        else if (tutorStep == 9)
+        {
+            bonusHitButton.interactable = false;
+            tutorPointer.SetActive(false);
+            tutorPointerUp.SetActive(false);
+            tutorMessageGO.SetActive(false);
+            gameIsOn = true;
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = false;
+            tutorStep++;
+        }
+        //merge tutor
+        else if (tutorStep == 10)
+        {
+            tutorMessageText.text = CommonData.instance.getMergeText();
+            tutorMessageRawImage.rectTransform.anchoredPosition = new Vector2(0, 284);
+            MergeTutorPanel.SetActive(true);
+            tutorMessageGO.SetActive(true);
+            tutorStep++;
+            gameIsOn = false;
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = false;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+        } 
+        //merge tutor
+        else if (tutorStep == 11)
+        {
+            MergeTutorPanel.SetActive(false);
+            tutorMessageGO.SetActive(false);
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = false;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+            showMessage(CommonData.instance.getTutorFinishTextText(), CommonData.instance.greenColor);
+        }
+    }
+
+    private void megaAttackTutor() {
+        tutorProcessor();
     }
 
     public void backToMenu() {
@@ -121,7 +307,8 @@ public class GameController : MonoBehaviour
             GameParams.achievedLocationStatic = CommonData.instance.location;
             if (GameParams.achievedSubLocationStatic<= CommonData.instance.subLocation) GameParams.achievedSubLocationStatic = CommonData.instance.subLocation+1;
         }
-        SaveAndLoad.instance.saveGameData();
+        if (!GameParams.isTutor) SaveAndLoad.instance.saveGameData();
+
         SceneSwitchMngr.LoadMenuScene();
     }
 
@@ -138,25 +325,6 @@ public class GameController : MonoBehaviour
         {
             showMessage(CommonData.instance.getLoseText(), CommonData.instance.redColor);
             victory = false; 
-        }
-    }
-
-
-    private void addPlatformTilesOnStart()
-    {
-        foreach (Vector2 positionOfPlatform in CommonData.instance.platformTilesUp.Keys)
-        {
-            ObjectPulledList = ObjectPuller.current.GetPlatformTilePullList();
-            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-            ObjectPulled.transform.position = positionOfPlatform;
-            ObjectPulled.SetActive(true);
-        }
-        foreach (Vector2 positionOfPlatform in CommonData.instance.platformTilesDown.Keys)
-        {
-            ObjectPulledList = ObjectPuller.current.GetPlatformTilePullList();
-            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
-            ObjectPulled.transform.position = positionOfPlatform;
-            ObjectPulled.SetActive(true);
         }
     }
 
@@ -200,6 +368,42 @@ public class GameController : MonoBehaviour
         }
     }
 
+    private void addPlatformTilesOnStart()
+    {
+        foreach (Vector2 positionOfPlatform in CommonData.instance.platformTilesUp.Keys)
+        {
+            ObjectPulledList = ObjectPuller.current.GetPlatformTilePullList();
+            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+            ObjectPulled.transform.position = positionOfPlatform;
+            ObjectPulled.SetActive(true);
+        }
+        foreach (Vector2 positionOfPlatform in CommonData.instance.platformTilesDown.Keys)
+        {
+            ObjectPulledList = ObjectPuller.current.GetPlatformTilePullList();
+            ObjectPulled = ObjectPuller.current.GetGameObjectFromPull(ObjectPulledList);
+            ObjectPulled.transform.position = positionOfPlatform;
+            ObjectPulled.SetActive(true);
+        }
+    }
+
+    private void addInitialCastleTiles()
+    {
+        if (GameParams.isTutor)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                addNewCastleTile(true);
+            }
+        }
+        else
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                addNewCastleTile(true);
+            }
+        }
+    }
+    
     public void showMessage(string message, Color colorOfMessage)
     {
         messagePanleText.text = message;
@@ -293,13 +497,18 @@ public class GameController : MonoBehaviour
     }
     public void updatePowerUpButtonsUI()
     {
-        for (int i = 0; i < energyToNextPowerUpList.Count; i++) {
-            if (energyToNextPowerUpList[i] > CommonData.instance.energyToPowerUpMax) powerUpButtonsList[i].interactable = false;
-            else { 
-                if (energyToNextPowerUpList[i]<= CommonData.instance.energy) powerUpButtonsList[i].interactable = true;
-                else powerUpButtonsList[i].interactable = false;
+        if (!GameParams.isTutor)
+        {
+            for (int i = 0; i < energyToNextPowerUpList.Count; i++)
+            {
+                if (energyToNextPowerUpList[i] > CommonData.instance.energyToPowerUpMax) powerUpButtonsList[i].interactable = false;
+                else
+                {
+                    if (energyToNextPowerUpList[i] <= CommonData.instance.energy) powerUpButtonsList[i].interactable = true;
+                    else powerUpButtonsList[i].interactable = false;
+                }
             }
-        } 
+        }
     }
 
 
@@ -363,6 +572,22 @@ public class GameController : MonoBehaviour
         updateUnitsAndCastleTileAddButtonsUI();
         updatePowerUpButtonsUI();
 
+        if (GameParams.isTutor)
+        {
+            tutorAddUnitCount++;
+            addCastleTileButton.interactable = false;
+            foreach (Button button in powerUpButtonsList) button.interactable = false;
+            if (tutorAddUnitCount == 2)
+            {
+                tutorStep++;
+                tutorProcessor();
+            }
+            if (tutorAddUnitCount == 10)
+            {
+                tutorStep++;
+                tutorProcessor();
+            }
+        }
         //foreach (CastleTiles ct in CommonData.instance.castleTiles) Debug.Log(ct._playerUnit == null);
     }
 
@@ -462,20 +687,23 @@ public class GameController : MonoBehaviour
             incrementEnergyNeedToNextCatleTileAdd();
             updateEneryToNextCastleTileAddText();
             updateUnitsAndCastleTileAddButtonsUI();
-            updatePowerUpButtonsUI();
+            updatePowerUpButtonsUI(); 
+            
+            if (GameParams.isTutor)
+            {
+                tutorAddTowerCount++;
+                addUnitButton.interactable = false;
+                foreach (Button button in powerUpButtonsList) button.interactable = false;
+                if (tutorAddTowerCount == 8)
+                {
+                    tutorStep++;
+                    tutorProcessor();
+                }
+            }
         }
     }
 
-    private void addInitialCastleTiles()
-    {
-        for (int j = 0; j < 6; j++)
-        {
-            addNewCastleTile(true);
-        }
-
-
-        //foreach (CastleTiles ct in CommonData.instance.castleTiles) Debug.Log(ct._playerUnit == null);
-    }
+    
 
     public void updateBonusSliderFill(int energy) {
         bonusFillSlider.value += energy;
@@ -491,10 +719,14 @@ public class GameController : MonoBehaviour
     }
 
     public void updateBonusHitButton() {
-        if (bounsHitsAvailable > 0) {
-            if (!bonusHitButton.interactable) bonusHitButton.interactable = true;
+        if (!GameParams.isTutor)
+        {
+            if (bounsHitsAvailable > 0)
+            {
+                if (!bonusHitButton.interactable) bonusHitButton.interactable = true;
+            }
+            else if (bonusHitButton.interactable) bonusHitButton.interactable = false;
         }
-        else if (bonusHitButton.interactable) bonusHitButton.interactable = false;
     }
 
     private void updateBonusHitsAvailable()
@@ -511,6 +743,9 @@ public class GameController : MonoBehaviour
             if (CommonData.instance.playerUnits[i]._unitType == indexOfNextMegaHitUnit) CommonData.instance.playerUnits[i].superHit();
         }
         setNextSuperHit();
+
+        tutorStep++;
+        tutorProcessor();
     }
 
     private void setNextSuperHit()
@@ -530,6 +765,17 @@ public class GameController : MonoBehaviour
             {
                 //CommonData.instance.playerUnits[i].setUnitPoweUpLevel(CommonData.instance.playerUnitTypesOnScenePowerUpLevel[i]);
                 CommonData.instance.playerUnits[i].updatePropertiesToLevel(true);
+            }
+        }
+        if (GameParams.isTutor)
+        {
+            tutorPowerUpCount++; 
+            addUnitButton.interactable = false;
+            addCastleTileButton.interactable = false;
+            if (tutorPowerUpCount == 4)
+            {
+                tutorStep++;
+                tutorProcessor();
             }
         }
     }

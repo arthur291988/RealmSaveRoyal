@@ -45,6 +45,7 @@ public class MapController : MonoBehaviour
             comingSoonText.text = getComingSoonText();
             comingSoonTextObject.SetActive(true);
         }
+        GameParams.isTutor = false;
     }
 
     public void updateMenuText()
@@ -52,6 +53,7 @@ public class MapController : MonoBehaviour
         GameParams.language = languageDropdown.value;
         comingSoonText.text = getComingSoonText();
         mapNameText.text = getMapName();
+        SaveAndLoad.instance.savePlayerPrefs();
     }
 
     private string getComingSoonText()

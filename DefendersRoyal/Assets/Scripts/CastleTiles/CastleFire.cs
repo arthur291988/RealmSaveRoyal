@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class CastleFire : CastleTiles
 {
+    [SerializeField]
+    private SpriteRenderer lifeCountSprite;
     // Start is called before the first frame update
     void Start()
     {
         HP = CommonData.instance.HPOfTile;
         addToCommonData();
+        lifeCountSprite.sprite = GameController.instance.playerRangeSpriteAtlases.GetSprite(HP.ToString());
     }
 
     private void addToCommonData() {
@@ -19,7 +22,9 @@ public class CastleFire : CastleTiles
     public override void reduceHP()
     {
         HP--;
+        lifeCountSprite.sprite = GameController.instance.playerRangeSpriteAtlases.GetSprite(HP.ToString());
         if (HP < 1) disactivateTile();
+        
     }
 
     public override void disactivateTile()

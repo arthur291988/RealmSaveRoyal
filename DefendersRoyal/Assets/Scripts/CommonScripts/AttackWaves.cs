@@ -448,7 +448,11 @@ public class AttackWaves : MonoBehaviour
                 attackWaveIsOn = false;
 
                 GameController.instance.incrementEnergy(bonusEnergyBeforeWave());
-                if (!finalBossAttackPassed) wavePause = true;
+                if (!finalBossAttackPassed)
+                {
+                    wavePause = true;
+                    if (GameParams.isTutor) GameController.instance.tutorProcessor();
+                }
                 else GameController.instance.EndGame(true);
                 
             }

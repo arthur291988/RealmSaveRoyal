@@ -24,7 +24,6 @@ public class SaveAndLoad : MonoBehaviour
         {
             GameParams.achievedLocationStatic = 0;
             GameParams.achievedSubLocationStatic = 0;
-            GameParams.language = 0;
         }
 
 
@@ -32,6 +31,9 @@ public class SaveAndLoad : MonoBehaviour
         if (File.Exists(Application.persistentDataPath + "/" + fileNamePref + ".art"))
         {
             LoadPrefsFromFile();
+        }
+        else {
+            GameParams.language = 0;
         }
     }
 
@@ -113,7 +115,7 @@ public class SaveAndLoad : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        saveGameData();
+        if (!GameParams.isTutor) saveGameData();
         savePlayerPrefs();
     }
 }

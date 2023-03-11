@@ -167,7 +167,8 @@ public class PlayerUnit : MonoBehaviour
         frozenEffect.Stop();
         simpleShotsCounter = 0;
         superHitsCounter = 0;
-        _spriteRendererTransform.localScale = Vector3.one;
+        _transform.rotation = Quaternion.Euler(0, 0, 0);
+        _transform.localScale = Vector3.one;
         _gameObject.SetActive(false);
     }
     public virtual void attackSimple()

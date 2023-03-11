@@ -149,6 +149,7 @@ public class DragController : MonoBehaviour
         draggedUnitScript.disactivateUnit();
         draggedFromTile = null;
         toPutOnTile = null;
+        if (GameParams.isTutor) GameController.instance.tutorProcessor(); 
     }
 
     private void putUnitOnNewPosition() {

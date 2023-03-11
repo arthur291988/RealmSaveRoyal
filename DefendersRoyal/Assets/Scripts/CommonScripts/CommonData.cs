@@ -1,9 +1,11 @@
 ﻿
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using static UnityEditor.PlayerSettings;
 
 public class CommonData : MonoBehaviour
 {
@@ -35,7 +37,7 @@ public class CommonData : MonoBehaviour
     public List<EnemyUnit> enemyUnitsAll; //this one is used on attack wave sequence control
 
     [NonSerialized]
-    public Dictionary<int, List<EnemyUnit>> enemyUnits;
+    public Dictionary<int, List<EnemyUnit>> enemyUnits; //0 - is up, 1 is down
 
     [NonSerialized]
     public List<PlayerUnit> playerUnits;
@@ -147,6 +149,62 @@ public class CommonData : MonoBehaviour
         else if (GameParams.language == 1) return "Они идут...";
         else return "Ellos estan viniendo...";
     }
+    public string getAvailableManaText()
+    {
+        if (GameParams.language == 0) return "Amount of mana";
+        else if (GameParams.language == 1) return "Количество маны";
+        else return "Сantidad de maná";
+    }
+    public string getAddHeroesText()
+    {
+        if (GameParams.language == 0) return "Summon heroes!";
+        else if (GameParams.language == 1) return "Призови героев!";
+        else return "Invocar héroes!";
+    }
+    public string getAddTowerText()
+    {
+        if (GameParams.language == 0) return "Build towers!";
+        else if (GameParams.language == 1) return "Построй башни!";
+        else return "Сonstruir torres!";
+    }
+    public string getEvilIsCloseAddHeroesText()
+    {
+        if (GameParams.language == 0) return "Evil is near! Summon more heroes!";
+        else if (GameParams.language == 1) return "Зло близко! Призови больше героев!";
+        else return "El mal está cerca! Invoca a más héroes!";
+    }
+    public string getTimeTilNextWaveText()
+    {
+        if (GameParams.language == 0) return "Time until next wave";
+        else if (GameParams.language == 1) return "Время до следующей волны";
+        else return "Tiempo hasta la próxima ola";
+    }
+    public string getPowerUpText()
+    {
+        if (GameParams.language == 0) return "Strengthen the heroes!";
+        else if (GameParams.language == 1) return "Усиль героев!";
+        else return "Fortalece a los héroes!";
+    }
+    public string getSuperAttackText()
+    {
+        if (GameParams.language == 0) return "Super attack!";
+        else if (GameParams.language == 1) return "Супер атака!";
+        else return "Super ataque!";
+    }
+    public string getMergeText()
+    {
+        if (GameParams.language == 0) return "Merge the same heroes!";
+        else if (GameParams.language == 1) return "Соедини одинаковых героев!";
+        else return "Combina los mismos héroes!";
+    }
+    public string getTutorFinishTextText()
+    {
+        if (GameParams.language == 0) return "You are ready! Save the Kingdom!";
+        else if (GameParams.language == 1) return "Вы готовы! Спасите Королевство!";
+        else return "Estás listo! Salvar el Reino!";
+    }
+
+
 
     #region levelParameters
     //index explanation: 0 - attack side counts (2 means attack will go from up and down simultaniously); 1-2-3-4 first-second-third-forth level enemies count 
@@ -455,13 +513,32 @@ public class CommonData : MonoBehaviour
         //for (int i = 0; i < playerUnitTypesOnScene.Length; i++)
         //{
         //    playerUnitTypesOnScene[i] = i; //TO DO with more than 5 types (for now there only 5 types). Also necessary to limit unittypes on scene with ones chosen by player 
-            
+
         //}
-        playerUnitTypesOnScene[0] = 1;
-        playerUnitTypesOnScene[1] = 2;
-        playerUnitTypesOnScene[2] = 27;
-        playerUnitTypesOnScene[3] = 4;
-        playerUnitTypesOnScene[4] = 5;
+        if (GameParams.subLocationStatic == 0)
+        {
+            playerUnitTypesOnScene[0] = 0;
+            playerUnitTypesOnScene[1] = 27;
+            playerUnitTypesOnScene[2] = 4;
+            playerUnitTypesOnScene[3] = 2;
+            playerUnitTypesOnScene[4] = 15;
+        }
+        else if (GameParams.subLocationStatic == 1)
+        {
+            playerUnitTypesOnScene[0] = 27;
+            playerUnitTypesOnScene[1] = 22;
+            playerUnitTypesOnScene[2] = 5;
+            playerUnitTypesOnScene[3] = 1;
+            playerUnitTypesOnScene[4] = 10;
+        }
+        else {
+            playerUnitTypesOnScene[0] = 5;
+            playerUnitTypesOnScene[1] = 2;
+            playerUnitTypesOnScene[2] = 0;
+            playerUnitTypesOnScene[3] = 10;
+            playerUnitTypesOnScene[4] = 15;
+
+        }
 
     }
 
@@ -548,7 +625,7 @@ public class CommonData : MonoBehaviour
         towerHPReduceAmount = 700;
 
         location = GameParams.locationStatic;
-        subLocation = GameParams.subLocationStatic; ;
+        subLocation = GameParams.subLocationStatic; 
         subLocationString = subLocation.ToString();
         locationString = location.ToString();
 
@@ -561,7 +638,9 @@ public class CommonData : MonoBehaviour
         // TO DO in case of success
         if (subLocation == 0) energyOnStart = 100;
         else if (subLocation == 1) energyOnStart = 2000;
-        else if (subLocation == 2) energyOnStart = 3500;
+        else if (subLocation == 2) energyOnStart = 4000;
+
+        if (GameParams.isTutor) energyOnStart = 5000;
 
         energyToNextUnitAddStep = 11;
 
@@ -705,17 +784,27 @@ public class CommonData : MonoBehaviour
         };
         }
 
+        if (GameParams.isTutor)
+        {
+            platformTilesUp = new Dictionary<Vector2, int>
+        {
+            {new Vector2(0, 4),0},
+            {new Vector2(-4, 4),0},
+            {new Vector2(4, 4),0},
+            {new Vector2(-8, 4),0},
+            {new Vector2(8, 4),0}
+        };
+            platformTilesDown = new Dictionary<Vector2, int>
+        {
+            {new Vector2(0, -4f),0},
+            {new Vector2(-4, -4f),0},
+            {new Vector2(4, -4f),0},
+            {new Vector2(-8, -4f),0},
+            {new Vector2(8, -4f),0}
+        };
+        }
 
-
-        //insideCastlePointsForEnemyUnits = new List<Vector2>{
-        //    new Vector2(0, 0),
-        //    new Vector2(-3.5f, 0),
-        //    new Vector2(3.5f, 0),
-        //    new Vector2(-7, 0),
-        //    new Vector2(7, 0)
-        //}; 
-
-        enemyUnits = new Dictionary<int, List<EnemyUnit>>
+            enemyUnits = new Dictionary<int, List<EnemyUnit>>
         {
             [0] = new List<EnemyUnit>(),
             [1] = new List<EnemyUnit>()
